@@ -1,7 +1,0 @@
-package fr.huautleroux.petitschevaux;
-
-public class Cheval {
-	private Case position;
-	private int numero;
-
-}
