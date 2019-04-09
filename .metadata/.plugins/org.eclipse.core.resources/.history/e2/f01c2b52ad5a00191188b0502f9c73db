@@ -1,0 +1,14 @@
+package fr.huautleroux.petitschevaux;
+
+public abstract class Participant {
+	private String pseudo;
+	
+	public String getPseudo() {
+		return pseudo;
+	}
+	
+	public void setPseudo(String value) {
+		this.pseudo = value;
+	}
+
+}

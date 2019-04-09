@@ -1,0 +1,7 @@
+package fr.huautleroux.petitschevaux;
+
+public class Plateau {
+	public final int TOUR_MAX;
+	public int DISTANCE_ECURIE;
+	public int CASE_MAX;
+}
