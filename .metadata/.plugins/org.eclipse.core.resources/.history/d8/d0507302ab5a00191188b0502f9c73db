@@ -1,0 +1,7 @@
+package fr.huautleroux.petitschevaux;
+
+public class Joueur {
+	public void choixAction(Actions action) {
+		
+	}
+}
