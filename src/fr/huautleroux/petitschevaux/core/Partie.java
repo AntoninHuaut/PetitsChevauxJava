@@ -3,17 +3,38 @@ package fr.huautleroux.petitschevaux.core;
 import java.util.ArrayList;
 import java.util.Random;
 
+import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.players.Joueur;
+import fr.huautleroux.petitschevaux.players.JoueurHumain;
+
 public class Partie {
 	private Random de;
 	
 	public Partie(){
-		
-		initialiserJoueurs();
+		int nb;
+		try {
+			do {
+				System.out.println("Combien de joueurs vont participer ?");
+				nb = Saisie.getInteger();
+			}while (nb>4 || nb<1);
+		}
+		catch(IllegalArgumentException e) {
+			System.out.println("Vous n'avez pas entré un chiffre");
+		}
+		initialiserJoueurs(nb);
 		initialiserPlateau();
 	}
 	
 	public void initialiserJoueurs(int nb){
-		
+		ArrayList<Joueur> players = new ArrayList<Joueur>();
+		Couleur[] couleurs = Couleur.values();
+		String nom;
+		for(int i = 0; i<nb; i++) {
+			System.out.println("Entrez votre pseudo");
+			nom = Saisie.getString();
+			players.add(new JoueurHumain(nom, couleurs[i]));
+			
+		}
 	}
 	
 	public void initialiserPlateau() {
@@ -30,7 +51,7 @@ public class Partie {
 		
 	}
 	
-	public boolean estPartieTermin�e() {
+	public boolean estPartieTerminée() {
 		return false;
 	}
 	
