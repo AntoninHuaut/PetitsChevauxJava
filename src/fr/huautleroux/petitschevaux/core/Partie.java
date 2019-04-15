@@ -2,7 +2,6 @@ package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.players.Joueur;
 import fr.huautleroux.petitschevaux.players.JoueurHumain;
@@ -28,8 +27,8 @@ public class Partie {
 	public void initialiserJoueurs(int nb){
 		ArrayList<Joueur> players = new ArrayList<Joueur>();
 		Couleur[] couleurs = Couleur.values();
-		String nom;
 		for(int i = 0; i<nb; i++) {
+			String nom;
 			System.out.println("Entrez votre pseudo");
 			nom = Saisie.getString();
 			players.add(new JoueurHumain(nom, couleurs[i]));
