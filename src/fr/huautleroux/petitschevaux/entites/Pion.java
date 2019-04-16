@@ -4,15 +4,15 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class Pion {
 	
-	private String id;
+	private int id;
 	private Couleur couleur;
 	
-	public Pion(String id, Couleur couleur) {
+	public Pion(int id, Couleur couleur) {
 		this.id = id;
 		this.couleur = couleur;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	

@@ -25,9 +25,7 @@ public class JoueurHumain extends Joueur {
 			 if (chevsurplat)*/
 		}
 		else {
-
-
-
+			System.out.println("Vous ne pouvez pas sortir de cheval");
 		}
 		
 		return null;
