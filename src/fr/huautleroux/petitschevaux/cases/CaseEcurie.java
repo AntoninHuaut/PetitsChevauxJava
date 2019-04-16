@@ -6,8 +6,8 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class CaseEcurie extends CaseColoree {
 
-	public CaseEcurie(int ident,Couleur couleur) {
-		super(ident,couleur);
+	public CaseEcurie(Couleur couleur) {
+		super(couleur);
 	}
 	
 	@Override

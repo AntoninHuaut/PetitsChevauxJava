@@ -5,10 +5,9 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class CaseEchelle extends CaseColoree {
-	private int id;
 
-	public CaseEchelle(int id, Couleur couleur) {
-		super(id,couleur);
+	public CaseEchelle(Couleur couleur) {
+		super(couleur);
 	}
 	
 	@Override

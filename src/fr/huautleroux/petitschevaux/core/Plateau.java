@@ -19,16 +19,17 @@ public class Plateau {
 		Couleur[] couleurs = Couleur.values();
 
 		for (int i = 0; i < 4; i++) {
-			this.ecurie.add(new CaseEcurie(0,couleurs[i]));
+			this.ecurie.add(new CaseEcurie(couleurs[i]));
 
 			for (int j = 0; j < 12; j++)
 				this.chemin.add(new CaseDeChemin());
 
-			for (int f = 1; f < 7; f++) {
-				ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
-				echelle.add(new CaseEchelle(f,couleurs[i]));
-				echelles.add(echelle);
-			}
+			ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
+			
+			for (int f = 1; f < 7; f++)
+				echelle.add(new CaseEchelle(couleurs[i]));
+			
+			echelles.add(echelle);
 		}
 	}
 
