@@ -9,15 +9,12 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public abstract class Joueur {
 	
-	private ArrayList<Pion> chevaux;
-	private Case caseDepart;
+	private ArrayList<Pion> chevaux = new ArrayList<Pion>();
+	private Case caseDepart = null;
 	private String nom;
 	private Couleur couleur;
 	
 	public Joueur(String name, Couleur couleur) {
-		this.chevaux = new ArrayList<Pion>();
-		this.caseDepart = null;
-		
 		this.nom = name;
 		this.couleur = couleur;
 	}

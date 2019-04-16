@@ -11,9 +11,9 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class Plateau {
 
-	private ArrayList<ArrayList<CaseEchelle>> echelles;
-	private ArrayList<CaseDeChemin> chemin;
-	private ArrayList<CaseEcurie> ecurie;
+	private ArrayList<ArrayList<CaseEchelle>> echelles = new ArrayList<ArrayList<CaseEchelle>>();
+	private ArrayList<CaseDeChemin> chemin = new ArrayList<CaseDeChemin>();
+	private ArrayList<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
 
 	public Plateau() {
 		Couleur[] couleurs = Couleur.values();

@@ -6,11 +6,7 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 
 public abstract class Case {
 	
-	private ArrayList<Pion> pions;
-	
-	public Case() {
-		this.pions = new ArrayList<Pion>();
-	}
+	private ArrayList<Pion> pions = new ArrayList<Pion>();
 	
 	public void ajouteCheval(Pion pion) {
 		// TODO

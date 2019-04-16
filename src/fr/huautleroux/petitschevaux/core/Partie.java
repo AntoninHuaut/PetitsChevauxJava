@@ -13,19 +13,17 @@ import fr.huautleroux.petitschevaux.utils.Saisie;
 
 public class Partie {
 
-	private ArrayList<Joueur> joueurs;
-	
-	private Joueur joueurCourant;
-	private Plateau plateau;
-	private Random random = new Random();
-	
-	private int nbJoueur;
+	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 
-	public Partie() {
-		this.joueurs = new ArrayList<Joueur>();
-		this.plateau = null;
+	private Joueur joueurCourant = null;
+	private Plateau plateau = null;
+	private Random random = new Random();
+
+	private int nbJoueur;
+	
+	public void initialiserJeu() {
 		int nb;
-		
+
 		do {
 			System.out.println("Combien de joueurs vont participer ?");
 			nb = Saisie.asInt();
@@ -33,25 +31,27 @@ public class Partie {
 
 		initialiserJoueurs(nb);
 		initialiserPlateau();
-		
+
 		while(!estPartieTerminee()) {
 			jouerUnTour();
-			
+
+			// TODO
+			break; // Evitez boucle infini pour les tests
 		}
 	}
 
 	public void initialiserJoueurs(int nb) {
 		this.nbJoueur = nb;
 		Couleur[] couleurs = Couleur.values();
-		
+
 		for(int i = 0; i < nbJoueur; i++) {
 			System.out.println("Entrez votre pseudo");
 			String nom = Saisie.asString();
 			JoueurHumain joueur = new JoueurHumain(nom, couleurs[i]);
-			
+
 			for(int j = 0; j < 4; j++)
 				joueur.getChevaux().add(new Pion(j, couleurs[i]));
-			
+
 			joueurs.add(joueur);
 		}
 	}
@@ -87,11 +87,11 @@ public class Partie {
 	public ArrayList<Joueur> getJoueurs() {
 		return joueurs;
 	}
-	
+
 	private void mangerLesPions(Case caseCible) {
 
 	}
-	
+
 	private int lancerDe() {
 		int lanceN = random.nextInt((6-1)+1)+1;
 		return lanceN;
