@@ -20,7 +20,7 @@ public class Partie {
 	private Random random = new Random();
 
 	private int nbJoueur;
-	
+
 	public void initialiserJeu() {
 		int nb;
 
@@ -31,13 +31,7 @@ public class Partie {
 
 		initialiserJoueurs(nb);
 		initialiserPlateau();
-
-		while(!estPartieTerminee()) {
-			jouerUnTour();
-
-			// TODO
-			break; // Evitez boucle infini pour les tests
-		}
+		startJeu();
 	}
 
 	public void initialiserJoueurs(int nb) {
@@ -58,6 +52,14 @@ public class Partie {
 
 	public void initialiserPlateau() {
 		this.plateau = new Plateau();
+	}
+
+	public void startJeu() {
+		while(!estPartieTerminee()) {
+			jouerUnTour();
+
+			break; // Evitez boucle infini pour les tests
+		}
 	}
 
 	public void jouerUnTour() {
