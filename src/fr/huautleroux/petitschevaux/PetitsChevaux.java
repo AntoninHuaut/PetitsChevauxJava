@@ -1,4 +1,5 @@
 package fr.huautleroux.petitschevaux;
+
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;

@@ -34,7 +34,7 @@ public abstract class Joueur {
 	}
 	
 	public void setChevaux() {
-		for (int i=0; i<4;i++)
+		for (int i = 0; i < 4; i++)
 			this.chevaux.add(new Pion(i, getCouleur()));
 	}
 	
@@ -52,4 +52,37 @@ public abstract class Joueur {
 	
 	public abstract Pion choisirPion(int de, Plateau plateau);
 	
+	public boolean hasToutPionEcurie(Plateau plateau) {
+		return getNombrePionEcurie(plateau) == 4;
+	}
+
+	public boolean hasPionEcurie(Plateau plateau) {
+		return getNombrePionEcurie(plateau) != 0;
+	}
+
+	public int getNombrePionEcurie(Plateau plateau) {
+		return getPionEcurie(plateau).size();
+	}
+	
+	public ArrayList<Pion> getPionEcurie(Plateau plateau) {
+		ArrayList<Pion> pions = new ArrayList<Pion>();
+
+		for(Pion pion : getChevaux()) {
+			ArrayList<Case> cases = new ArrayList<Case>();
+			plateau.getEcuries().forEach(c -> cases.add(c));
+			plateau.getChemin().forEach(c -> cases.add(c));
+			plateau.getEchelles().forEach(get -> get.forEach(c -> cases.add(c)));
+			
+			boolean containsPion = false;
+			
+			for(int i = 0; i < cases.size() && !containsPion; i++)
+				if(cases.get(i).getChevaux().contains(pion))
+					containsPion = true;
+			
+			if(!containsPion)
+				pions.add(pion);
+		}
+
+		return pions;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
+import fr.huautleroux.petitschevaux.entites.JoueurBot;
 import fr.huautleroux.petitschevaux.entites.JoueurHumain;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
@@ -19,7 +20,7 @@ public class Partie {
 	private Plateau plateau = null;
 	private Random random = new Random();
 
-	private int nbJoueur;
+	private int nbJoueurHumain;
 
 	public void initialiserJeu() {
 		int nb;
@@ -35,23 +36,24 @@ public class Partie {
 	}
 
 	public void initialiserJoueurs(int nb) {
-		this.nbJoueur = nb;
+		this.nbJoueurHumain = nb;
 		Couleur[] couleurs = Couleur.values();
 
-		for(int i = 0; i < nbJoueur; i++) {
+		for(int i = 0; i < nbJoueurHumain; i++) {
 			System.out.println("Entrez votre pseudo");
 			String nom = Saisie.asString();
-			JoueurHumain joueur = new JoueurHumain(nom, couleurs[i]);
-
-			for(int j = 0; j < 4; j++)
-				joueur.getChevaux().add(new Pion(j, couleurs[i]));
-
-			joueurs.add(joueur);
+			joueurs.add(new JoueurHumain(nom, couleurs[i]));
 		}
+		
+		for(int i = 0; i < (4 - nbJoueurHumain); i++)
+			joueurs.add(new JoueurBot(couleurs[nbJoueurHumain + i]));
 	}
 
 	public void initialiserPlateau() {
 		this.plateau = new Plateau();
+
+		for(int i = 0; i < joueurs.size(); i++)
+			joueurs.get(i).setCaseDeDepart(plateau.getEcuries().get(i));
 	}
 
 	public void startJeu() {
@@ -63,7 +65,7 @@ public class Partie {
 	}
 
 	public void jouerUnTour() {
-		for (int i = 0; i < nbJoueur; i++) {
+		for (int i = 0; i < joueurs.size(); i++) {
 			setJoueurCourant(joueurs.get(i));
 			int de = lancerDe();
 			Pion pion = joueurCourant.choisirPion(de, plateau);
@@ -95,7 +97,7 @@ public class Partie {
 	}
 
 	private int lancerDe() {
-		int lanceN = random.nextInt((6-1)+1)+1;
+		int lanceN = random.nextInt(7);
 		return lanceN;
 	}
 

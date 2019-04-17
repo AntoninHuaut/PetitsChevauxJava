@@ -14,7 +14,7 @@ public class Saisie {
 		try {
 			return Integer.valueOf(asString());
 		} catch(NumberFormatException e) {
-			errorMsg("int");
+			errorMsg("entier");
 			return asInt();
 		}
 	}
@@ -23,7 +23,7 @@ public class Saisie {
 		try {
 			return Double.valueOf(asString().replace(',', '.'));
 		} catch(NumberFormatException e) {
-			errorMsg("double");
+			errorMsg("décimal (double précision)");
 			return asDouble();
 		}
 	}
@@ -32,12 +32,12 @@ public class Saisie {
 		try {
 			return (float) asDouble();
 		} catch(NumberFormatException e) {
-			errorMsg("float");
+			errorMsg("décimal (simple précision)");
 			return asFloat();
 		}
 	}
 
 	private static void errorMsg(String msg) {
-		System.out.println("Entrée invalide, veuillez rentrer un " + msg);
+		System.out.println("Entrée invalide, veuillez rentrer un nombre " + msg);
 	}
 }

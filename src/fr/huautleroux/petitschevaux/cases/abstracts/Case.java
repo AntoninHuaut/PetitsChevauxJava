@@ -9,7 +9,8 @@ public abstract class Case {
 	private ArrayList<Pion> pions = new ArrayList<Pion>();
 	
 	public void ajouteCheval(Pion pion) {
-		// TODO
+		// ?TODO? Retirer le pion sur son ancienne case
+		pions.add(pion);
 	}
 
 	public abstract boolean peutPasser(Pion pion);
