@@ -2,6 +2,7 @@ package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
 
+
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseDeChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
@@ -26,7 +27,7 @@ public class Plateau {
 
 			ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
 			
-			for (int f = 1; f < 7; f++)
+			for (int f = 0; f < 7; f++)
 				echelle.add(new CaseEchelle(couleurs[i]));
 			
 			echelles.add(echelle);
@@ -38,7 +39,11 @@ public class Plateau {
 	}
 
 	public void deplacerPionA(Pion pion, Case caseCible) {
-
+		boolean passage;
+		boolean stop;
+		
+		passage = plateau.peutPasser(pion); 
+		stop = plateau.IndexOf().peutSArreter(pion);
 	}
 	
 	public ArrayList<CaseEcurie> getEcuries(){

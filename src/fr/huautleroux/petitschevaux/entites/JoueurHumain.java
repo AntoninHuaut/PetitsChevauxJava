@@ -1,8 +1,10 @@
 package fr.huautleroux.petitschevaux.entites;
 
+import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.utils.Saisie;
 
 public class JoueurHumain extends Joueur {
 
@@ -12,23 +14,37 @@ public class JoueurHumain extends Joueur {
 
 	@Override
 	public Pion choisirPion(int de, Plateau plateau) {
-		/*V√©rifier la position des Chevaux
-		Si d√© = 6 -> Sortir Cheval
-		Si d√© = 6 ET Chevaux d√©j√† sur plateau = 2 Choix
-		Si d√© != 6 ET Chevaux d√©j√† sur plateau = Choix
-		Si d√© != 6 ET Pas de chevaux sur le plateau = Pas de Choix
-		Return Cheval √† d√©placer 
-		 */
-		if (de == 6){
-			System.out.println("Vous pouvez sortir un cheval de l'√©curie");
-			/*Afficher la liste des chevaux dispos
-			 if (chevsurplat)*/
+		Case caseCible;
+		/*V√©rifier la position des Chevaux*/
+		if (de == 6 /*&& chevaux.getPosition ? == caseDepart*/) {
+			System.out.println("Vous avez fait un 6, vous pouvez sortir un cheval de l'Ècurie");
+			int sais = Saisie.asInt();
+			plateau.deplacerPionA(Joueur.chevaux.indexOf(sais), caseCible);
+			return null; /*Pion avec nouvelles coord ?*/
+
 		}
-		else {
-			System.out.println("Vous ne pouvez pas sortir de cheval");
+		else if (de == 6 /*&& chevaux.getPosition() == CaseChemin ou caseDepart ou caseDEchelle*/) {
+			System.out.println("Vous avez fait un " +de + " , vous pouvez sortir un cheval de l'Ècurie ou en dÈplacer un sur le plateau");
+			System.out.println("Chevaux disponibles : "  /*joueur.getChevaux()*/);
+			System.out.println("Entrez le numÈro du cheval ‡ sortir");
+			int sais = Saisie.asInt();
+			plateau.deplacerPionA(Joueur.chevaux.indexOf(sais), caseCible);
+			return null;/*Pion avec nouvelles coord ?*/
 		}
-		
+		else if(de != 6 /*&& chevaux.getPosition() == CaseChemin ou caseDEchelle*/) {
+			System.out.println("Vous avez fait " + de + " pouvez dÈplacer un cheval sur le plateau");
+			System.out.println("Chevaux disponibles : "  /*joueur.getChevaux()*/);
+			System.out.println("Entrez le numÈro du cheval ‡ sortir");
+			int sais = Saisie.asInt();
+			plateau.deplacerPionA(Joueur.chevaux.indexOf(sais), caseCible);
+			return null;/*Pion avec nouvelles coord ?*/
+			
+		}
+		else /*Pas de chevaux sur plateau*/ {
+			System.out.println("Vous avez tirÈ un " + de + " Vous ne pouvez pas sortir de cheval");
+		}
 		return null;
+	
 	}
 
 }
