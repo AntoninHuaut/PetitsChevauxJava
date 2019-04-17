@@ -51,7 +51,7 @@ public class SaveManager {
 			json = new String(Files.readAllBytes(Paths.get(saveFile.toURI())));
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new ChargementSauvegardeException("Une erreur d'écriture est survenue pour la sauvegarde " + saveName);
+			throw new ChargementSauvegardeException("Une erreur de lecture est survenue pour la sauvegarde " + saveName);
 		}
 
 		try {
@@ -81,7 +81,7 @@ public class SaveManager {
 			Files.write(Paths.get(saveFile.toURI()), gson.toJson(partie).getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new SauvegardeException("Une erreur de lecture est survenue pour la sauvegarde " + saveName);
+			throw new SauvegardeException("Une erreur d'écriture est survenue pour la sauvegarde " + saveName);
 		}
 
 		return true;
