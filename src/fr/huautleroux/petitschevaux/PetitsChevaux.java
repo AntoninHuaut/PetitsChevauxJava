@@ -1,5 +1,7 @@
 package fr.huautleroux.petitschevaux;
 import fr.huautleroux.petitschevaux.core.Partie;
+import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
+import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.utils.SaveManager;
 
 public class PetitsChevaux {
@@ -17,10 +19,22 @@ public class PetitsChevaux {
 
 	private void testSaveLoadPartie(String saveName) {
 		System.out.println("Sauvegarde sous le nom : " + saveName);
-		saveManager.sauvegarderPartie(partie, saveName);
+		
+		try {
+			saveManager.sauvegarderPartie(partie, saveName);
+		} catch (SauvegardeException e) {
+			System.err.println(e.getMessage());
+		}
 		
 		System.out.println("Chargement de : " + saveName);
-		Partie partieTest = saveManager.chargerPartie(saveName);
+		
+		Partie partieTest;
+		try {
+			partieTest = saveManager.chargerPartie(saveName);
+		} catch (ChargementSauvegardeException e) {
+			System.err.println(e.getMessage());
+			return;
+		}
 		
 		System.out.println(" Joueurs :");
 		partieTest.getJoueurs().forEach(get -> System.out.println("    " + get.getNom() + " " + get.getCouleur()));

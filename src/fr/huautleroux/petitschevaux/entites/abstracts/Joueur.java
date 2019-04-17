@@ -2,7 +2,6 @@ package fr.huautleroux.petitschevaux.entites.abstracts;
 
 import java.util.ArrayList;
 
-import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.Pion;
@@ -18,17 +17,8 @@ public abstract class Joueur {
 	public Joueur(String name, Couleur couleur) {
 		this.nom = name;
 		this.couleur = couleur;
+		
 		setChevaux();
-		
-		/*Pas au bon endroit*/
-		Plateau plateau = new Plateau();	/*Je suis pas sûre que créer un nouveau plateau soit une solution potable...*/
-		ArrayList<CaseEcurie> depart = new ArrayList<CaseEcurie>(); 
-		depart = plateau.getEcuries();
-		
-		int indice = depart.indexOf(this.getCouleur());
-		CaseEcurie caseDepart = depart.get(indice);
-		
-		setCaseDeDepart(caseDepart);
 	}
 	
 	public Case getCaseDeDepart() {
@@ -44,9 +34,8 @@ public abstract class Joueur {
 	}
 	
 	public void setChevaux() {
-		for (int i=0; i<4;i++) {
-			this.chevaux.add(new Pion(i,getCouleur()));
-		}
+		for (int i=0; i<4;i++)
+			this.chevaux.add(new Pion(i, getCouleur()));
 	}
 	
 	public String getNom() {

@@ -6,14 +6,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
+import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
+import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 
 public class SaveManager {
 
@@ -29,17 +33,17 @@ public class SaveManager {
 		gsonBuilder.registerTypeAdapter(CaseColoree.class, new InterfaceAdapter<CaseColoree>());
 		gsonBuilder.setPrettyPrinting();
 		this.gson = gsonBuilder.create();
-		
+
 		this.folder = new File(folderName);
 		if(!folder.exists())
 			folder.mkdir();
 	}
 
-	public Partie chargerPartie(String saveName) {
+	public Partie chargerPartie(String saveName) throws ChargementSauvegardeException {
 		File saveFile = getFile(saveName);
 
 		if(!saveFile.exists())
-			return null;
+			throw new ChargementSauvegardeException("La sauvegarde " + saveName + " n'existe pas");
 
 		String json;
 
@@ -47,39 +51,55 @@ public class SaveManager {
 			json = new String(Files.readAllBytes(Paths.get(saveFile.toURI())));
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
+			throw new ChargementSauvegardeException("Une erreur d'écriture est survenue pour la sauvegarde " + saveName);
 		}
 
-		return gson.fromJson(json, Partie.class);
+		try {
+			return gson.fromJson(json, Partie.class);
+		} catch(JsonSyntaxException e) {
+			e.printStackTrace();
+			throw new ChargementSauvegardeException("La sauvegarde " + saveName + " n'est pas valide");
+		}
 	}
 
-	public boolean sauvegarderPartie(Partie partie, String saveName, boolean overwrite) {
+	public boolean estSauvegardeValide(String saveName) {
+		try {
+			chargerPartie(saveName);
+			return true;
+		} catch(ChargementSauvegardeException e) {
+			return false;
+		}
+	}
+
+	public boolean sauvegarderPartie(Partie partie, String saveName, boolean overwrite) throws SauvegardeException {
 		File saveFile = getFile(saveName);
 
 		if(saveFile.exists() && !overwrite)
-			return false;
+			throw new SauvegardeException("La sauvegarde " + saveName + " existe déjà");
 
 		try {
 			Files.write(Paths.get(saveFile.toURI()), gson.toJson(partie).getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			throw new SauvegardeException("Une erreur de lecture est survenue pour la sauvegarde " + saveName);
 		}
 
 		return true;
 	}
 
-	public boolean sauvegarderPartie(Partie partie, String saveName) {
+	public boolean sauvegarderPartie(Partie partie, String saveName) throws SauvegardeException {
 		return sauvegarderPartie(partie, saveName, true);
 	}
-	
+
 	public List<String> getSauvegardes() {
-		List<String> saves = Arrays.asList(folder.list());
-		for(int i = 0; i < saves.size(); i++) {
-			String save = saves.get(i);
-			saves.set(i, save.replace(save.substring(save.lastIndexOf(EXT), save.length()), ""));
-		}
-		
+		List<String> saves = Arrays.asList(folder.list()).stream().map(save -> {
+			int index = save.lastIndexOf(EXT);
+			if(index != -1)
+				save = save.replace(save.substring(index, save.length()), "");
+			
+			return save;
+		}).collect(Collectors.toList()).stream().filter(save -> estSauvegardeValide(save)).collect(Collectors.toList());
+
 		return saves;
 	}
 

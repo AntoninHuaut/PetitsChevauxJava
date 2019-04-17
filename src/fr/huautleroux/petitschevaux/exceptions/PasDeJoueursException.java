@@ -1,7 +1,7 @@
 package fr.huautleroux.petitschevaux.exceptions;
 
 @SuppressWarnings("serial")
-public class PasDeJoueursException extends Exception{
+public class PasDeJoueursException extends Exception {
 
 	public PasDeJoueursException() {
 		super("Pas de joueur");

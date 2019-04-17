@@ -27,7 +27,7 @@ public class Plateau {
 
 			ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
 			
-			for (int f = 0; f < 7; f++)
+			for (int k = 0; k < 7; k++)
 				echelle.add(new CaseEchelle(couleurs[i]));
 			
 			echelles.add(echelle);
@@ -39,11 +39,8 @@ public class Plateau {
 	}
 
 	public void deplacerPionA(Pion pion, Case caseCible) {
-		boolean passage;
-		boolean stop;
-		
-		passage = plateau.peutPasser(pion); 
-		stop = plateau.IndexOf().peutSArreter(pion);
+		boolean peutPasser = caseCible.peutPasser(pion);
+		boolean peutSArreter = caseCible.peutSArreter(pion);
 	}
 	
 	public ArrayList<CaseEcurie> getEcuries(){
