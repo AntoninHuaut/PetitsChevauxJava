@@ -41,6 +41,12 @@ public class Plateau {
 	public void deplacerPionA(Pion pion, Case caseCible) {
 		boolean peutPasser = caseCible.peutPasser(pion);
 		boolean peutSArreter = caseCible.peutSArreter(pion);
+		if(peutPasser && peutSArreter) {
+			caseCible.ajouteCheval(pion);
+		}
+		else {
+			System.out.println("Le cheval n'a pas pu se déplacer");
+		}
 	}
 	
 	public ArrayList<CaseEcurie> getEcuries(){

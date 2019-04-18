@@ -3,6 +3,7 @@ package fr.huautleroux.petitschevaux.entites;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.utils.Saisie;
 
 public class JoueurHumain extends Joueur {
 
@@ -27,8 +28,11 @@ public class JoueurHumain extends Joueur {
 
 			System.out.println("  Vous pouvez déplacer un cheval sur le plateau [2]");
 		}
-
-		return null;
-	}
+		
+		int saisie = Saisie.asInt();
+		Pion piondeplacer = new Pion(saisie,this.getCouleur());
+		
+		return piondeplacer;
+	};
 
 }

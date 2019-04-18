@@ -69,6 +69,9 @@ public class Partie {
 			setJoueurCourant(joueurs.get(i));
 			int de = lancerDe();
 			Pion pion = joueurCourant.choisirPion(de, plateau);
+			Case caseA = pion.getCaseActuelle(plateau);
+			Case caseCible = pion.getCaseCible(plateau, caseA, de);
+			plateau.deplacerPionA(pion, caseCible);
 		}
 	}
 

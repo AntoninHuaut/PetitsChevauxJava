@@ -33,6 +33,25 @@ public class Pion {
 		return null;
 	}
 	
+	public Case getCaseCible(Plateau plateau, Case caseActuelle, int de) {
+	
+		
+		ArrayList<Case> cases = new ArrayList<Case>();
+		plateau.getEchelles().get(couleur.ordinal()).forEach(c -> cases.add(c));
+		plateau.getChemin().forEach(c -> cases.add(c));
+		
+		for (Case c : cases) {
+			if(c.equals(caseActuelle)) {
+				int indice = cases.indexOf(c);
+				indice += de;
+				Case caseCible = cases.get(indice);
+				return caseCible;
+			}
+		}
+		
+		return null;
+	}
+	
 	public int getId() {
 		return id;
 	}
