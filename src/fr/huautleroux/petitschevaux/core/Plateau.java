@@ -12,17 +12,20 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class Plateau {
 
+	private Partie partie;
 	private ArrayList<ArrayList<CaseEchelle>> echelles = new ArrayList<ArrayList<CaseEchelle>>();
 	private ArrayList<CaseDeChemin> chemin = new ArrayList<CaseDeChemin>();
 	private ArrayList<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
 
-	public Plateau() {
+	public Plateau(Partie partie) {
+		this.partie = partie;
+		
 		Couleur[] couleurs = Couleur.values();
 
 		for (int i = 0; i < 4; i++) {
 			this.ecurie.add(new CaseEcurie(couleurs[i]));
 
-			for (int j = 0; j < 12; j++)
+			for (int j = 0; j < 13; j++)
 				this.chemin.add(new CaseDeChemin());
 
 			ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
@@ -39,13 +42,19 @@ public class Plateau {
 	}
 
 	public void deplacerPionA(Pion pion, Case caseCible) {
-		boolean peutPasser = caseCible.peutPasser(pion);
+		/*
+		 * Il faut vérifier toutes les cases entre la case actuelle du Pion, et la caseCible, si il peut passer dessus
+		 * Si il peut passer sur toutes les cases, alors on vérifie s'il peut s'arrêter sur la case cible
+		 * Si il peut s'arrêter alors on effectue le déplacement
+		 */
 		boolean peutSArreter = caseCible.peutSArreter(pion);
-		if(peutPasser && peutSArreter) {
+	
+		if(peutSArreter) {
+			partie.mangerLesPions(caseCible);
 			caseCible.ajouteCheval(pion);
 		}
 		else {
-			System.out.println("Le cheval n'a pas pu se d�placer");
+			System.out.println("Le cheval n'a pas pu se déplacer");
 		}
 	}
 	

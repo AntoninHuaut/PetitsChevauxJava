@@ -30,22 +30,21 @@ public class Pion {
 			if(c.getChevaux().contains(this))
 				return c;
 		
-		return null;
+		return null; // Théoriquement impossible que ça se produise
 	}
 	
-	public Case getCaseCible(Plateau plateau, Case caseActuelle, int de) {
-	
+	public Case getCaseCible(Plateau plateau, int de) {
+		/*
+		 * Ici tu gères seulement le cas des cases de Chemin, il faudra gérer le cas aussi lorsqu'on passe des cases de chemins aux cases d'échelles
+		 */
 		
-		ArrayList<Case> cases = new ArrayList<Case>();
-		plateau.getEchelles().get(couleur.ordinal()).forEach(c -> cases.add(c));
-		plateau.getChemin().forEach(c -> cases.add(c));
+		Case caseActuelle = getCaseActuelle(plateau);
 		
-		for (Case c : cases) {
+		for (Case c : plateau.getChemin()) {
 			if(c.equals(caseActuelle)) {
-				int indice = cases.indexOf(c);
+				int indice = plateau.getChemin().indexOf(c);
 				indice += de;
-				Case caseCible = cases.get(indice);
-				return caseCible;
+				return plateau.getChemin().get(indice);
 			}
 		}
 		

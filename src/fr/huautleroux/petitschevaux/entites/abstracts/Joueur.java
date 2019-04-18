@@ -65,24 +65,6 @@ public abstract class Joueur {
 	}
 	
 	public ArrayList<Pion> getPionEcurie(Plateau plateau) {
-		ArrayList<Pion> pions = new ArrayList<Pion>();
-
-		for(Pion pion : getChevaux()) {
-			ArrayList<Case> cases = new ArrayList<Case>();
-			plateau.getEcuries().forEach(c -> cases.add(c));
-			plateau.getChemin().forEach(c -> cases.add(c));
-			plateau.getEchelles().forEach(get -> get.forEach(c -> cases.add(c)));
-			
-			boolean containsPion = false;
-			
-			for(int i = 0; i < cases.size() && !containsPion; i++)
-				if(cases.get(i).getChevaux().contains(pion))
-					containsPion = true;
-			
-			if(!containsPion)
-				pions.add(pion);
-		}
-
-		return pions;
+		return plateau.getEcuries().get(couleur.ordinal()).getChevaux();
 	}
 }

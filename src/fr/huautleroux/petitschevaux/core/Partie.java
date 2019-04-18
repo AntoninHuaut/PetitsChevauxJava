@@ -50,10 +50,10 @@ public class Partie {
 	}
 
 	public void initialiserPlateau() {
-		this.plateau = new Plateau();
+		this.plateau = new Plateau(this);
 
 		for(int i = 0; i < joueurs.size(); i++)
-			joueurs.get(i).setCaseDeDepart(plateau.getEcuries().get(i));
+			joueurs.get(i).setCaseDeDepart(plateau.getChemin().get(i * 14));
 	}
 
 	public void startJeu() {
@@ -69,8 +69,7 @@ public class Partie {
 			setJoueurCourant(joueurs.get(i));
 			int de = lancerDe();
 			Pion pion = joueurCourant.choisirPion(de, plateau);
-			Case caseA = pion.getCaseActuelle(plateau);
-			Case caseCible = pion.getCaseCible(plateau, caseA, de);
+			Case caseCible = pion.getCaseCible(plateau, de);
 			plateau.deplacerPionA(pion, caseCible);
 		}
 	}
@@ -95,7 +94,7 @@ public class Partie {
 		return joueurs;
 	}
 
-	private void mangerLesPions(Case caseCible) {
+	public void mangerLesPions(Case caseCible) {
 
 	}
 
