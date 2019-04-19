@@ -47,6 +47,8 @@ public class Plateau {
 		 * Si il peut passer sur toutes les cases, alors on vérifie s'il peut s'arrêter sur la case cible
 		 * Si il peut s'arrêter alors on effectue le déplacement
 		 */
+		
+		
 		boolean peutSArreter = caseCible.peutSArreter(pion);
 	
 		if(peutSArreter) {
