@@ -12,7 +12,7 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class Plateau {
 
-	private Partie partie;
+	private transient Partie partie;
 	private ArrayList<ArrayList<CaseEchelle>> echelles = new ArrayList<ArrayList<CaseEchelle>>();
 	private ArrayList<CaseDeChemin> chemin = new ArrayList<CaseDeChemin>();
 	private ArrayList<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
@@ -53,7 +53,7 @@ public class Plateau {
 	
 		if(peutSArreter) {
 			partie.mangerLesPions(caseCible);
-			caseCible.ajouteCheval(pion);
+			caseCible.ajouteCheval(this, pion);
 		}
 		else {
 			System.out.println("Le cheval n'a pas pu se déplacer");

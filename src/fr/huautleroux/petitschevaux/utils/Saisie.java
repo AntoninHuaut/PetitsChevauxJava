@@ -7,7 +7,8 @@ public class Saisie {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static String asString() {
-		return scanner.nextLine();
+		String get = scanner.nextLine();
+		return get.isEmpty() ? asString() : get;
 	}
 
 	public static int asInt() {

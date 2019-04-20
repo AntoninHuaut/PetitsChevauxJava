@@ -1,9 +1,11 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import fr.huautleroux.petitschevaux.PetitsChevaux;
+import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.entites.JoueurBot;
 import fr.huautleroux.petitschevaux.entites.JoueurHumain;
@@ -14,12 +16,6 @@ import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.utils.Saisie;
 
 public class Partie {
-
-	private transient PetitsChevaux main;
-
-	public Partie(PetitsChevaux main) {
-		this.main = main;
-	}
 
 	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 
@@ -34,13 +30,14 @@ public class Partie {
 		int nb;
 
 		do {
-			System.out.println("Combien de joueurs vont participer ?");
+			System.out.print("Entrez le nombre de joueurs qui vont participer : ");
 			nb = Saisie.asInt();
+			System.out.println("");
 		} while (nb > 4 || nb < 1);
 
 		initialiserJoueurs(nb);
 		initialiserPlateau();
-		startJeu();
+		initialiserReference();
 	}
 
 	public void initialiserJoueurs(int nb) {
@@ -62,15 +59,25 @@ public class Partie {
 	public void initialiserPlateau() {
 		this.plateau = new Plateau(this);
 
+		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++)
+			for(int idCheval = 0; idCheval < 4; idCheval++) {
+				Pion pion = new Pion(idCheval, Couleur.values()[idJoueur]);
+				plateau.getEcuries().get(idJoueur).ajouteCheval(plateau, pion);
+			}
+	}
+
+	/*
+	 * On initialise des listes avec des objets déjà crées
+	 * Méthode indépendance pour qu'elle puisse être appelée par le système de chargement de sauvegarde
+	 */
+	public void initialiserReference() {
 		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++) {
 			Joueur j = joueurs.get(idJoueur);
 			j.setCaseDeDepart(plateau.getChemin().get(idJoueur * 14));
+			j.initialisationReference();
 
-			for(int idCheval = 0; idCheval < 4; idCheval++) {
-				Pion pion = new Pion(idCheval, Couleur.values()[idJoueur]);
-				j.addCheval(pion);
-				plateau.getEcuries().get(idJoueur).ajouteCheval(pion);
-			}
+			for (Pion pion : plateau.getEcuries().get(idJoueur).getChevaux())
+				j.ajouterCheval(pion);
 		}
 	}
 
@@ -96,7 +103,6 @@ public class Partie {
 
 			else if (choixAction == 1 || choixAction == 2) {
 				Pion pion = joueurCourant.choisirPion(de, choixAction, plateau);
-				
 				// Pion renvoie null car la fonction n'est pas terminée, c'est en commentaire pour faire des tests sans que ça crash
 				//Case caseCible = pion.getCaseCible(plateau, de);
 				//plateau.deplacerPionA(pion, caseCible);
@@ -109,15 +115,16 @@ public class Partie {
 	private boolean menuSauvegarde() {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
 		String nomSauvegarde = Saisie.asString();
+		nomSauvegarde = PetitsChevaux.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
 		boolean overwrite = false;
 
-		if (main.getSaveManager().estSauvegardeValide(nomSauvegarde)) {
+		if (PetitsChevaux.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
 			System.out.println("Une sauvegarde existe avec ce nom, souhaitez-vous l'écraser ? (Oui/Non)");
 			overwrite = Saisie.asBoolean();
 		}
 
 		try {
-			main.getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
+			PetitsChevaux.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
 			System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
 
 			System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
@@ -130,7 +137,34 @@ public class Partie {
 	}
 
 	public boolean estPartieTerminee() {
-		return false;
+		return !getJoueurGagnant().isEmpty();
+	}
+
+	public List<Joueur> getJoueurGagnant() {
+		List<Joueur> gagnants = new ArrayList<Joueur>();
+
+		for (Joueur j : joueurs) {
+			boolean pionBienPlace = true;
+
+			int countPion = 0;
+			List<CaseEchelle> echelles = plateau.getEchelles().get(j.getCouleur().ordinal());
+
+			for (int i = 0; i < echelles.size() && pionBienPlace; i++) {
+				CaseEchelle caseEchelle = echelles.get(i);
+				countPion += caseEchelle.getChevaux().size();
+
+				// Si le pion est sur un case de l'échelle qui n'est pas 3-4-5-6
+				// L'indice 1 correspond à la case 2
+				if(i <= 1)
+					pionBienPlace = false;
+			}
+
+			// Si tous les pions du joueur sont à l'échelles et que les pions sont dans placés dans les cases 3-4-5-6
+			if(countPion == 4 && pionBienPlace)
+				gagnants.add(j);
+		}
+
+		return gagnants;
 	}
 
 	public Joueur getJoueurCourant() {

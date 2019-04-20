@@ -1,4 +1,4 @@
-package fr.huautleroux.petitschevaux.utils;
+package fr.huautleroux.petitschevaux.utils.save;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,15 +22,16 @@ import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 public class SaveManager {
 
 	private static final String EXT = ".json";
+	private static final char[] invalideCaracteres = new char[] {' ', '/', '\\', '>', '<', ':', '|', '"', '?', '*'};
 
 	private Gson gson;
 	private File folder;
 
 	public SaveManager(String folderName) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Joueur.class, new InterfaceAdapter<Joueur>());
 		gsonBuilder.registerTypeAdapter(Case.class, new InterfaceAdapter<Case>());
 		gsonBuilder.registerTypeAdapter(CaseColoree.class, new InterfaceAdapter<CaseColoree>());
+		gsonBuilder.registerTypeAdapter(Joueur.class, new InterfaceAdapter<Joueur>());
 		gsonBuilder.setPrettyPrinting();
 		this.gson = gsonBuilder.create();
 
@@ -40,6 +41,7 @@ public class SaveManager {
 	}
 
 	public Partie chargerPartie(String saveName) throws ChargementSauvegardeException {
+		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
 
 		if(!saveFile.exists())
@@ -55,7 +57,9 @@ public class SaveManager {
 		}
 
 		try {
-			return gson.fromJson(json, Partie.class);
+			Partie partie = gson.fromJson(json, Partie.class);
+			partie.initialiserReference();
+			return partie;
 		} catch(JsonSyntaxException e) {
 			e.printStackTrace();
 			throw new ChargementSauvegardeException("La sauvegarde " + saveName + " n'est pas valide");
@@ -63,6 +67,7 @@ public class SaveManager {
 	}
 
 	public boolean estSauvegardeValide(String saveName) {
+		saveName = convertSaveName(saveName);
 		try {
 			chargerPartie(saveName);
 			return true;
@@ -72,6 +77,7 @@ public class SaveManager {
 	}
 
 	public boolean sauvegarderPartie(Partie partie, String saveName, boolean overwrite) throws SauvegardeException {
+		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
 
 		if(saveFile.exists() && !overwrite)
@@ -101,6 +107,13 @@ public class SaveManager {
 		}).collect(Collectors.toList()).stream().filter(save -> estSauvegardeValide(save)).collect(Collectors.toList());
 
 		return saves;
+	}
+	
+	public String convertSaveName(String saveName) {
+		for (char c : invalideCaracteres)
+			saveName = saveName.replace(c, '_');
+		
+		return saveName;
 	}
 
 	private File getFile(String saveName) {

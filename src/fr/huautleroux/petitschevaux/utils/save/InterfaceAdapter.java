@@ -1,4 +1,4 @@
-package fr.huautleroux.petitschevaux.utils;
+package fr.huautleroux.petitschevaux.utils.save;
 
 import java.lang.reflect.Type;
 
@@ -44,7 +44,7 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
 
 		if (elem == null)
 			throw new JsonParseException("no '" + memberName + "' member found in json file.");
-		
+
 		return elem;
 	}
 

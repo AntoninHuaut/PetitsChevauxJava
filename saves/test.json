@@ -1,0 +1,415 @@
+{
+  "joueurs": [
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "j",
+        "couleur": "JAUNE"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "b",
+        "couleur": "BLEU"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "v",
+        "couleur": "VERT"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "r",
+        "couleur": "ROUGE"
+      }
+    }
+  ],
+  "joueurCourant": {
+    "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+    "data": {
+      "nom": "r",
+      "couleur": "ROUGE"
+    }
+  },
+  "plateau": {
+    "echelles": [
+      [
+        {
+          "couleur": "JAUNE",
+          "pions": [
+            {
+              "id": 0,
+              "couleur": "JAUNE"
+            }
+          ]
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "pions": []
+        }
+      ]
+    ],
+    "chemin": [
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      },
+      {
+        "pions": []
+      }
+    ],
+    "ecurie": [
+      {
+        "couleur": "JAUNE",
+        "pions": [
+          {
+            "id": 1,
+            "couleur": "JAUNE"
+          },
+          {
+            "id": 2,
+            "couleur": "JAUNE"
+          },
+          {
+            "id": 3,
+            "couleur": "JAUNE"
+          }
+        ]
+      },
+      {
+        "couleur": "BLEU",
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 1,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 2,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 3,
+            "couleur": "BLEU"
+          }
+        ]
+      },
+      {
+        "couleur": "VERT",
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "VERT"
+          },
+          {
+            "id": 1,
+            "couleur": "VERT"
+          },
+          {
+            "id": 2,
+            "couleur": "VERT"
+          },
+          {
+            "id": 3,
+            "couleur": "VERT"
+          }
+        ]
+      },
+      {
+        "couleur": "ROUGE",
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "ROUGE"
+          },
+          {
+            "id": 1,
+            "couleur": "ROUGE"
+          },
+          {
+            "id": 2,
+            "couleur": "ROUGE"
+          },
+          {
+            "id": 3,
+            "couleur": "ROUGE"
+          }
+        ]
+      }
+    ]
+  },
+  "random": {
+    "seed": 109007804810457,
+    "nextNextGaussian": 0.0,
+    "haveNextNextGaussian": false
+  },
+  "nbJoueurHumain": 4,
+  "stopPartie": false
+}
