@@ -14,10 +14,15 @@ public class JoueurBot extends Joueur {
 	}
 
 	@Override
-	public Pion choisirPion(int de, Plateau plateau) {
+	public int choixAction(int de, Plateau plateau) {
+		// TODO
+		return 0;
+	}
+	
+	@Override
+	public Pion choisirPion(int de, int choix, Plateau plateau) {
 		System.out.println(getNom() + " a fait un " + de);
 
 		return null;
 	}
-
 }

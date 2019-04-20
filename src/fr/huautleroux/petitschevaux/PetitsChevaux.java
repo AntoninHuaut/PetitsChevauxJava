@@ -12,10 +12,10 @@ public class PetitsChevaux {
 
 	public PetitsChevaux() {
 		this.saveManager = new SaveManager("saves");
-		this.partie = new Partie();
+		this.partie = new Partie(this);
 		partie.initialiserJeu();
 
-		testSaveLoadPartie("test");
+		//testSaveLoadPartie("test");
 	}
 
 	private void testSaveLoadPartie(String saveName) {
@@ -48,4 +48,7 @@ public class PetitsChevaux {
 		new PetitsChevaux();
 	}
 
+	public SaveManager getSaveManager() {
+		return saveManager;
+	}
 }

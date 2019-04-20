@@ -3,9 +3,9 @@ package fr.huautleroux.petitschevaux.utils;
 import java.util.Scanner;
 
 public class Saisie {
-	
+
 	private static Scanner scanner = new Scanner(System.in);
-	
+
 	public static String asString() {
 		return scanner.nextLine();
 	}
@@ -23,7 +23,7 @@ public class Saisie {
 		try {
 			return Double.valueOf(asString().replace(',', '.'));
 		} catch(NumberFormatException e) {
-			errorMsg("décimal (double précision)");
+			errorMsg("un nombre décimal (double précision)");
 			return asDouble();
 		}
 	}
@@ -32,12 +32,23 @@ public class Saisie {
 		try {
 			return (float) asDouble();
 		} catch(NumberFormatException e) {
-			errorMsg("décimal (simple précision)");
+			errorMsg("un nombre décimal (simple précision)");
 			return asFloat();
 		}
 	}
 
+	public static boolean asBoolean() {
+		String get = asString().toLowerCase();
+		if(get.equals("o") || get.equals("oui"))
+			return true;
+		else if(get.equals("n") || get.equals("non"))
+			return false;
+		
+		errorMsg("O(ui) / N(on)");
+		return asBoolean();
+	}
+
 	private static void errorMsg(String msg) {
-		System.out.println("Entrée invalide, veuillez rentrer un nombre " + msg);
+		System.out.println("Entrée invalide, veuillez rentrer " + msg);
 	}
 }
