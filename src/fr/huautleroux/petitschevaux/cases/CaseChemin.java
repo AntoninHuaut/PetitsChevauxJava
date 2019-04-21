@@ -3,9 +3,9 @@ package fr.huautleroux.petitschevaux.cases;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.entites.Pion;
 
-public class CaseDeChemin extends Case {
+public class CaseChemin extends Case {
 	
-	public CaseDeChemin() {}
+	public CaseChemin() {}
 	
 	@Override
 	public boolean peutPasser(Pion pion) {

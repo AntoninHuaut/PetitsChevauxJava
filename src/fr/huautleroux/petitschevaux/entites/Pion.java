@@ -1,14 +1,15 @@
 package fr.huautleroux.petitschevaux.entites;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import fr.huautleroux.petitschevaux.cases.CaseDeChemin;
+import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 
-public class Pion {
+public class Pion implements Comparable<Pion> {
 
 	private int id;
 	private Couleur couleur;
@@ -24,7 +25,7 @@ public class Pion {
 		if(ecurie.getChevaux().contains(this))
 			return ecurie;
 
-		ArrayList<Case> cases = new ArrayList<Case>();
+		List<Case> cases = new ArrayList<Case>();
 		plateau.getEchelles().get(couleur.ordinal()).forEach(c -> cases.add(c));
 		plateau.getChemin().forEach(c -> cases.add(c));
 
@@ -43,13 +44,13 @@ public class Pion {
 		Case caseActuelle = getCaseActuelle(plateau);
 		int indiceJoueur = couleur.ordinal();
 		
-		ArrayList<Case> cases = new ArrayList<Case>();
+		List<Case> cases = new ArrayList<Case>();
 		plateau.getEchelles().get(couleur.ordinal()).forEach(c -> cases.add(c));
 		plateau.getChemin().forEach(c -> cases.add(c));
 
 		for (Case c : cases) {
 			if(c.equals(caseActuelle)) {
-				if (c instanceof CaseDeChemin) {
+				if (c instanceof CaseChemin) {
 					int indice = plateau.getChemin().indexOf(c);
 					indice += de;
 					indice %= plateau.getChemin().size();
@@ -79,6 +80,16 @@ public class Pion {
 		
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return "Pion n° " + (id + 1);
+	}
+	
+	@Override
+    public int compareTo(Pion pion) {
+        return Integer.valueOf(this.getId()).compareTo(Integer.valueOf(pion.getId()));
+    }
 	
 	public int getId() {
 		return id;

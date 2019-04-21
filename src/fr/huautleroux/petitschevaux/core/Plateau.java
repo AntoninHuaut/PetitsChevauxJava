@@ -1,10 +1,10 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
-
+import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
-import fr.huautleroux.petitschevaux.cases.CaseDeChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.entites.Pion;
@@ -13,9 +13,9 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 public class Plateau {
 
 	private transient Partie partie;
-	private ArrayList<ArrayList<CaseEchelle>> echelles = new ArrayList<ArrayList<CaseEchelle>>();
-	private ArrayList<CaseDeChemin> chemin = new ArrayList<CaseDeChemin>();
-	private ArrayList<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
+	private List<List<CaseEchelle>> echelles = new ArrayList<List<CaseEchelle>>();
+	private List<CaseChemin> chemin = new ArrayList<CaseChemin>();
+	private List<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
 
 	public Plateau(Partie partie) {
 		this.partie = partie;
@@ -26,9 +26,9 @@ public class Plateau {
 			this.ecurie.add(new CaseEcurie(couleurs[i]));
 
 			for (int j = 0; j < 13; j++)
-				this.chemin.add(new CaseDeChemin());
+				this.chemin.add(new CaseChemin());
 
-			ArrayList<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
+			List<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
 			
 			for (int k = 0; k < 7; k++)
 				echelle.add(new CaseEchelle(couleurs[i]));
@@ -60,15 +60,15 @@ public class Plateau {
 		}
 	}
 	
-	public ArrayList<CaseEcurie> getEcuries(){
+	public List<CaseEcurie> getEcuries(){
 		return ecurie;
 	}
 
-	public  ArrayList<ArrayList<CaseEchelle>> getEchelles(){
+	public  List<List<CaseEchelle>> getEchelles(){
 		return echelles;
 	}
 
-	public ArrayList<CaseDeChemin> getChemin(){
+	public List<CaseChemin> getChemin(){
 		return chemin;
 	}
 }

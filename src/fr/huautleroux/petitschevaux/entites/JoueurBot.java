@@ -3,6 +3,7 @@ package fr.huautleroux.petitschevaux.entites;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.enums.JoueurAction;
 
 public class JoueurBot extends Joueur {
 
@@ -14,14 +15,15 @@ public class JoueurBot extends Joueur {
 	}
 
 	@Override
-	public int choixAction(int de, Plateau plateau) {
+	public JoueurAction choixAction(int de, Plateau plateau) {
 		// TODO
-		return 0;
+		return null;
 	}
 	
 	@Override
-	public Pion choisirPion(int de, int choix, Plateau plateau) {
+	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
 		System.out.println(getNom() + " a fait un " + de);
+		// TODO
 
 		return null;
 	}

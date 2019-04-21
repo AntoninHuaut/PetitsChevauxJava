@@ -3,28 +3,28 @@
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "j",
+        "nom": "Jean Jauni",
         "couleur": "JAUNE"
       }
     },
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "b",
+        "nom": "Jean bleuti",
         "couleur": "BLEU"
       }
     },
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "v",
+        "nom": "Jean verdi",
         "couleur": "VERT"
       }
     },
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "r",
+        "nom": "Jean rougi",
         "couleur": "ROUGE"
       }
     }

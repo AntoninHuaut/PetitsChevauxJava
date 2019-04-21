@@ -1,13 +1,14 @@
 package fr.huautleroux.petitschevaux.cases.abstracts;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.Pion;
 
 public abstract class Case {
 
-	private ArrayList<Pion> pions = new ArrayList<Pion>();
+	private List<Pion> pions = new ArrayList<Pion>();
 
 	public void ajouteCheval(Plateau plateau, Pion pion) {
 		Case caseActuel = pion.getCaseActuelle(plateau);
@@ -26,7 +27,7 @@ public abstract class Case {
 	public abstract boolean peutPasser(Pion pion);
 	public abstract boolean peutSArreter(Pion pion);
 
-	public ArrayList<Pion> getChevaux() {
+	public List<Pion> getChevaux() {
 		return pions;
 	}
 }

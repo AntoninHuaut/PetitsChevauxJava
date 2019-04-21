@@ -1,8 +1,11 @@
 package fr.huautleroux.petitschevaux.entites;
 
+import java.util.List;
+
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.utils.Saisie;
 
 public class JoueurHumain extends Joueur {
@@ -18,7 +21,7 @@ public class JoueurHumain extends Joueur {
 	 */
 
 	@Override
-	public int choixAction(int de, Plateau plateau) {
+	public JoueurAction choixAction(int de, Plateau plateau) {
 		System.out.println("Vous avez fait un " + de);
 		System.out.println("  Vous pouvez ne rien faire [0]");
 
@@ -44,36 +47,31 @@ public class JoueurHumain extends Joueur {
 			System.out.println("");
 		} while(!estChoixValide(de, choix, plateau));
 
-		return choix;
+		return JoueurAction.values()[choix];
 	};
 
 	@Override
-	public Pion choisirPion(int de, int choix, Plateau plateau) {
-		if(choix == 1) {
-			System.out.println("Voici la liste de vos chevaux que vous pouvez sortir de l'écurie");
+	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
+		List<Pion> pionsAction = getPionsParAction(action, plateau);
 
-			// TODO
-		} else {
-			System.out.println("Voici la liste de vos chevaux que vous pouvez déplacer sur le plateau");
+		System.out.println("Voici la liste de vos chevaux que vous pouvez " + action.getMessage());
 
-			// TODO
-		}
+		pionsAction.forEach(pion -> System.out.println("  • " + pion));
+		System.out.print("\nVeuillez entrer le numéro du cheval que vous souhaitez " + action.getMessage() + " : ");
 
-		return null;
-	}
+		boolean allowed = false;
+		int numPion;
 
-	private boolean estChoixValide(int de, int choix, Plateau plateau) {
-		boolean choixValide = true;
-		
-		if (choix == 1 && !hasPionEcurie(plateau) // ucun cheval dans l'écurie
-			|| choix == 1 && de != 6 // Il n'a pas le droit d'en sortir un de l'écurie
-			|| choix == 2 && hasToutPionEcurie(plateau) // Aucun cheval sur le plateau
-			|| choix < 0 || choix > 3) // Le numéro entré ne correspond à aucun choix
-			choixValide = false;
-		
-		if(!choixValide)
-			System.out.print("Votre choix n'est pas valide, reessayez : ");
+		do {
+			numPion = Saisie.asInt() - 1;
+			System.out.println("");
 
-		return choixValide;
+			for (Pion pion : pionsAction)
+				if(pion.getId() == numPion)
+					allowed = true;
+
+		} while (!allowed);
+
+		return pionsAction.get(numPion);
 	}
 }
