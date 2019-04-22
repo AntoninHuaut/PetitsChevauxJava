@@ -14,6 +14,7 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
+import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.utils.Saisie;
 import fr.huautleroux.petitschevaux.utils.Utils;
@@ -136,13 +137,18 @@ public class Partie {
 		}
 
 		else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
-			Pion pion = joueurCourant.choisirPion(de, action, plateau);
-			plateau.deplacerPionA(pion, plateau, de);
+			Pion pion;
+			try {
+				pion = joueurCourant.choisirPion(de, action, plateau);
+				plateau.deplacerPionA(pion, plateau, de);
+			} catch (AucunPionException e) {
+				System.out.println("Aucun pion disponible, " + joueurCourant.getNom() + " a gagné");
+			}
 		}
 
 		System.out.println("");
 		
-		if (de == 66 && !aDejaFaitSix) {
+		if (de == 6 && !aDejaFaitSix) {
 			System.out.println("Vous avez fait 6 ! Vous pouvez rejouer une deuxième fois");
 			jouerJoueur(true);
 		}

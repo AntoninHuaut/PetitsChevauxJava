@@ -10,6 +10,7 @@ import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException;
 
 public class Plateau {
 
@@ -54,7 +55,15 @@ public class Plateau {
 	public void deplacerPionA(Pion pion, Plateau plateau, int de) {
 		if (pion.isDeplacementPossible(plateau, de)) {
 			Case ancienneCase = pion.getCaseActuelle();
-			Case nouvelleCase = pion.getCaseCible(plateau, de);
+			Case nouvelleCase;
+			
+			try {
+				nouvelleCase = pion.getCaseCible(plateau, de);
+			} catch (PionFinParcoursException e) {
+				System.err.println(e.getMessage());
+				return;
+			}
+			
 			ancienneCase.retirerCheval(pion);
 			nouvelleCase.ajouteCheval(pion);
 

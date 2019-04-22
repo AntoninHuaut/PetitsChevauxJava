@@ -15,7 +15,9 @@ public class PetitsChevaux {
 		instance = this;
 		this.saveManager = new SaveManager("saves");
 
-		if((partie = menuChargementSauvegarde()) == null) {
+		try {
+			this.partie = menuChargementSauvegarde();
+		} catch (ChargementSauvegardeException e) {
 			System.out.println("Nouvelle partie\n");
 			this.partie = new Partie();
 			this.partie.initialiserJeu();
@@ -24,15 +26,15 @@ public class PetitsChevaux {
 		this.partie.startJeu();
 	}
 
-	public Partie menuChargementSauvegarde() {
+	public Partie menuChargementSauvegarde() throws ChargementSauvegardeException {
 		if(saveManager.getSauvegardes().isEmpty())
-			return null;
+			throw new ChargementSauvegardeException("Aucune sauvegarde n'existe");
 		
 		System.out.println("Souhaitez-vous charger une sauvegarde ? (Oui/Non)");
 		boolean chargerSauvegarde = Saisie.asBoolean();
 
 		if(!chargerSauvegarde)
-			return null;
+			throw new ChargementSauvegardeException("Opération interrompue");
 
 		System.out.println(" Liste des sauvegardes :");
 		saveManager.getSauvegardes().forEach(save -> System.out.println("    • " + save));
@@ -44,20 +46,15 @@ public class PetitsChevaux {
 			nomSauvegarde = Saisie.asString();
 			System.out.println("");
 		} while(!saveManager.estSauvegardeValide(nomSauvegarde) && !nomSauvegarde.equals("stop"));
-		
+
 		if(nomSauvegarde.equals("stop"))
-			return null;
-		
+			throw new ChargementSauvegardeException("Opération interrompue");
+
 		nomSauvegarde = saveManager.convertSaveName(nomSauvegarde);
 
-		try {
-			Partie partie = saveManager.chargerPartie(nomSauvegarde);
-			System.out.println("La partie " + nomSauvegarde + " a été chargée\n");
-			return partie;
-		} catch (ChargementSauvegardeException e) {
-			System.err.println("Le chargement sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
-			return null;
-		}
+		Partie partie = saveManager.chargerPartie(nomSauvegarde);
+		System.out.println("La partie " + nomSauvegarde + " a été chargée\n");
+		return partie;
 	}
 
 	public static void main(String[] args) {

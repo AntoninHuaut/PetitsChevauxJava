@@ -9,6 +9,7 @@ import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException;
 
 public class Pion implements Comparable<Pion> {
 
@@ -22,32 +23,33 @@ public class Pion implements Comparable<Pion> {
 	}
 
 	public boolean isDeplacementPossible(Plateau plateau, int de) {
-		Case caseCible = getCaseCible(plateau, de);
+		try {
+			Case caseCible = getCaseCible(plateau, de);
+			boolean deplacementPossible = true;
 
-		if (caseCible == null)
+			Case caseTmp;
+			int i = 1;
+
+
+			do {
+				caseTmp = getCaseCible(plateau, i);
+
+				if (!caseTmp.peutPasser(this) || !caseTmp.peutSArreter(this, de))
+					deplacementPossible = false;
+
+				i++;
+			} while (caseTmp != caseCible && deplacementPossible);
+
+			return deplacementPossible;
+		} catch (PionFinParcoursException e) {
 			return false;
-
-		boolean deplacementPossible = true;
-
-		Case caseTmp;
-		int i = 1;
-
-		do {
-			caseTmp = getCaseCible(plateau, i);
-
-			if (!caseTmp.peutPasser(this) || !caseTmp.peutSArreter(this, de))
-				deplacementPossible = false;
-
-			i++;
-		} while (caseTmp != caseCible && deplacementPossible);
-
-		return deplacementPossible;
+		}
 	}
 
-	public Case getCaseCible(Plateau plateau, int nbDeplacement) {
+	public Case getCaseCible(Plateau plateau, int nbDeplacement) throws PionFinParcoursException {
 		Case caseActuelle = getCaseActuelle();
 		int indiceJoueur = couleur.ordinal();
-		
+
 		if (caseActuelle instanceof CaseEcurie)
 			return plateau.getPartie().getJoueurCourant().getCaseDeDepart();
 
@@ -79,7 +81,7 @@ public class Pion implements Comparable<Pion> {
 			int indice = echelles.indexOf(caseActuelle);
 
 			if (indice == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
-				return null;
+				throw new PionFinParcoursException();
 
 			return echelles.get(indice + 1);
 		}

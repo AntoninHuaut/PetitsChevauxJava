@@ -13,6 +13,7 @@ import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
+import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 
 public abstract class Joueur {
 
@@ -27,7 +28,7 @@ public abstract class Joueur {
 	}
 
 	public abstract JoueurAction choixAction(int de, Plateau plateau);
-	public abstract Pion choisirPion(int de, JoueurAction choix, Plateau plateau);
+	public abstract Pion choisirPion(int de, JoueurAction choix, Plateau plateau) throws AucunPionException;
 
 	public boolean hasToutPionEcurie(Plateau plateau) {
 		return getNombrePionEcurie(plateau) == 4;

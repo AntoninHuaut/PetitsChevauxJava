@@ -8,6 +8,8 @@ import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
+import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
+import fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException;
 
 public class JoueurBot extends Joueur {
 
@@ -27,9 +29,9 @@ public class JoueurBot extends Joueur {
 
 		if (actionDispo.isEmpty())
 			return JoueurAction.RIEN_FAIRE;
-		
+
 		JoueurAction choixAction;
-		
+
 		if (actionDispo.size() == 1)
 			choixAction = actionDispo.get(0);
 		else {
@@ -38,55 +40,71 @@ public class JoueurBot extends Joueur {
 			else
 				choixAction = JoueurAction.SORTIR_CHEVAL;
 		}
-		
-		// Empêche getPionDeplaceable() de retourner null dans choisirPion 
-		if (choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && getPionDeplaceable(de, plateau) == null)
+
+		if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplaceable(de, plateau))
 			return JoueurAction.RIEN_FAIRE;
-		
+
 		return choixAction;
 	}
 
 	@Override
-	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
+	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) throws AucunPionException {
 		Pion pionChoisi;
 
 		if (action.equals(JoueurAction.SORTIR_CHEVAL))
 			pionChoisi = getChevaux().stream().filter(pion -> pion.isDansEcurie()).findFirst().get();
 		else {
-			pionChoisi = getPionQuiPeutManger(de, plateau);
-
-			if (pionChoisi == null)
+			try {
+				pionChoisi = getPionQuiPeutManger(de, plateau);
+			} catch (AucunPionException e) {
 				pionChoisi = getPionDeplaceable(de, plateau);
+			}
 		}
 
 		return pionChoisi;
 	}
 
 	private boolean hasPionQuiPeutManger(int de, Plateau plateau) {
-		return getPionQuiPeutManger(de, plateau) != null;
+		try {
+			getPionQuiPeutManger(de, plateau);
+			return true;
+		} catch (AucunPionException e) {
+			return false;
+		}
 	}
 
-	private Pion getPionDeplaceable(int de, Plateau plateau) {
+	private boolean hasPionDeplaceable(int de, Plateau plateau) {
+		try {
+			getPionDeplaceable(de, plateau);
+			return true;
+		} catch (AucunPionException e) {
+			return false;
+		}
+	}
+
+	private Pion getPionDeplaceable(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux())
 			if (pion.isDeplacementPossible(plateau, de))
 				return pion;
 
-		// Impossible que çela arrive
-		return null;
+		throw new AucunPionException("Aucun pion déplaceable trouvé");
 	}
 
-	private Pion getPionQuiPeutManger(int de, Plateau plateau) {
+	private Pion getPionQuiPeutManger(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux()) {
 			if(!pion.isDeplacementPossible(plateau, de))
 				continue;
-			
-			Case caseCible = pion.getCaseCible(plateau, de);
-			boolean hasPionEnemy = !caseCible.getChevaux().stream().filter(enemy -> !enemy.getCouleur().equals(getCouleur())).collect(Collectors.toList()).isEmpty();
 
-			if (hasPionEnemy)
-				return pion;
+			try {
+				Case caseCible = pion.getCaseCible(plateau, de);
+				
+				boolean hasPionEnemy = !caseCible.getChevaux().stream().filter(enemy -> !enemy.getCouleur().equals(getCouleur())).collect(Collectors.toList()).isEmpty();
+
+				if (hasPionEnemy)
+					return pion;
+			} catch (PionFinParcoursException e) {}
 		}
 
-		return null;
+		throw new AucunPionException("Aucun pion pouvant manger un autre pion trouvé");
 	}
 }
