@@ -3,19 +3,18 @@ package fr.huautleroux.petitschevaux.cases.abstracts;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.Pion;
 
 public abstract class Case {
 
+	private int numero;
 	private List<Pion> pions = new ArrayList<Pion>();
+	
+	public Case(int numero) {
+		this.numero = numero;
+	}
 
-	public void ajouteCheval(Plateau plateau, Pion pion) {
-		Case caseActuel = pion.getCaseActuelle();
-		
-		if (caseActuel != null)
-			caseActuel.retirerCheval(pion);
-		
+	public void ajouteCheval(Pion pion) {
 		pion.setCaseActuelle(this);
 		pions.add(pion);
 	}
@@ -25,7 +24,7 @@ public abstract class Case {
 	}
 
 	public abstract boolean peutPasser(Pion pion);
-	public abstract boolean peutSArreter(Pion pion);
+	public abstract boolean peutSArreter(Pion pion, int de);
 
 	public List<Pion> getChevaux() {
 		return pions;
@@ -43,5 +42,9 @@ public abstract class Case {
 			s += "\n" + pion;
 		
 		return s;
+	}
+	
+	public int getNumero() {
+		return numero;
 	}
 }

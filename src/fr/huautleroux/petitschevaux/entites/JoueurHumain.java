@@ -16,7 +16,7 @@ public class JoueurHumain extends Joueur {
 
 	@Override
 	public JoueurAction choixAction(int de, Plateau plateau) {
-		System.out.println("Vous avez fait un " + de);
+		System.out.println("Vous avez fait " + de + " au dé");
 		List<JoueurAction> actionDispo = getActionDisponible(de, plateau, true);
 
 		System.out.print("\nVeuillez entrer le numéro de l'action que vous souhaitez effectuer : ");
@@ -40,7 +40,7 @@ public class JoueurHumain extends Joueur {
 		pionsAction.forEach(pion -> System.out.println("  • " + pion));
 		System.out.print("\nVeuillez entrer le numéro du cheval que vous souhaitez " + action.getMessage() + " : ");
 
-		boolean allowed = false;
+		boolean pionAutorise = false;
 		int numPion;
 
 		do {
@@ -49,9 +49,9 @@ public class JoueurHumain extends Joueur {
 
 			for (Pion pion : pionsAction)
 				if(pion.getId() == numPion)
-					allowed = true;
+					pionAutorise = true;
 
-		} while (!allowed);
+		} while (!pionAutorise);
 
 		return pionsAction.get(numPion);
 	}

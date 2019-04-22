@@ -6,7 +6,8 @@ public abstract class CaseColoree extends Case {
 	
 	private Couleur couleur;
 	
-	public CaseColoree(Couleur couleur) {
+	public CaseColoree(Couleur couleur, int numero) {
+		super(numero);
 		this.couleur = couleur;
 	}
 	

@@ -25,6 +25,9 @@ public class PetitsChevaux {
 	}
 
 	public Partie menuChargementSauvegarde() {
+		if(saveManager.getSauvegardes().isEmpty())
+			return null;
+		
 		System.out.println("Souhaitez-vous charger une sauvegarde ? (Oui/Non)");
 		boolean chargerSauvegarde = Saisie.asBoolean();
 

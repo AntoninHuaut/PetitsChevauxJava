@@ -18,22 +18,20 @@ public class Plateau {
 	private List<CaseChemin> chemin = new ArrayList<CaseChemin>();
 	private List<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
 
-	public Plateau(Partie partie) {
-		this.partie = partie;
-		
+	public Plateau() {
 		Couleur[] couleurs = Couleur.values();
 
 		for (int i = 0; i < 4; i++) {
-			this.ecurie.add(new CaseEcurie(couleurs[i]));
+			this.ecurie.add(new CaseEcurie(couleurs[i], i));
 
 			for (int j = 0; j < 13; j++)
-				this.chemin.add(new CaseChemin());
+				this.chemin.add(new CaseChemin(i*13 + j));
 
 			List<CaseEchelle> echelle = new ArrayList<CaseEchelle>();
-			
-			for (int k = 0; k < 7; k++)
-				echelle.add(new CaseEchelle(couleurs[i]));
-			
+
+			for (int j = 0; j < 6; j++)
+				echelle.add(new CaseEchelle(couleurs[i], i*6 + j));
+
 			echelles.add(echelle);
 		}
 	}
@@ -43,46 +41,48 @@ public class Plateau {
 		cases.addAll(getEcuries());
 		cases.addAll(getChemin());
 		getEchelles().forEach(c -> cases.addAll(c));
-		
+
 		System.out.println("Affichage de Cases");
-		
+
 		for (int i = 0; i < cases.size(); i++) // Affichage de la liste en tableau 1D =/= ce qu'on veut...
 			System.out.println(cases.get(i));
-		
-		
-		
-	}
-	
-	
 
-	public void deplacerPionA(Pion pion, Case caseCible) {
-		/*
-		 * Il faut vérifier toutes les cases entre la case actuelle du Pion, et la caseCible, si il peut passer dessus
-		 * Si il peut passer sur toutes les cases, alors on vérifie s'il peut s'arrêter sur la case cible
-		 * Si il peut s'arrêter alors on effectue le déplacement
-		 */
-		
-		
-		boolean peutSArreter = caseCible.peutSArreter(pion);
-	
-		if(peutSArreter) {
-			partie.mangerLesPions(caseCible);
-			caseCible.ajouteCheval(this, pion);
-		}
-		else {
-			System.out.println("Le cheval n'a pas pu se déplacer");
-		}
+
+
 	}
-	
-	public List<CaseEcurie> getEcuries(){
+
+	public void deplacerPionA(Pion pion, Plateau plateau, int de) {
+		if (pion.isDeplacementPossible(plateau, de)) {
+			Case ancienneCase = pion.getCaseActuelle();
+			Case nouvelleCase = pion.getCaseCible(plateau, de);
+			ancienneCase.retirerCheval(pion);
+			nouvelleCase.ajouteCheval(pion);
+
+			if (ancienneCase instanceof CaseEcurie)
+				System.out.println("Votre " + pion + " est sorti de l'écurie");
+			else
+				System.out.println("Votre " + pion + " s'est déplacé");
+		} else
+			System.out.println("Votre " + pion + " n'a pas pu se déplacer");
+	}
+
+	public List<CaseEcurie> getEcuries() {
 		return ecurie;
 	}
 
-	public  List<List<CaseEchelle>> getEchelles(){
+	public  List<List<CaseEchelle>> getEchelles() {
 		return echelles;
 	}
 
 	public List<CaseChemin> getChemin(){
 		return chemin;
+	}
+
+	public Partie getPartie() {
+		return partie;
+	}
+	
+	public void setPartie(Partie partie) {
+		this.partie = partie;
 	}
 }

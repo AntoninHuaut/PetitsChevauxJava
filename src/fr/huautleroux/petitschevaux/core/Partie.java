@@ -16,16 +16,18 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.utils.Saisie;
+import fr.huautleroux.petitschevaux.utils.Utils;
 
 public class Partie {
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
-	private Joueur joueurCourant = null;
+	private int idJoueurCourant = 0;
 	private Plateau plateau = null;
 	private Random random = new Random();
 
 	private int nbJoueurHumain;
+	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
 	public void initialiserJeu() {
@@ -59,12 +61,12 @@ public class Partie {
 	}
 
 	public void initialiserPlateau() {
-		this.plateau = new Plateau(this);
+		this.plateau = new Plateau();
 
 		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++)
 			for(int idCheval = 0; idCheval < 4; idCheval++) {
 				Pion pion = new Pion(idCheval, Couleur.values()[idJoueur]);
-				plateau.getEcuries().get(idJoueur).ajouteCheval(plateau, pion);
+				plateau.getEcuries().get(idJoueur).ajouteCheval(pion);
 			}
 	}
 
@@ -73,15 +75,17 @@ public class Partie {
 	 * Méthode indépendance pour qu'elle puisse être appelée par le système de chargement de sauvegarde
 	 */
 	public void initialiserReference() {
+		this.plateau.setPartie(this);
+		
 		List<Case> cases = new ArrayList<Case>();
 		cases.addAll(plateau.getEcuries());
 		cases.addAll(plateau.getChemin());
-		plateau.getEchelles().forEach(c -> cases.addAll(c));
+		this.plateau.getEchelles().forEach(c -> cases.addAll(c));
 
 		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++) {
 			final int idJoueurFinal = idJoueur;
 			Joueur j = joueurs.get(idJoueur);
-			j.setCaseDeDepart(plateau.getChemin().get(idJoueur * 14));
+			j.setCaseDeDepart(plateau.getChemin().get(1 + idJoueur * 14));
 			j.initialisationReference();
 
 			cases.forEach(c -> {
@@ -102,32 +106,45 @@ public class Partie {
 		while(!estPartieTerminee() && !stopPartie) {
 			jouerUnTour();
 
-			break; // Evitez boucle infini pour les tests
+			//break; // Evitez boucle infini pour les tests
 		}
 	}
 
 	public void jouerUnTour() {
-		for (int i = 0; i < joueurs.size() && !stopPartie; i++) {
-			setJoueurCourant(joueurs.get(i));
+		Utils.effacerAffichage();
+	    System.out.println("TOUR N°" + numeroTour);
+	    
+		for (int i = idJoueurCourant; i < joueurs.size() && !stopPartie; i++) {
+			this.idJoueurCourant = i;
+			jouerJoueur(false);
+		}
+		
+		numeroTour++;
+	}
+	
+	public void jouerJoueur(boolean aDejaFaitSix) {
+		Joueur joueurCourant = getJoueurCourant();
 
-			System.out.println("Au tour de " + joueurCourant.getNom() + " (" + joueurCourant.getCouleur() + ")");
+		System.out.println("Au tour de " + joueurCourant.getNom() + " (" + joueurCourant.getCouleur() + ")");
 
-			int de = lancerDe();
-			JoueurAction action = joueurCourant.choixAction(de, plateau);
+		int de = lancerDe();
+		JoueurAction action = joueurCourant.choixAction(de, plateau);
 
-			if (action.equals(JoueurAction.SAUVEGARDER)) {
-				if(menuSauvegarde())
-					return;
-			}
+		if (action.equals(JoueurAction.SAUVEGARDER)) {
+			if(menuSauvegarde())
+				return;
+		}
 
-			else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
-				Pion pion = joueurCourant.choisirPion(de, action, plateau);
-				// Pion renvoie null car la fonction n'est pas terminée, c'est en commentaire pour faire des tests sans que ça crash
-				//Case caseCible = pion.getCaseCible(plateau, de);
-				//plateau.deplacerPionA(pion, caseCible);
-			}
+		else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
+			Pion pion = joueurCourant.choisirPion(de, action, plateau);
+			plateau.deplacerPionA(pion, plateau, de);
+		}
 
-			System.out.println("");
+		System.out.println("");
+		
+		if (de == 66 && !aDejaFaitSix) {
+			System.out.println("Vous avez fait 6 ! Vous pouvez rejouer une deuxième fois");
+			jouerJoueur(true);
 		}
 	}
 
@@ -187,11 +204,7 @@ public class Partie {
 	}
 
 	public Joueur getJoueurCourant() {
-		return joueurCourant;
-	}
-
-	public void setJoueurCourant(Joueur joueur) {
-		this.joueurCourant = joueur;
+		return joueurs.get(idJoueurCourant);
 	}
 
 	public Plateau getPlateau() {

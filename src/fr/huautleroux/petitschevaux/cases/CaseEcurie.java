@@ -6,18 +6,18 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class CaseEcurie extends CaseColoree {
 
-	public CaseEcurie(Couleur couleur) {
-		super(couleur);
+	public CaseEcurie(Couleur couleur, int numero) {
+		super(couleur, numero);
 	}
 	
 	@Override
 	public boolean peutPasser(Pion pion) {
-		return false;
+		return true;
 	}
 
 	@Override
-	public boolean peutSArreter(Pion pion) {
-		return false;
+	public boolean peutSArreter(Pion pion, int de) {
+		return true;
 	}
 	
 	@Override
