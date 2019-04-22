@@ -41,7 +41,7 @@ public class JoueurBot extends Joueur {
 				choixAction = JoueurAction.SORTIR_CHEVAL;
 		}
 
-		if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplaceable(de, plateau))
+		if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplacable(de, plateau))
 			return JoueurAction.RIEN_FAIRE;
 
 		return choixAction;
@@ -57,7 +57,7 @@ public class JoueurBot extends Joueur {
 			try {
 				pionChoisi = getPionQuiPeutManger(de, plateau);
 			} catch (AucunPionException e) {
-				pionChoisi = getPionDeplaceable(de, plateau);
+				pionChoisi = getPionDeplacable(de, plateau);
 			}
 		}
 
@@ -73,21 +73,21 @@ public class JoueurBot extends Joueur {
 		}
 	}
 
-	private boolean hasPionDeplaceable(int de, Plateau plateau) {
+	private boolean hasPionDeplacable(int de, Plateau plateau) {
 		try {
-			getPionDeplaceable(de, plateau);
+			getPionDeplacable(de, plateau);
 			return true;
 		} catch (AucunPionException e) {
 			return false;
 		}
 	}
 
-	private Pion getPionDeplaceable(int de, Plateau plateau) throws AucunPionException {
+	private Pion getPionDeplacable(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux())
-			if (pion.isDeplacementPossible(plateau, de))
+			if (pion.isDeplacementPossible(plateau, de)) 
 				return pion;
 
-		throw new AucunPionException("Aucun pion déplaceable trouvé");
+		throw new AucunPionException("Aucun pion déplaçable trouvé");
 	}
 
 	private Pion getPionQuiPeutManger(int de, Plateau plateau) throws AucunPionException {

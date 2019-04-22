@@ -17,13 +17,13 @@ import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 
 public abstract class Joueur {
 
-	private transient List<Pion> chevaux = new ArrayList<Pion>();
+	private transient List<Pion> chevaux;
 	private transient Case caseDepart = null;
 	private String nom;
 	private Couleur couleur;
 
-	public Joueur(String name, Couleur couleur) {
-		this.nom = name;
+	public Joueur(String nom, Couleur couleur) {
+		this.nom = nom;
 		this.couleur = couleur;
 	}
 
