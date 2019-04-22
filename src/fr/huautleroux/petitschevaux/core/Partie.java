@@ -121,7 +121,7 @@ public class Partie {
 			}
 
 			else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
-				Pion pion = joueurCourant.choisirPion(de, action);
+				Pion pion = joueurCourant.choisirPion(de, action, plateau);
 				// Pion renvoie null car la fonction n'est pas terminée, c'est en commentaire pour faire des tests sans que ça crash
 				//Case caseCible = pion.getCaseCible(plateau, de);
 				//plateau.deplacerPionA(pion, caseCible);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
+import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -81,6 +82,10 @@ public class Pion implements Comparable<Pion> {
 	
 	public void setCaseActuelle(Case caseActuelle) {
 		this.caseActuelle = caseActuelle;
+	}
+	
+	public boolean isDansEcurie() {
+		return caseActuelle instanceof CaseEcurie;
 	}
 	
 	public int getId() {

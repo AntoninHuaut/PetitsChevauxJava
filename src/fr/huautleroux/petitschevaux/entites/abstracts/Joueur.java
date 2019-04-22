@@ -1,6 +1,7 @@
 package fr.huautleroux.petitschevaux.entites.abstracts;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public abstract class Joueur {
 	}
 
 	public abstract JoueurAction choixAction(int de, Plateau plateau);
-	public abstract Pion choisirPion(int de, JoueurAction choix);
+	public abstract Pion choisirPion(int de, JoueurAction choix, Plateau plateau);
 
 	public boolean hasToutPionEcurie(Plateau plateau) {
 		return getNombrePionEcurie(plateau) == 4;
@@ -42,6 +43,47 @@ public abstract class Joueur {
 
 	public List<Pion> getPionsEcurie(Plateau plateau) {
 		return plateau.getEcuries().get(couleur.ordinal()).getChevaux();
+	}
+	
+	public void ajouterCheval(Pion pion) {
+		this.chevaux.add(pion);
+		this.chevaux = this.chevaux.stream().sorted((p1, p2) -> p1.compareTo(p2)).collect(Collectors.toList());
+	}
+
+	public void initialisationReference() {
+		this.chevaux = new ArrayList<Pion>();
+	}
+
+	protected List<JoueurAction> getActionDisponible(int de, Plateau plateau, boolean afficherMessage) {
+		List<JoueurAction> actionDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
+
+		if (afficherMessage)
+			System.out.println("  Vous pouvez ne rien faire [0]");
+
+		if(hasToutPionEcurie(plateau)) {
+			if(de == 6) {
+				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
+				if (afficherMessage)
+					System.out.println("  Vous pouvez sortir un cheval de l'écurie [1]");
+			}
+		}
+
+		else {
+			if(de == 6 && hasPionEcurie(plateau)) {
+				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
+				if (afficherMessage)
+					System.out.println("  Vous pouvez sortir un cheval de l'écurie [1]");
+			}
+
+			actionDispo.add(JoueurAction.DEPLACER_CHEVAL);
+			if (afficherMessage)
+				System.out.println("  Vous pouvez déplacer un cheval sur le plateau [2]");
+		}
+
+		if (afficherMessage)
+			System.out.println("  Vous pouvez sauvegarder [3]");
+
+		return actionDispo;
 	}
 
 	protected List<Pion> getPionsParAction(JoueurAction action) {
@@ -60,31 +102,11 @@ public abstract class Joueur {
 		return pionsAction;
 	}
 
-	protected boolean estChoixValide(int de, int choix, Plateau plateau) {
-		if(choix < 0 || choix >= JoueurAction.values().length) // Le choix n'existe pas
+	protected boolean estChoixValide(int choix, List<JoueurAction> actionDispo) {
+		if(choix < 0 || choix >= JoueurAction.values().length)
 			return false;
 
-		JoueurAction action = JoueurAction.values()[choix];
-		boolean choixValide = true;
-
-		if (action.equals(JoueurAction.SORTIR_CHEVAL) && !hasPionEcurie(plateau) // ucun cheval dans l'écurie
-				|| action.equals(JoueurAction.SORTIR_CHEVAL) && de != 6 // Il n'a pas le droit d'en sortir un de l'écurie
-				|| action.equals(JoueurAction.DEPLACER_CHEVAL) && hasToutPionEcurie(plateau)) // Aucun cheval sur le plateau
-			choixValide = false;
-
-		if(!choixValide)
-			System.out.print("Votre choix n'est pas valide, reessayez : ");
-
-		return choixValide;
-	}
-	
-	public void ajouterCheval(Pion pion) {
-		this.chevaux.add(pion);
-		this.chevaux = this.chevaux.stream().sorted((p1, p2) -> p1.compareTo(p2)).collect(Collectors.toList());
-	}
-
-	public void initialisationReference() {
-		this.chevaux = new ArrayList<Pion>();
+		return actionDispo.contains(JoueurAction.values()[choix]);
 	}
 
 	public Case getCaseDeDepart() {
