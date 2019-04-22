@@ -1,6 +1,7 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
@@ -37,9 +38,22 @@ public class Plateau {
 		}
 	}
 
-	public void afficher() {
-
+	public void afficher(Plateau plateau) {
+		List<Case> cases = new ArrayList<Case>();
+		plateau.getEcuries().forEach(c->cases.add(c));
+		plateau.getChemin().forEach(c -> cases.add(c));
+		plateau.getEchelles().forEach(c -> cases.add(c));
+		
+		Object[] tableau = cases.toArray();
+		System.out.println("Affichage de Cases");
+		for (int i=0; i<cases.size();i++) // Affichage de la liste en tableau 1D =/= ce qu'on veut...
+			System.out.println(tableau[i]);
+		
+		
+		
 	}
+	
+	
 
 	public void deplacerPionA(Pion pion, Case caseCible) {
 		/*

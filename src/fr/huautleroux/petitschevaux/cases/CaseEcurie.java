@@ -19,5 +19,9 @@ public class CaseEcurie extends CaseColoree {
 	public boolean peutSArreter(Pion pion) {
 		return false;
 	}
+	
+	public String toString() {
+		return this.getCouleur() + "E";
+	}
 
 }
