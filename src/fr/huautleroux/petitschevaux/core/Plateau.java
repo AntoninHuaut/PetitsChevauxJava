@@ -38,16 +38,16 @@ public class Plateau {
 		}
 	}
 
-	public void afficher(Plateau plateau) {
+	public void afficher() {
 		List<Case> cases = new ArrayList<Case>();
-		plateau.getEcuries().forEach(c->cases.add(c));
-		plateau.getChemin().forEach(c -> cases.add(c));
-		plateau.getEchelles().forEach(c -> cases.add(c));
+		cases.addAll(getEcuries());
+		cases.addAll(getChemin());
+		getEchelles().forEach(c -> cases.addAll(c));
 		
-		Object[] tableau = cases.toArray();
 		System.out.println("Affichage de Cases");
-		for (int i=0; i<cases.size();i++) // Affichage de la liste en tableau 1D =/= ce qu'on veut...
-			System.out.println(tableau[i]);
+		
+		for (int i = 0; i < cases.size(); i++) // Affichage de la liste en tableau 1D =/= ce qu'on veut...
+			System.out.println(cases.get(i));
 		
 		
 		

@@ -26,7 +26,7 @@ public abstract class Joueur {
 	}
 
 	public abstract JoueurAction choixAction(int de, Plateau plateau);
-	public abstract Pion choisirPion(int de, JoueurAction choix, Plateau plateau);
+	public abstract Pion choisirPion(int de, JoueurAction choix);
 
 	public boolean hasToutPionEcurie(Plateau plateau) {
 		return getNombrePionEcurie(plateau) == 4;
@@ -44,11 +44,11 @@ public abstract class Joueur {
 		return plateau.getEcuries().get(couleur.ordinal()).getChevaux();
 	}
 
-	protected List<Pion> getPionsParAction(JoueurAction action, Plateau plateau) {
+	protected List<Pion> getPionsParAction(JoueurAction action) {
 		List<Pion> pionsAction = new ArrayList<Pion>();
 
 		for (Pion pion : chevaux) {
-			Case caseActuelle = pion.getCaseActuelle(plateau);
+			Case caseActuelle = pion.getCaseActuelle();
 
 			if (action.equals(JoueurAction.SORTIR_CHEVAL) && caseActuelle instanceof CaseEcurie)
 				pionsAction.add(pion);

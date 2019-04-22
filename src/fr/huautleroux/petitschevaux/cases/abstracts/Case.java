@@ -11,12 +11,12 @@ public abstract class Case {
 	private List<Pion> pions = new ArrayList<Pion>();
 
 	public void ajouteCheval(Plateau plateau, Pion pion) {
-		Case caseActuel = pion.getCaseActuelle(plateau);
+		Case caseActuel = pion.getCaseActuelle();
 		
-		// Ce cas arrive seulement à l'initialisation
 		if (caseActuel != null)
 			caseActuel.retirerCheval(pion);
 		
+		pion.setCaseActuelle(this);
 		pions.add(pion);
 	}
 	
@@ -29,5 +29,19 @@ public abstract class Case {
 
 	public List<Pion> getChevaux() {
 		return pions;
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + toStringPions();
+	}
+	
+	public String toStringPions() {
+		String s = "";
+		
+		for (Pion pion : pions)
+			s += "\n" + pion;
+		
+		return s;
 	}
 }

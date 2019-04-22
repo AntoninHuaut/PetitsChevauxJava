@@ -51,8 +51,8 @@ public class JoueurHumain extends Joueur {
 	};
 
 	@Override
-	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
-		List<Pion> pionsAction = getPionsParAction(action, plateau);
+	public Pion choisirPion(int de, JoueurAction action) {
+		List<Pion> pionsAction = getPionsParAction(action);
 
 		System.out.println("Voici la liste de vos chevaux que vous pouvez " + action.getMessage());
 

@@ -7,6 +7,7 @@ import java.util.Random;
 import fr.huautleroux.petitschevaux.PetitsChevaux;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
+import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
 import fr.huautleroux.petitschevaux.entites.JoueurBot;
 import fr.huautleroux.petitschevaux.entites.JoueurHumain;
 import fr.huautleroux.petitschevaux.entites.Pion;
@@ -72,21 +73,29 @@ public class Partie {
 	 * Méthode indépendance pour qu'elle puisse être appelée par le système de chargement de sauvegarde
 	 */
 	public void initialiserReference() {
+		List<Case> cases = new ArrayList<Case>();
+		cases.addAll(plateau.getEcuries());
+		cases.addAll(plateau.getChemin());
+		plateau.getEchelles().forEach(c -> cases.addAll(c));
+
 		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++) {
+			final int idJoueurFinal = idJoueur;
 			Joueur j = joueurs.get(idJoueur);
 			j.setCaseDeDepart(plateau.getChemin().get(idJoueur * 14));
 			j.initialisationReference();
-			
-			List<Case> cases = new ArrayList<Case>();
-			cases.add(plateau.getEcuries().get(idJoueur));
-			plateau.getEchelles().get(idJoueur).forEach(c -> cases.add(c));
-			plateau.getChemin().forEach(c -> cases.add(c));
-			
-			cases.forEach(c -> c.getChevaux().forEach(pion -> {
-				if (pion.getCouleur().equals(j.getCouleur()))
-					j.ajouterCheval(pion);
-			}));
+
+			cases.forEach(c -> {
+				if (c instanceof CaseColoree && ((CaseColoree) c).getCouleur().ordinal() != idJoueurFinal)
+					return;
+
+				c.getChevaux().forEach(pion -> {
+					if (pion.getCouleur().equals(j.getCouleur()))
+						j.ajouterCheval(pion);
+				});
+			});
 		}
+		
+		cases.forEach(c -> c.getChevaux().forEach(pion -> pion.setCaseActuelle(c)));
 	}
 
 	public void startJeu() {
@@ -100,7 +109,7 @@ public class Partie {
 	public void jouerUnTour() {
 		for (int i = 0; i < joueurs.size() && !stopPartie; i++) {
 			setJoueurCourant(joueurs.get(i));
-			
+
 			System.out.println("Au tour de " + joueurCourant.getNom() + " (" + joueurCourant.getCouleur() + ")");
 
 			int de = lancerDe();
@@ -112,7 +121,7 @@ public class Partie {
 			}
 
 			else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
-				Pion pion = joueurCourant.choisirPion(de, action, plateau);
+				Pion pion = joueurCourant.choisirPion(de, action);
 				// Pion renvoie null car la fonction n'est pas terminée, c'est en commentaire pour faire des tests sans que ça crash
 				//Case caseCible = pion.getCaseCible(plateau, de);
 				//plateau.deplacerPionA(pion, caseCible);

@@ -21,7 +21,7 @@ public class JoueurBot extends Joueur {
 	}
 	
 	@Override
-	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
+	public Pion choisirPion(int de, JoueurAction action) {
 		System.out.println(getNom() + " a fait un " + de);
 		// TODO
 

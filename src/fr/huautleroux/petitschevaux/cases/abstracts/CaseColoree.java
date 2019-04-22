@@ -13,4 +13,9 @@ public abstract class CaseColoree extends Case {
 	public Couleur getCouleur() {
 		return couleur;
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + " " + couleur + toStringPions();
+	}
 }

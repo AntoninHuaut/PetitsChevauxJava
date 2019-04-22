@@ -20,8 +20,9 @@ public class CaseEcurie extends CaseColoree {
 		return false;
 	}
 	
+	@Override
 	public String toString() {
-		return this.getCouleur() + "E";
+		return getClass().getName() + " " + getCouleur() + toStringPions();
 	}
 
 }

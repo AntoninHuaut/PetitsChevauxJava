@@ -16,4 +16,9 @@ public class CaseChemin extends Case {
 	public boolean peutSArreter(Pion pion) {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + toStringPions();
+	}
 }
