@@ -30,7 +30,6 @@ public class Pion implements Comparable<Pion> {
 			Case caseTmp;
 			int i = 1;
 
-
 			do {
 				caseTmp = getCaseCible(plateau, i);
 
@@ -78,18 +77,17 @@ public class Pion implements Comparable<Pion> {
 
 		} else {
 			List<CaseEchelle> echelles = plateau.getEchelles().get(indiceJoueur);
-			int indice = echelles.indexOf(caseActuelle);
 
-			if (indice == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
+			if (caseActuelle.getNumero() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
 				throw new PionFinParcoursException();
 
-			return echelles.get(indice + 1);
+			return echelles.get(caseActuelle.getNumero() + 1);
 		}
 	}
 
 	private boolean isTransition(int caseNumero, int de) {
 		for (int i = 1; i < de + 1; i++)
-			if(caseNumero + de == 0 % 14)
+			if((caseNumero + de) % 14 == 0)
 				return true;
 
 		return false;

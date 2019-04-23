@@ -77,7 +77,7 @@ public class Partie {
 	 */
 	public void initialiserReference() {
 		this.plateau.setPartie(this);
-		
+
 		List<Case> cases = new ArrayList<Case>();
 		cases.addAll(plateau.getEcuries());
 		cases.addAll(plateau.getChemin());
@@ -99,13 +99,14 @@ public class Partie {
 				});
 			});
 		}
-		
+
 		cases.forEach(c -> c.getChevaux().forEach(pion -> pion.setCaseActuelle(c)));
 	}
 
 	public void startJeu() {
 		while(!estPartieTerminee() && !stopPartie) {
 			jouerUnTour();
+			idJoueurCourant = 0;
 
 			//break; // Evitez boucle infini pour les tests
 		}
@@ -113,16 +114,16 @@ public class Partie {
 
 	public void jouerUnTour() {
 		Utils.effacerAffichage();
-	    System.out.println("TOUR N°" + numeroTour);
-	    
+		System.out.println("TOUR N°" + numeroTour);
+
 		for (int i = idJoueurCourant; i < joueurs.size() && !stopPartie; i++) {
 			this.idJoueurCourant = i;
 			jouerJoueur(false);
 		}
-		
+
 		numeroTour++;
 	}
-	
+
 	public void jouerJoueur(boolean aDejaFaitSix) {
 		Joueur joueurCourant = getJoueurCourant();
 
@@ -147,7 +148,7 @@ public class Partie {
 		}
 
 		System.out.println("");
-		
+
 		if (de == 6 && !aDejaFaitSix) {
 			System.out.println("Vous avez fait 6 ! Vous pouvez rejouer une deuxième fois");
 			jouerJoueur(true);
