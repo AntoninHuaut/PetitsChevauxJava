@@ -118,23 +118,27 @@ public class Partie {
 
 		for (int i = idJoueurCourant; i < joueurs.size() && !stopPartie; i++) {
 			this.idJoueurCourant = i;
-			jouerJoueur(false);
+			
+			System.out.println("Au tour de " + getJoueurCourant().getNom() + " (" + getJoueurCourant().getCouleur() + ")");
+			jouerJoueur(false, lancerDe());
 		}
 
 		numeroTour++;
 	}
 
-	public void jouerJoueur(boolean aDejaFaitSix) {
+	public void jouerJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
-
-		System.out.println("Au tour de " + joueurCourant.getNom() + " (" + joueurCourant.getCouleur() + ")");
-
-		int de = lancerDe();
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
 
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
-			if(menuSauvegarde())
-				return;
+			try {
+				if(menuSauvegarde())
+					return;
+			} catch (SauvegardeException e) {
+				System.err.println("La sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
+				System.out.println("Vous pouvez changer votre action");
+				jouerJoueur(aDejaFaitSix, de);
+			}
 		}
 
 		else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
@@ -151,11 +155,11 @@ public class Partie {
 
 		if (de == 6 && !aDejaFaitSix) {
 			System.out.println("Vous avez fait 6 ! Vous pouvez rejouer une deuxième fois");
-			jouerJoueur(true);
+			jouerJoueur(true, lancerDe());
 		}
 	}
 
-	private boolean menuSauvegarde() {
+	private boolean menuSauvegarde() throws SauvegardeException {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
 		String nomSauvegarde = Saisie.asString();
 		nomSauvegarde = PetitsChevaux.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
@@ -166,15 +170,11 @@ public class Partie {
 			overwrite = Saisie.asBoolean();
 		}
 
-		try {
-			PetitsChevaux.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
-			System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
+		PetitsChevaux.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
+		System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
 
-			System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
-			stopPartie = Saisie.asBoolean();
-		} catch (SauvegardeException e) {
-			System.err.println("La sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
-		}
+		System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
+		stopPartie = Saisie.asBoolean();
 
 		return stopPartie;
 	}
