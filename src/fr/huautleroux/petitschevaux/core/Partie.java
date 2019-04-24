@@ -24,15 +24,18 @@ public class Partie {
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
-	private int idJoueurCourant = tirageCouleur().ordinal();
+	private Couleur couleurCommence;
 	private Plateau plateau = null;
 	private Random random = new Random();
 
+	private int idJoueurCourant = 0;
 	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
 	public void initialiserJeu() {
-		int nbJoueur, nbBot = -1;
+		this.couleurCommence = tirageCouleur();
+		
+		int nbJoueur;
 
 		do {
 			System.out.print("Entrez le nombre de joueurs qui vont participer : ");
@@ -40,13 +43,7 @@ public class Partie {
 			System.out.println("");
 		} while (nbJoueur > 4 || nbJoueur < 0);
 
-		while (nbJoueur < 4 && (nbBot < 0 || nbBot > (4 - nbJoueur) || (nbJoueur == 0 && nbBot == 0))) {
-			System.out.print("Entrez le nombre de bots qui vont participer : ");
-			nbBot = Saisie.asInt();
-			System.out.println("");
-		}
-
-		initialiserJoueurs(nbJoueur, nbBot);
+		initialiserJoueurs(nbJoueur, 4 - nbJoueur);
 		initialiserPlateau();
 		initialiserReference();
 		
@@ -87,6 +84,8 @@ public class Partie {
 
 			joueurs.add(new JoueurBot(couleurs.get(0)));
 		}
+		
+		System.out.println("C'est " + joueurs.get(couleurCommence.ordinal()) + " qui commence en premier !");
 	}
 
 	public void initialiserPlateau() {
@@ -143,11 +142,14 @@ public class Partie {
 	public void jouerUnTour() {
 		Utils.effacerAffichage();
 		System.out.println("TOUR N°" + numeroTour);
+		
+		int idDepart = couleurCommence.ordinal();
 
-		for (int i = idJoueurCourant; i < joueurs.size() && !stopPartie; i++) {
-			this.idJoueurCourant = i;
+		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
+			int nb = i % joueurs.size();
+			this.idJoueurCourant = nb;
 
-			System.out.println("Au tour de " + getJoueurCourant().getNom() + " (" + getJoueurCourant().getCouleur() + ")");
+			System.out.println("Au tour de " + getJoueurCourant());
 			jouerJoueur(false, lancerDe());
 		}
 

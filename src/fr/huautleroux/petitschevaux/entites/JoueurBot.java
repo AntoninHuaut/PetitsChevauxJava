@@ -63,6 +63,11 @@ public class JoueurBot extends Joueur {
 
 		return pionChoisi;
 	}
+	
+	@Override
+	public String toString() {
+		return "Bot " + super.toString();
+	}
 
 	private boolean hasPionQuiPeutManger(int de, Plateau plateau) {
 		try {

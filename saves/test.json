@@ -30,6 +30,7 @@
     }
   ],
   "idJoueurCourant": 1,
+  "couleurCommence": "VERT",
   "numeroTour": 2,
   "plateau": {
     "echelles": [

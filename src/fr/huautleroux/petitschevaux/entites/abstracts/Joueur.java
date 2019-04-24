@@ -109,6 +109,11 @@ public abstract class Joueur {
 
 		return actionDispo.contains(JoueurAction.values()[choix]);
 	}
+	
+	@Override
+	public String toString() {
+		return getNom() + " (" + getCouleur() + ")";
+	}
 
 	public Case getCaseDeDepart() {
 		return caseDepart;

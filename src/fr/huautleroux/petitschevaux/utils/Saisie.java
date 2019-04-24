@@ -15,6 +15,13 @@ public class Saisie {
 	
 	public static Couleur asCouleur() {
 		try {
+			String couleurStr = asString();
+			
+			if (couleurStr.length() == 1)
+				for (Couleur couleur : Couleur.values())
+					if (("" + couleur.getSymbol()).equals(couleurStr.toLowerCase()))
+						return couleur;
+			
 			return Couleur.valueOf(asString().toUpperCase());
 		} catch(IllegalArgumentException e) {
 			errorMsg("une couleur");
