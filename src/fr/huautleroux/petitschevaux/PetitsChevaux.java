@@ -43,7 +43,7 @@ public class PetitsChevaux {
 
 		do {
 			System.out.print("Choisissez la sauvegarde à charger (Tappez stop pour annuler) : ");
-			nomSauvegarde = Saisie.asString();
+			nomSauvegarde = Saisie.asStringNoEmpty();
 			System.out.println("");
 		} while(!saveManager.estSauvegardeValide(nomSauvegarde) && !nomSauvegarde.equals("stop"));
 

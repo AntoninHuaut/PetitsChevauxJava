@@ -1,7 +1,6 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
@@ -52,18 +51,18 @@ public class Plateau {
 
 	}
 
-	public void deplacerPionA(Pion pion, Plateau plateau, int de) {
-		if (pion.isDeplacementPossible(plateau, de)) {
+	public void deplacerPionA(Pion pion, int de) {
+		if (pion.isDeplacementPossible(this, de)) {
 			Case ancienneCase = pion.getCaseActuelle();
 			Case nouvelleCase;
-			
+
 			try {
-				nouvelleCase = pion.getCaseCible(plateau, de);
+				nouvelleCase = pion.getCaseCible(this, de);
 			} catch (PionFinParcoursException e) {
 				System.err.println(e.getMessage());
 				return;
 			}
-			
+
 			ancienneCase.retirerCheval(pion);
 			nouvelleCase.ajouteCheval(pion);
 
@@ -71,8 +70,21 @@ public class Plateau {
 				System.out.println("Votre " + pion + " est sorti de l'écurie");
 			else
 				System.out.println("Votre " + pion + " s'est déplacé");
+
+			if (!(nouvelleCase instanceof CaseEchelle))
+				mangerLesPions(pion.getCouleur(), nouvelleCase);
 		} else
 			System.out.println("Votre " + pion + " n'a pas pu se déplacer");
+	}
+
+	public void mangerLesPions(Couleur couleur, Case caseCible) {
+		for (Pion pion : caseCible.getChevaux()) {
+			if (pion.getCouleur().equals(couleur))
+				continue;
+			
+			getEcuries().get(couleur.ordinal()).ajouteCheval(pion);
+			System.out.println("Le " + pion + " " + couleur + " a été renvoyé à l'écurie");
+		}
 	}
 
 	public List<CaseEcurie> getEcuries() {
@@ -90,7 +102,7 @@ public class Plateau {
 	public Partie getPartie() {
 		return partie;
 	}
-	
+
 	public void setPartie(Partie partie) {
 		this.partie = partie;
 	}

@@ -34,7 +34,7 @@ public class Partie {
 
 	public void initialiserJeu() {
 		this.couleurCommence = tirageCouleur();
-		
+
 		int nbJoueur;
 
 		do {
@@ -46,14 +46,13 @@ public class Partie {
 		initialiserJoueurs(nbJoueur, 4 - nbJoueur);
 		initialiserPlateau();
 		initialiserReference();
-		
 	}
 
 	public void initialiserJoueurs(int nbJoueur, int nbBot) {
 		for (int i = 0; i < nbJoueur; i++) {
 			System.out.println("Nouveau Joueur");
 			System.out.print("  Entrez votre pseudo : ");
-			String nom = Saisie.asString();
+			String nom = Saisie.asStringNoEmpty();
 			System.out.print("  Entrez la couleur que vous souhaitez : ");
 			Couleur choixCouleur;
 
@@ -84,8 +83,10 @@ public class Partie {
 
 			joueurs.add(new JoueurBot(couleurs.get(0)));
 		}
-		
-		System.out.println("C'est " + joueurs.get(couleurCommence.ordinal()) + " qui commence en premier !");
+
+		System.out.println(couleurCommence.getTextColor() + "C'est " + joueurs.get(couleurCommence.ordinal()) + " qui commence en premier !" + Utils.RESET);
+		System.out.println("Appuyez sur [Entrer] pour commencer la partie");
+		Saisie.asString();
 	}
 
 	public void initialiserPlateau() {
@@ -141,15 +142,15 @@ public class Partie {
 
 	public void jouerUnTour() {
 		Utils.effacerAffichage();
-		System.out.println("TOUR N°" + numeroTour);
-		
+		System.out.println(Utils.BLUE_BOLD + Utils.WHITE_BACKGROUND + "TOUR N°" + numeroTour + Utils.RESET);
+
 		int idDepart = couleurCommence.ordinal();
 
 		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
 			int nb = i % joueurs.size();
 			this.idJoueurCourant = nb;
 
-			System.out.println("Au tour de " + getJoueurCourant());
+			System.out.println(getJoueurCourant().getCouleur().getTextColor() + "Au tour de " + getJoueurCourant() + Utils.RESET);
 			jouerJoueur(false, lancerDe());
 		}
 
@@ -175,7 +176,8 @@ public class Partie {
 			Pion pion;
 			try {
 				pion = joueurCourant.choisirPion(de, action, plateau);
-				plateau.deplacerPionA(pion, plateau, de);
+				System.out.println("");
+				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
 				System.out.println("Aucun pion disponible, " + joueurCourant.getNom() + " a gagné");
 			}
@@ -191,7 +193,7 @@ public class Partie {
 
 	private boolean menuSauvegarde() throws SauvegardeException {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
-		String nomSauvegarde = Saisie.asString();
+		String nomSauvegarde = Saisie.asStringNoEmpty();
 		nomSauvegarde = PetitsChevaux.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
 		boolean overwrite = false;
 
@@ -256,19 +258,15 @@ public class Partie {
 		this.stopPartie = stopPartie;
 	}
 
-	public void mangerLesPions(Case caseCible) {
-
-	}
-
 	private int lancerDe() {
 		int lanceN = random.nextInt(6) + 1;
 		return lanceN;
 	}
-	
+
 
 	private Couleur tirageCouleur(){
-	    int de = random.nextInt(4);
-	    Couleur[] couleurs = Couleur.values();
-	    return couleurs[de];
+		int de = random.nextInt(4);
+		Couleur[] couleurs = Couleur.values();
+		return couleurs[de];
 	}
 }

@@ -14,6 +14,7 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
+import fr.huautleroux.petitschevaux.utils.Utils;
 
 public abstract class Joueur {
 
@@ -59,13 +60,13 @@ public abstract class Joueur {
 		List<JoueurAction> actionDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
 
 		if (afficherMessage)
-			System.out.println("  Vous pouvez ne rien faire [0]");
+			System.out.println(getActionColor(0) + "Vous pouvez ne rien faire");
 
 		if(hasToutPionEcurie(plateau)) {
 			if(de == 6) {
 				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
 				if (afficherMessage)
-					System.out.println("  Vous pouvez sortir un cheval de l'écurie [1]");
+					System.out.println(getActionColor(1) + "Vous pouvez sortir un cheval de l'écurie");
 			}
 		}
 
@@ -73,18 +74,22 @@ public abstract class Joueur {
 			if(de == 6 && hasPionEcurie(plateau)) {
 				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
 				if (afficherMessage)
-					System.out.println("  Vous pouvez sortir un cheval de l'écurie [1]");
+					System.out.println(getActionColor(1) + "Vous pouvez sortir un cheval de l'écurie");
 			}
 
 			actionDispo.add(JoueurAction.DEPLACER_CHEVAL);
 			if (afficherMessage)
-				System.out.println("  Vous pouvez déplacer un cheval sur le plateau [2]");
+				System.out.println(getActionColor(2) + "Vous pouvez déplacer un cheval sur le plateau");
 		}
 
 		if (afficherMessage)
-			System.out.println("  Vous pouvez sauvegarder [3]");
+			System.out.println(getActionColor(3) + "Vous pouvez sauvegarder");
 
 		return actionDispo;
+	}
+	
+	private String getActionColor(int numeroAction) {
+		return "  [" + Utils.PURPLE_BRIGHT + numeroAction + Utils.RESET + "] ";
 	}
 
 	protected List<Pion> getPionsParAction(JoueurAction action) {
@@ -101,13 +106,6 @@ public abstract class Joueur {
 		}
 
 		return pionsAction;
-	}
-
-	protected boolean estChoixValide(int choix, List<JoueurAction> actionDispo) {
-		if(choix < 0 || choix >= JoueurAction.values().length)
-			return false;
-
-		return actionDispo.contains(JoueurAction.values()[choix]);
 	}
 	
 	@Override

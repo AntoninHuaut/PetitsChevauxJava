@@ -7,22 +7,26 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 public class Saisie {
 
 	private static Scanner scanner = new Scanner(System.in);
-
+	
 	public static String asString() {
-		String get = scanner.nextLine();
-		return get.isEmpty() ? asString() : get;
+		return scanner.nextLine();
+	}
+	
+	public static String asStringNoEmpty() {
+		String get = asString();
+		return get.isEmpty() ? asStringNoEmpty() : get;
 	}
 	
 	public static Couleur asCouleur() {
 		try {
-			String couleurStr = asString();
+			String couleurStr = asStringNoEmpty();
 			
 			if (couleurStr.length() == 1)
 				for (Couleur couleur : Couleur.values())
 					if (("" + couleur.getSymbol()).equals(couleurStr.toLowerCase()))
 						return couleur;
 			
-			return Couleur.valueOf(asString().toUpperCase());
+			return Couleur.valueOf(asStringNoEmpty().toUpperCase());
 		} catch(IllegalArgumentException e) {
 			errorMsg("une couleur");
 			return asCouleur();
@@ -31,7 +35,7 @@ public class Saisie {
 
 	public static int asInt() {
 		try {
-			return Integer.valueOf(asString());
+			return Integer.valueOf(asStringNoEmpty());
 		} catch(NumberFormatException e) {
 			errorMsg("un nombre entier");
 			return asInt();
@@ -40,7 +44,7 @@ public class Saisie {
 
 	public static double asDouble() {
 		try {
-			return Double.valueOf(asString().replace(',', '.'));
+			return Double.valueOf(asStringNoEmpty().replace(',', '.'));
 		} catch(NumberFormatException e) {
 			errorMsg("un nombre décimal (double précision)");
 			return asDouble();
@@ -57,7 +61,7 @@ public class Saisie {
 	}
 
 	public static boolean asBoolean() {
-		String get = asString().toLowerCase();
+		String get = asStringNoEmpty().toLowerCase();
 		if(get.equals("o") || get.equals("oui"))
 			return true;
 		else if(get.equals("n") || get.equals("non"))

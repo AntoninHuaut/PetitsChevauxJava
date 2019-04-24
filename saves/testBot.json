@@ -1,0 +1,472 @@
+{
+  "joueurs": [
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "j",
+        "couleur": "JAUNE"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "b",
+        "couleur": "BLEU"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "data": {
+        "nom": "v",
+        "couleur": "VERT"
+      }
+    },
+    {
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
+      "data": {
+        "nom": "Alpha",
+        "couleur": "ROUGE"
+      }
+    }
+  ],
+  "couleurCommence": "VERT",
+  "plateau": {
+    "echelles": [
+      [
+        {
+          "couleur": "JAUNE",
+          "numero": 0,
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "numero": 1,
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "numero": 2,
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "numero": 3,
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "numero": 4,
+          "pions": []
+        },
+        {
+          "couleur": "JAUNE",
+          "numero": 5,
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "BLEU",
+          "numero": 6,
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 7,
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 8,
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 9,
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 10,
+          "pions": []
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 11,
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "VERT",
+          "numero": 12,
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "numero": 13,
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "numero": 14,
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "numero": 15,
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "numero": 16,
+          "pions": []
+        },
+        {
+          "couleur": "VERT",
+          "numero": 17,
+          "pions": []
+        }
+      ],
+      [
+        {
+          "couleur": "ROUGE",
+          "numero": 18,
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "numero": 19,
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "numero": 20,
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "numero": 21,
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "numero": 22,
+          "pions": []
+        },
+        {
+          "couleur": "ROUGE",
+          "numero": 23,
+          "pions": []
+        }
+      ]
+    ],
+    "chemin": [
+      {
+        "numero": 0,
+        "pions": []
+      },
+      {
+        "numero": 1,
+        "pions": []
+      },
+      {
+        "numero": 2,
+        "pions": []
+      },
+      {
+        "numero": 3,
+        "pions": []
+      },
+      {
+        "numero": 4,
+        "pions": []
+      },
+      {
+        "numero": 5,
+        "pions": []
+      },
+      {
+        "numero": 6,
+        "pions": []
+      },
+      {
+        "numero": 7,
+        "pions": []
+      },
+      {
+        "numero": 8,
+        "pions": []
+      },
+      {
+        "numero": 9,
+        "pions": []
+      },
+      {
+        "numero": 10,
+        "pions": []
+      },
+      {
+        "numero": 11,
+        "pions": []
+      },
+      {
+        "numero": 12,
+        "pions": []
+      },
+      {
+        "numero": 13,
+        "pions": []
+      },
+      {
+        "numero": 14,
+        "pions": []
+      },
+      {
+        "numero": 15,
+        "pions": []
+      },
+      {
+        "numero": 16,
+        "pions": []
+      },
+      {
+        "numero": 17,
+        "pions": []
+      },
+      {
+        "numero": 18,
+        "pions": []
+      },
+      {
+        "numero": 19,
+        "pions": []
+      },
+      {
+        "numero": 20,
+        "pions": []
+      },
+      {
+        "numero": 21,
+        "pions": []
+      },
+      {
+        "numero": 22,
+        "pions": []
+      },
+      {
+        "numero": 23,
+        "pions": []
+      },
+      {
+        "numero": 24,
+        "pions": []
+      },
+      {
+        "numero": 25,
+        "pions": []
+      },
+      {
+        "numero": 26,
+        "pions": []
+      },
+      {
+        "numero": 27,
+        "pions": []
+      },
+      {
+        "numero": 28,
+        "pions": []
+      },
+      {
+        "numero": 29,
+        "pions": []
+      },
+      {
+        "numero": 30,
+        "pions": []
+      },
+      {
+        "numero": 31,
+        "pions": []
+      },
+      {
+        "numero": 32,
+        "pions": []
+      },
+      {
+        "numero": 33,
+        "pions": []
+      },
+      {
+        "numero": 34,
+        "pions": []
+      },
+      {
+        "numero": 35,
+        "pions": []
+      },
+      {
+        "numero": 36,
+        "pions": []
+      },
+      {
+        "numero": 37,
+        "pions": []
+      },
+      {
+        "numero": 38,
+        "pions": []
+      },
+      {
+        "numero": 39,
+        "pions": []
+      },
+      {
+        "numero": 40,
+        "pions": []
+      },
+      {
+        "numero": 41,
+        "pions": []
+      },
+      {
+        "numero": 42,
+        "pions": []
+      },
+      {
+        "numero": 43,
+        "pions": [{
+            "id": 0,
+            "couleur": "ROUGE"
+          }]
+      },
+      {
+        "numero": 44,
+        "pions": []
+      },
+      {
+        "numero": 45,
+        "pions": []
+      },
+      {
+        "numero": 46,
+        "pions": []
+      },
+      {
+        "numero": 47,
+        "pions": []
+      },
+      {
+        "numero": 48,
+        "pions": []
+      },
+      {
+        "numero": 49,
+        "pions": []
+      },
+      {
+        "numero": 50,
+        "pions": []
+      },
+      {
+        "numero": 51,
+        "pions": []
+      }
+    ],
+    "ecurie": [
+      {
+        "couleur": "JAUNE",
+        "numero": 0,
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "JAUNE"
+          },
+          {
+            "id": 1,
+            "couleur": "JAUNE"
+          },
+          {
+            "id": 2,
+            "couleur": "JAUNE"
+          },
+          {
+            "id": 3,
+            "couleur": "JAUNE"
+          }
+        ]
+      },
+      {
+        "couleur": "BLEU",
+        "numero": 1,
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 1,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 2,
+            "couleur": "BLEU"
+          },
+          {
+            "id": 3,
+            "couleur": "BLEU"
+          }
+        ]
+      },
+      {
+        "couleur": "VERT",
+        "numero": 2,
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "VERT"
+          },
+          {
+            "id": 1,
+            "couleur": "VERT"
+          },
+          {
+            "id": 2,
+            "couleur": "VERT"
+          },
+          {
+            "id": 3,
+            "couleur": "VERT"
+          }
+        ]
+      },
+      {
+        "couleur": "ROUGE",
+        "numero": 3,
+        "pions": [
+          {
+            "id": 1,
+            "couleur": "ROUGE"
+          },
+          {
+            "id": 2,
+            "couleur": "ROUGE"
+          },
+          {
+            "id": 3,
+            "couleur": "ROUGE"
+          }
+        ]
+      }
+    ]
+  },
+  "random": {
+    "seed": 14613949094657,
+    "nextNextGaussian": 0.0,
+    "haveNextNextGaussian": false
+  },
+  "idJoueurCourant": 0,
+  "numeroTour": 1,
+  "stopPartie": false
+}
