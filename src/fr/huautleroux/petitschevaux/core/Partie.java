@@ -24,7 +24,7 @@ public class Partie {
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
-	private int idJoueurCourant = 0;
+	private int idJoueurCourant = tirageCouleur().ordinal();
 	private Plateau plateau = null;
 	private Random random = new Random();
 
@@ -49,6 +49,7 @@ public class Partie {
 		initialiserJoueurs(nbJoueur, nbBot);
 		initialiserPlateau();
 		initialiserReference();
+		
 	}
 
 	public void initialiserJoueurs(int nbJoueur, int nbBot) {
@@ -260,5 +261,12 @@ public class Partie {
 	private int lancerDe() {
 		int lanceN = random.nextInt(6) + 1;
 		return lanceN;
+	}
+	
+
+	private Couleur tirageCouleur(){
+	    int de = random.nextInt(4);
+	    Couleur[] couleurs = Couleur.values();
+	    return couleurs[de];
 	}
 }
