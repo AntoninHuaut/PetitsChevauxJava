@@ -1,6 +1,7 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -27,38 +28,64 @@ public class Partie {
 	private Plateau plateau = null;
 	private Random random = new Random();
 
-	private int nbJoueurHumain;
 	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
 	public void initialiserJeu() {
-		int nb;
+		int nbJoueur, nbBot = -1;
 
 		do {
 			System.out.print("Entrez le nombre de joueurs qui vont participer : ");
-			nb = Saisie.asInt();
+			nbJoueur = Saisie.asInt();
 			System.out.println("");
-		} while (nb > 4 || nb < 1);
+		} while (nbJoueur > 4 || nbJoueur < 0);
 
-		initialiserJoueurs(nb);
+		while (nbJoueur < 4 && (nbBot < 0 || nbBot > (4 - nbJoueur) || (nbJoueur == 0 && nbBot == 0))) {
+			System.out.print("Entrez le nombre de bots qui vont participer : ");
+			nbBot = Saisie.asInt();
+			System.out.println("");
+		}
+
+		initialiserJoueurs(nbJoueur, nbBot);
 		initialiserPlateau();
 		initialiserReference();
 	}
 
-	public void initialiserJoueurs(int nb) {
-		this.nbJoueurHumain = nb;
-		Couleur[] couleurs = Couleur.values();
-
-		for(int i = 0; i < nbJoueurHumain; i++) {
-			System.out.println("Joueur " + couleurs[i]);
+	public void initialiserJoueurs(int nbJoueur, int nbBot) {
+		for (int i = 0; i < nbJoueur; i++) {
+			System.out.println("Nouveau Joueur");
 			System.out.print("  Entrez votre pseudo : ");
 			String nom = Saisie.asString();
+			System.out.print("  Entrez la couleur que vous souhaitez : ");
+			Couleur choixCouleur;
+
+			do {
+				choixCouleur = Saisie.asCouleur();
+				boolean containsCouleur = false;
+
+				for (Joueur j : joueurs)
+					if (j.getCouleur().equals(choixCouleur))
+						containsCouleur = true;
+
+				if (containsCouleur) {
+					System.out.print("  Cette couleur est déjà prise : ");
+					choixCouleur = null;
+				}
+			} while (choixCouleur == null);
+
 			System.out.println("");
-			joueurs.add(new JoueurHumain(nom, couleurs[i]));
+			joueurs.add(new JoueurHumain(nom, choixCouleur));
 		}
 
-		for(int i = 0; i < (4 - nbJoueurHumain); i++)
-			joueurs.add(new JoueurBot(couleurs[nbJoueurHumain + i]));
+		for (int i = 0; i < nbBot; i++) {
+			List<Couleur> couleurs = new ArrayList<Couleur>(Arrays.asList(Couleur.values()));
+			joueurs.forEach(j -> couleurs.remove(j.getCouleur()));
+
+			if (couleurs.isEmpty())
+				return;
+
+			joueurs.add(new JoueurBot(couleurs.get(0)));
+		}
 	}
 
 	public void initialiserPlateau() {
@@ -118,7 +145,7 @@ public class Partie {
 
 		for (int i = idJoueurCourant; i < joueurs.size() && !stopPartie; i++) {
 			this.idJoueurCourant = i;
-			
+
 			System.out.println("Au tour de " + getJoueurCourant().getNom() + " (" + getJoueurCourant().getCouleur() + ")");
 			jouerJoueur(false, lancerDe());
 		}

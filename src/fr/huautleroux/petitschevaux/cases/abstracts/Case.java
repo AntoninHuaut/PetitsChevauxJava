@@ -7,7 +7,7 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 
 public abstract class Case {
 
-	private int numero;
+	private final int numero;
 	private List<Pion> pions = new ArrayList<Pion>();
 	
 	public Case(int numero) {
