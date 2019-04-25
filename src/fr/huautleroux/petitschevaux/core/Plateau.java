@@ -82,6 +82,7 @@ public class Plateau {
 			if (pion.getCouleur().equals(couleur))
 				continue;
 			
+			pion.getCaseActuelle().retirerCheval(pion);
 			getEcuries().get(couleur.ordinal()).ajouteCheval(pion);
 			System.out.println("Le " + pion + " " + couleur + " a été renvoyé à l'écurie");
 		}

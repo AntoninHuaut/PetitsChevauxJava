@@ -27,23 +27,23 @@ public class JoueurBot extends Joueur {
 		actionDispo.remove(JoueurAction.SAUVEGARDER);
 		actionDispo.remove(JoueurAction.RIEN_FAIRE);
 
-		if (actionDispo.isEmpty())
-			return JoueurAction.RIEN_FAIRE;
-
 		JoueurAction choixAction;
-
-		if (actionDispo.size() == 1)
+		
+		if (actionDispo.isEmpty())
+			choixAction = JoueurAction.RIEN_FAIRE;
+		else if (actionDispo.size() == 1) {
 			choixAction = actionDispo.get(0);
+			
+			if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplacable(de, plateau))
+				choixAction = JoueurAction.RIEN_FAIRE;
+		}
 		else {
 			if(hasPionQuiPeutManger(de, plateau))
 				choixAction = JoueurAction.DEPLACER_CHEVAL;
 			else
 				choixAction = JoueurAction.SORTIR_CHEVAL;
 		}
-
-		if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplacable(de, plateau))
-			return JoueurAction.RIEN_FAIRE;
-
+		
 		return choixAction;
 	}
 

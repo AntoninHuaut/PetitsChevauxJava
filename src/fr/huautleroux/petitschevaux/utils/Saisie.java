@@ -26,9 +26,9 @@ public class Saisie {
 					if (("" + couleur.getSymbol()).equals(couleurStr.toLowerCase()))
 						return couleur;
 			
-			return Couleur.valueOf(asStringNoEmpty().toUpperCase());
+			return Couleur.valueOf(couleurStr.toUpperCase());
 		} catch(IllegalArgumentException e) {
-			errorMsg("une couleur");
+			errorMsg("une couleur", "  ");
 			return asCouleur();
 		}
 	}
@@ -70,8 +70,12 @@ public class Saisie {
 		errorMsg("O(ui) / N(on)");
 		return asBoolean();
 	}
+	
+	private static void errorMsg(String msg, String prefix) {
+		System.out.print(prefix + Utils.RED_BRIGHT + "Entrée invalide" + Utils.RESET + ", veuillez rentrer " + msg + " : ");
+	}
 
 	private static void errorMsg(String msg) {
-		System.out.println("Entrée invalide, veuillez rentrer " + msg);
+		errorMsg(msg, "");
 	}
 }

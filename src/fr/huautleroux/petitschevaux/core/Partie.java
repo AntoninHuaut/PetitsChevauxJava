@@ -35,14 +35,19 @@ public class Partie {
 	public void initialiserJeu() {
 		this.couleurCommence = tirageCouleur();
 
-		int nbJoueur;
+		int nbJoueur = 0;
 
 		do {
-			System.out.print("Entrez le nombre de joueurs qui vont participer : ");
+			if (nbJoueur > 4 || nbJoueur < 0)
+				System.out.print(Utils.RED_BRIGHT + "Le nombre de joueurs est invalide" + Utils.RESET + ", veuillez entrer un nombre entre 0 et 4 : ");
+			else
+				System.out.print("Entrez le nombre de joueurs qui vont participer : ");
+			
 			nbJoueur = Saisie.asInt();
-			System.out.println("");
+			System.out.print("");
 		} while (nbJoueur > 4 || nbJoueur < 0);
 
+		System.out.println("");
 		initialiserJoueurs(nbJoueur, 4 - nbJoueur);
 		initialiserPlateau();
 		initialiserReference();
@@ -65,7 +70,7 @@ public class Partie {
 						containsCouleur = true;
 
 				if (containsCouleur) {
-					System.out.print("  Cette couleur est déjà prise : ");
+					System.out.print(Utils.RED_BRIGHT + "  Cette couleur est déjà prise" + Utils.RESET + ", veuillez saisir une couleur : ");
 					choixCouleur = null;
 				}
 			} while (choixCouleur == null);
@@ -179,14 +184,17 @@ public class Partie {
 				System.out.println("");
 				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
-				System.out.println("Aucun pion disponible, " + joueurCourant.getNom() + " a gagné");
+				System.out.println("Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
 			}
 		}
+		
+		else 
+			System.out.println(joueurCourant.getNom() + " passe son tour");
 
 		System.out.println("");
 
 		if (de == 6 && !aDejaFaitSix) {
-			System.out.println("Vous avez fait 6 ! Vous pouvez rejouer une deuxième fois");
+			System.out.println(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n");
 			jouerJoueur(true, lancerDe());
 		}
 	}

@@ -7,6 +7,7 @@ import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.utils.Saisie;
+import fr.huautleroux.petitschevaux.utils.Utils;
 
 public class JoueurHumain extends Joueur {
 
@@ -46,8 +47,9 @@ public class JoueurHumain extends Joueur {
 			numPion = Saisie.asInt() - 1;
 			System.out.print("");
 		} while(!estPionValide(pionsAction, numPion));
-
-		return pionsAction.get(numPion);
+		
+		final int numPionFinal = numPion;
+		return pionsAction.stream().filter(pionAction -> pionAction.getId() == numPionFinal).findFirst().get();
 	}
 	
 	private boolean estPionValide(List<Pion> pionsAction, int numPion) {
@@ -58,7 +60,7 @@ public class JoueurHumain extends Joueur {
 				estPionValide = true;
 		
 		if (!estPionValide)
-			System.out.print("Le pion choisie est invalide, veuillez en choisir un autre : ");
+			System.out.print(Utils.RED_BRIGHT + "Le pion choisie est invalide" + Utils.RESET + ", veuillez en choisir un autre : ");
 		
 		return estPionValide;
 	}
@@ -72,7 +74,7 @@ public class JoueurHumain extends Joueur {
 			estChoixValide = false;
 
 		if (!estChoixValide)
-			System.out.print("L'action choisie est invalide, veuillez entrez une autre valeur : ");
+			System.out.print(Utils.RED_BRIGHT + "L'action choisie est invalide" + Utils.RESET + ", veuillez entrez une autre valeur : ");
 
 		return estChoixValide;
 	}
