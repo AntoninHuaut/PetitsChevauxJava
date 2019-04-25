@@ -4,19 +4,31 @@ import java.util.Scanner;
 
 import fr.huautleroux.petitschevaux.enums.Couleur;
 
+/**
+ * Gestion de la saisie utilisateur
+ */
 public class Saisie {
 
 	private static Scanner scanner = new Scanner(System.in);
 	
+	/**
+	 * @return Chaîne de caractère
+	 */
 	public static String asString() {
 		return scanner.nextLine();
 	}
 	
+	/**
+	 * @return Chaîne de caractère qui n'est pas vide
+	 */
 	public static String asStringNoEmpty() {
 		String get = asString();
 		return get.isEmpty() ? asStringNoEmpty() : get;
 	}
 	
+	/**
+	 * @return Couleur obtenue par son nom ou sa première lettre
+	 */
 	public static Couleur asCouleur() {
 		try {
 			String couleurStr = asStringNoEmpty();
@@ -33,6 +45,9 @@ public class Saisie {
 		}
 	}
 
+	/**
+	 * @return Nombre entier
+	 */
 	public static int asInt() {
 		try {
 			return Integer.valueOf(asStringNoEmpty());
@@ -41,7 +56,9 @@ public class Saisie {
 			return asInt();
 		}
 	}
-
+	/**
+	 * @return Nombre décimal (double précision)
+	 */
 	public static double asDouble() {
 		try {
 			return Double.valueOf(asStringNoEmpty().replace(',', '.'));
@@ -50,7 +67,9 @@ public class Saisie {
 			return asDouble();
 		}
 	}
-
+	/**
+	 * @return Nombre décimal (simple précision)
+	 */
 	public static float asFloat() {
 		try {
 			return (float) asDouble();
@@ -59,7 +78,9 @@ public class Saisie {
 			return asFloat();
 		}
 	}
-
+	/**
+	 * @return Boolean obtenue par un o(ui) / n(on)
+	 */
 	public static boolean asBoolean() {
 		String get = asStringNoEmpty().toLowerCase();
 		if(get.equals("o") || get.equals("oui"))

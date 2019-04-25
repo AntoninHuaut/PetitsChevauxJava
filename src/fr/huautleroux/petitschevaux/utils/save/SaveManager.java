@@ -27,6 +27,10 @@ public class SaveManager {
 	private Gson gson;
 	private File folder;
 
+	/**
+	 * Initialise la gestion des sauvegardes
+	 * @param folderName Nom du sous dossier contenant les sauvegardes
+	 */
 	public SaveManager(String folderName) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Case.class, new InterfaceAdapter<Case>());
@@ -40,6 +44,12 @@ public class SaveManager {
 			folder.mkdir();
 	}
 
+	/**
+	 * Charge une sauvegarde (fichier) à partir de son nom
+	 * @param saveName Nom du fichier
+	 * @return Partie
+	 * @throws ChargementSauvegardeException Erreur générée si le chargement échoue
+	 */
 	public Partie chargerPartie(String saveName) throws ChargementSauvegardeException {
 		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
@@ -66,6 +76,11 @@ public class SaveManager {
 		}
 	}
 
+	/**
+	 * Vérifie si le fichier ciblé est bien un fichier de sauvegarde, et qu'elle est compatible avec la version actuelle
+	 * @param saveName Nom du fichier
+	 * @return boolean
+	 */
 	public boolean estSauvegardeValide(String saveName) {
 		saveName = convertSaveName(saveName);
 		try {
@@ -76,7 +91,14 @@ public class SaveManager {
 		}
 	}
 
-	public boolean sauvegarderPartie(Partie partie, String saveName, boolean overwrite) throws SauvegardeException {
+	/**
+	 * Sauvegarde une partie en un fichier
+	 * @param partie Partie qui sera sauvegardée
+	 * @param saveName Nom du (futur) fichier
+	 * @param overwrite Si l'on doit écraser le fichier s'il existe déjà
+	 * @throws SauvegardeException Erreur générée si la sauvegarde échoue
+	 */
+	public void sauvegarderPartie(Partie partie, String saveName, boolean overwrite) throws SauvegardeException {
 		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
 
@@ -89,14 +111,12 @@ public class SaveManager {
 			e.printStackTrace();
 			throw new SauvegardeException("Une erreur d'écriture est survenue pour la sauvegarde " + saveName);
 		}
-
-		return true;
 	}
 
-	public boolean sauvegarderPartie(Partie partie, String saveName) throws SauvegardeException {
-		return sauvegarderPartie(partie, saveName, true);
-	}
-
+	/**
+	 * Liste les sauvegardes compatibles
+	 * @return List&lt;String&gt; Liste des noms de fichiers de sauvegardes compatibles
+	 */
 	public List<String> getSauvegardes() {
 		List<String> saves = Arrays.asList(folder.list()).stream().map(save -> {
 			int index = save.lastIndexOf(EXT);
@@ -109,6 +129,11 @@ public class SaveManager {
 		return saves;
 	}
 	
+	/**
+	 * Converti un nom de fichier, en retirant des caractères interdits
+	 * @param saveName Nom du fichier
+	 * @return String Nom du fichier converti
+	 */
 	public String convertSaveName(String saveName) {
 		for (char c : invalideCaracteres)
 			saveName = saveName.replace(c, '_');

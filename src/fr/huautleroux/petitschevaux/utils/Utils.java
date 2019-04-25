@@ -2,8 +2,14 @@ package fr.huautleroux.petitschevaux.utils;
 
 import java.io.IOException;
 
+/**
+ * Classe Utilitaire
+ */
 public class Utils {
 	
+	/**
+	 * Efface l'affichage suivant le système d'exploitation
+	 */
 	public static void effacerAffichage() {
 		String os = System.getProperty("os.name");
 

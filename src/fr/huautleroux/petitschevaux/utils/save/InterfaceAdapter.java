@@ -10,8 +10,15 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+/**
+ * Gestion de la sérialisation des classes abstraites
+ * @param <T> Classe abstraite parent des objets à sauvegarder
+ */
 public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
 
+	/**
+	 * Transforme en JsonElement un objet (héritant d'une classe abstraite)
+	 */
 	@Override
 	public final JsonElement serialize(final T object, final Type interfaceType, final JsonSerializationContext context) {
 		final JsonObject member = new JsonObject();
@@ -20,6 +27,10 @@ public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<
 
 		return member;
 	}
+	
+	/**
+	 * Charge à partir d'un json un objet (héritant d'une classe abstraite)
+	 */
 
 	@Override
 	public final T deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context) throws JsonParseException {

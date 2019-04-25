@@ -81,11 +81,75 @@ public class Plateau {
 		for (Pion pion : caseCible.getChevaux()) {
 			if (pion.getCouleur().equals(couleur))
 				continue;
-			
+
 			pion.getCaseActuelle().retirerCheval(pion);
 			getEcuries().get(couleur.ordinal()).ajouteCheval(pion);
 			System.out.println("Le " + pion + " " + couleur + " a été renvoyé à l'écurie");
 		}
+	}
+
+	public Case getCaseParCordonnee(int x, int y) {
+		// Cases plateaux standards (sauf cases pré-échelles)
+		
+		if (x == 6) {
+			if (y < 7)
+				return getChemin().get(1 + y);
+			else if (y > 7)
+				return getChemin().get(21 + y);
+		} else if (x == 8) {
+			if (y < 7)
+				return getChemin().get(49 + (7-y));
+			else if (y > 7)
+				return getChemin().get(29 + (14-y));
+		}
+
+		if (y == 6) {
+			if (x < 6)
+				return getChemin().get(8 + (5-x));
+			else if (x > 8)
+				return getChemin().get(43 + (14-x));
+		} else if (y == 8) {
+			if (x < 6)
+				return getChemin().get(15 + x);
+			else if (x > 8)
+				return getChemin().get(36 + (9-x));
+		}
+		
+		// Cases pré-échelles
+		
+		if (x == 7) {
+			if (y == 0)
+				return getChemin().get(0);
+			else if (y == 14)
+				return getChemin().get(28);
+		} else if (y == 7) {
+			if (x == 0)
+				return getChemin().get(14);
+			else if (x == 14)
+				return getChemin().get(42);
+		}
+		
+		// Cases échelles
+		
+		if (x == 7) {
+			if (y < 7)
+				return getEchelles().get(0).get(y-1);
+			else if (y > 7)
+				return getEchelles().get(2).get(13-y);
+		} else if (y == 7) {
+			if (x < 7)
+				return getEchelles().get(1).get(x-1);
+			else if (x > 7)
+				return getEchelles().get(3).get(13-x);
+		}
+		
+		// Cases écuries
+		
+		// TODO
+		
+		
+		// Pas de cases
+		return null;
 	}
 
 	public List<CaseEcurie> getEcuries() {

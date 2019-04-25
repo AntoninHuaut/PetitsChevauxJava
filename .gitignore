@@ -1,6 +1,7 @@
 .git/
+bin/
+doc/
 .metadata/
 .settings/
 .classpath
 .project
-/bin/

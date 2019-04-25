@@ -26,6 +26,11 @@ public class PetitsChevaux {
 		this.partie.startJeu();
 	}
 
+	/**
+	 * Affiche le menu de sauvegarde et permet d'en charger une
+	 * @return Partie
+	 * @throws ChargementSauvegardeException Erreur générée si le chargement échoue
+	 */
 	public Partie menuChargementSauvegarde() throws ChargementSauvegardeException {
 		if(saveManager.getSauvegardes().isEmpty())
 			throw new ChargementSauvegardeException("Aucune sauvegarde n'existe");
