@@ -2,10 +2,12 @@ package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import fr.huautleroux.petitschevaux.PetitsChevaux;
+import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.PopupManager;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
@@ -24,6 +26,7 @@ public class Partie {
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
+	private transient PopupManager pm = new PopupManager();
 	private Couleur couleurCommence;
 	private Plateau plateau = null;
 	private Random random = new Random();
@@ -35,54 +38,25 @@ public class Partie {
 	public void initialiserJeu() {
 		this.couleurCommence = tirageCouleur();
 
-		int nbJoueur = 0;
-
-		do {
-			if (nbJoueur > 4 || nbJoueur < 0)
-				System.out.print(Utils.RED_BRIGHT + "Le nombre de joueurs est invalide" + Utils.RESET + ", veuillez entrer un nombre entre 0 et 4 : ");
-			else
-				System.out.print("Entrez le nombre de joueurs qui vont participer : ");
-			
-			nbJoueur = Saisie.asInt();
-			System.out.print("");
-		} while (nbJoueur > 4 || nbJoueur < 0);
-
-		System.out.println("");
+		int nbJoueur = pm.getNombresJoueurs();
+		
 		initialiserJoueurs(nbJoueur, 4 - nbJoueur);
 		initialiserPlateau();
 		initialiserReference();
 	}
 
 	public void initialiserJoueurs(int nbJoueur, int nbBot) {
-		for (int i = 0; i < nbJoueur; i++) {
-			System.out.println("Nouveau Joueur");
-			System.out.print("  Entrez votre pseudo : ");
-			String nom = Saisie.asStringNoEmpty();
-			System.out.print("  Entrez la couleur que vous souhaitez : ");
-			Couleur choixCouleur;
-
-			do {
-				choixCouleur = Saisie.asCouleur();
-				boolean containsCouleur = false;
-
-				for (Joueur j : joueurs)
-					if (j.getCouleur().equals(choixCouleur))
-						containsCouleur = true;
-
-				if (containsCouleur) {
-					System.out.print(Utils.RED_BRIGHT + "  Cette couleur est déjà prise" + Utils.RESET + ", veuillez saisir une couleur : ");
-					choixCouleur = null;
-				}
-			} while (choixCouleur == null);
-
-			System.out.println("");
-			joueurs.add(new JoueurHumain(nom, choixCouleur));
-		}
+		HashMap<String, Couleur> pairs = pm.getInitialisationJoueurs(nbJoueur);
+		
+		for (String nomJoueur : pairs.keySet())
+			joueurs.add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
 
 		for (int i = 0; i < nbBot; i++) {
 			List<Couleur> couleurs = new ArrayList<Couleur>(Arrays.asList(Couleur.values()));
 			joueurs.forEach(j -> couleurs.remove(j.getCouleur()));
 
+			// TODO BUG Détection couleur
+			
 			if (couleurs.isEmpty())
 				return;
 
@@ -202,15 +176,15 @@ public class Partie {
 	private boolean menuSauvegarde() throws SauvegardeException {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
 		String nomSauvegarde = Saisie.asStringNoEmpty();
-		nomSauvegarde = PetitsChevaux.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
+		nomSauvegarde = Main.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
 		boolean overwrite = false;
 
-		if (PetitsChevaux.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
+		if (Main.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
 			System.out.println("Une sauvegarde existe avec ce nom, souhaitez-vous l'écraser ? (Oui/Non)");
 			overwrite = Saisie.asBoolean();
 		}
 
-		PetitsChevaux.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
+		Main.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
 		System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
 
 		System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
