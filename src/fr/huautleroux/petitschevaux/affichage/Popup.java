@@ -7,24 +7,54 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.huautleroux.petitschevaux.entites.Pion;
+import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 
-public class PopupManager {
+public class Popup {
 
 	private final String MAUVAISE_ENTREE = "red";
 	private final String BONNE_ENTREE = "green";
 
 	// Platform.runLater(() -> /* TODO */);
+	
+	public JoueurAction getJoueurAction(int de, List<JoueurAction> actionsDispo, JoueurAction actionDefaut, Joueur joueur) {
+		List<String> actionsDispoStr = new ArrayList<String>();
+		actionsDispo.forEach(action -> actionsDispoStr.add(action.getNom()));
+		ChoiceDialog<String> dialog = new ChoiceDialog<>(actionDefaut.getNom(), actionsDispoStr);
+		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
+		dialog.setTitle("Au tour de " + joueurInfos);
+		dialog.setHeaderText(joueurInfos + "\nVous avez fait " + de);
+		dialog.setContentText("Choisissez une action");	
+		String actionStr =  dialog.showAndWait().get();
+		return getJoueurActionByNom(actionStr);
+	}
+	
+	public Pion getJoueurPion(JoueurAction action, List<Pion> pionsDispo, Joueur joueur) {
+		List<String> pionsDispoStr = new ArrayList<String>();
+		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
+		ChoiceDialog<String> dialog = new ChoiceDialog<>(pionsDispoStr.get(0), pionsDispoStr);
+		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
+		dialog.setTitle("Au tour de " + joueurInfos);
+		dialog.setHeaderText(joueurInfos + "\nQuel pion choisir pour l'action : " + action.getNom());
+		dialog.setContentText("Choisissez un pion");
+		String pionStr =  dialog.showAndWait().get();
+		return getJoueurPionByNom(joueur, pionStr);
+	}
 
 	public Integer getNombresJoueurs() {
 		TextInputDialog dialog = new TextInputDialog();
@@ -33,7 +63,8 @@ public class PopupManager {
 		dialog.setContentText("Nombre de joueurs : ");
 
 		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-		dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setDisable(true);
+		okButton.setText("Valider");
+		dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
 		TextField tf = dialog.getEditor();
 		tf.textProperty().addListener((observable) -> {
 			boolean disabled = true;
@@ -48,6 +79,7 @@ public class PopupManager {
 		});
 		okButton.setDisable(true);
 
+		tf.requestFocus();
 		return Integer.parseInt(dialog.showAndWait().get());
 	}
 
@@ -57,7 +89,7 @@ public class PopupManager {
 		dialog.setHeaderText("Veuillez entrer le pseudo unique et sa couleur unique (Jaune/Bleu/Rouge/Vert) de chaque joueur");
 
 		ButtonType validerButtonType = new ButtonType("Valider", ButtonData.OK_DONE);
-		dialog.getDialogPane().getButtonTypes().addAll(validerButtonType, ButtonType.CANCEL);
+		dialog.getDialogPane().getButtonTypes().addAll(validerButtonType);
 
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
@@ -100,7 +132,16 @@ public class PopupManager {
 			return null;
 		});
 
+		pairs.keySet().iterator().next().requestFocus();
 		return dialog.showAndWait().get();
+	}
+	
+	public void showPopup(AlertType type, String title, String header, String message) {
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 	private void checkInitJoueurs(HashMap<TextField, TextField> pairs, Node validerButton) {
@@ -149,6 +190,22 @@ public class PopupManager {
 		}
 
 		validerButton.setDisable(disable);
+	}
+	
+	private Pion getJoueurPionByNom(Joueur joueur, String pionStr) {
+		for (Pion pion : joueur.getChevaux())
+			if (pion.toString().equals(pionStr))
+				return pion;
+
+		return null;
+	}
+	
+	private JoueurAction getJoueurActionByNom(String actionStr) {
+		for (JoueurAction action : JoueurAction.values())
+			if (action.getNom().equals(actionStr))
+				return action;
+
+		return null;
 	}
 
 	private Couleur getCouleurString(String couleurStr) {

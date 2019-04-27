@@ -14,7 +14,6 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
-import fr.huautleroux.petitschevaux.utils.Utils;
 
 public abstract class Joueur {
 
@@ -56,42 +55,25 @@ public abstract class Joueur {
 		this.chevaux = new ArrayList<Pion>();
 	}
 
-	protected List<JoueurAction> getActionDisponible(int de, Plateau plateau, boolean afficherMessage) {
+	protected List<JoueurAction> getActionDisponible(int de, Plateau plateau) {
 		List<JoueurAction> actionDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
-
-		if (afficherMessage)
-			System.out.println(getActionColor(0) + "Vous pouvez ne rien faire");
 
 		if(hasToutPionEcurie(plateau)) {
 			if(de == 6) {
-				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
-				if (afficherMessage)
-					System.out.println(getActionColor(1) + "Vous pouvez sortir un cheval de l'écurie");
+				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 			}
 		}
 
 		else {
-			if(de == 6 && hasPionEcurie(plateau)) {
-				actionDispo.add(JoueurAction.SORTIR_CHEVAL);
-				if (afficherMessage)
-					System.out.println(getActionColor(1) + "Vous pouvez sortir un cheval de l'écurie");
-			}
+			if(de == 6 && hasPionEcurie(plateau))
+				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 
-			actionDispo.add(JoueurAction.DEPLACER_CHEVAL);
-			if (afficherMessage)
-				System.out.println(getActionColor(2) + "Vous pouvez déplacer un cheval sur le plateau");
+			actionDispo.add(2, JoueurAction.DEPLACER_CHEVAL);
 		}
-
-		if (afficherMessage)
-			System.out.println(getActionColor(3) + "Vous pouvez sauvegarder");
 
 		return actionDispo;
 	}
 	
-	private String getActionColor(int numeroAction) {
-		return "  [" + Utils.PURPLE_BRIGHT + numeroAction + Utils.RESET + "] ";
-	}
-
 	protected List<Pion> getPionsParAction(JoueurAction action) {
 		List<Pion> pionsAction = new ArrayList<Pion>();
 

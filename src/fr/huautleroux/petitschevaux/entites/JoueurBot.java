@@ -22,8 +22,7 @@ public class JoueurBot extends Joueur {
 
 	@Override
 	public JoueurAction choixAction(int de, Plateau plateau) {
-		System.out.println("Bot " + getNom() + " a fait " + de + " au dé");
-		List<JoueurAction> actionDispo = getActionDisponible(de, plateau, false);
+		List<JoueurAction> actionDispo = getActionDisponible(de, plateau);
 		actionDispo.remove(JoueurAction.SAUVEGARDER);
 		actionDispo.remove(JoueurAction.RIEN_FAIRE);
 
@@ -42,7 +41,7 @@ public class JoueurBot extends Joueur {
 				choixAction = JoueurAction.DEPLACER_CHEVAL;
 			else
 				choixAction = JoueurAction.SORTIR_CHEVAL;
-		}
+		}	
 		
 		return choixAction;
 	}
@@ -53,13 +52,12 @@ public class JoueurBot extends Joueur {
 
 		if (action.equals(JoueurAction.SORTIR_CHEVAL))
 			pionChoisi = getChevaux().stream().filter(pion -> pion.isDansEcurie()).findFirst().get();
-		else {
+		else
 			try {
 				pionChoisi = getPionQuiPeutManger(de, plateau);
 			} catch (AucunPionException e) {
 				pionChoisi = getPionDeplacable(de, plateau);
 			}
-		}
 
 		return pionChoisi;
 	}

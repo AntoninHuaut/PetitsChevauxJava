@@ -1,7 +1,8 @@
 package fr.huautleroux.petitschevaux;
 
-import fr.huautleroux.petitschevaux.affichage.AffichageManager;
-import fr.huautleroux.petitschevaux.affichage.GererPartie;
+import fr.huautleroux.petitschevaux.affichage.Affichage;
+import fr.huautleroux.petitschevaux.affichage.Popup;
+import fr.huautleroux.petitschevaux.core.GererPartie;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.utils.save.SaveManager;
 import javafx.application.Application;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.security.krb5.internal.PAData;
 
 public class Main extends Application {
 
@@ -23,9 +25,11 @@ public class Main extends Application {
 		Application.launch(args);
 	}
 
+	private Affichage affichage;
+	private Popup popup = new Popup();
+	
 	private GererPartie petitsChevaux = new GererPartie();
 	private SaveManager saveManager = new SaveManager("saves");
-	private AffichageManager affichageManager;
 	private Scene scene;
 	private Stage stage;
 	private GridPane infoContenu;
@@ -34,53 +38,57 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		instance = this;
 		this.stage = stage;
-		affichageManager = new AffichageManager(this);
+		affichage = new Affichage(this);
 		
 		GridPane root = new GridPane();
 		GridPane grilleContenu = new GridPane();
 		infoContenu = new GridPane();
 
-		int length = 15;
+		int nbCases = 15;
 		int recTaille = 50;
-		int espacement = 5;
-		int padding = 20;
+		int espacement = 2;
+		int marge = 20;
 
-		grilleContenu.setPadding(new Insets(padding));
+		grilleContenu.setPadding(new Insets(marge));
 		grilleContenu.setHgap(espacement);
 		grilleContenu.setVgap(espacement);
-		infoContenu.setPadding(new Insets(padding));
+		infoContenu.setPadding(new Insets(marge));
 		infoContenu.setHgap(espacement);
 		infoContenu.setVgap(espacement);
 
-		int tailleCarre = (recTaille-7)*(espacement+length);
+		int tailleCarre = (recTaille+espacement)*nbCases + 2*marge;
 		infoContenu.setTranslateX(tailleCarre);
 		
 		root.getChildren().addAll(grilleContenu, infoContenu);
 		scene = new Scene(root, tailleCarre + 500, tailleCarre);
 
-		for (int i = 1; i < length + 1; i++)
-			for (int j = 1; j < length + 1; j++) {
+		for (int i = 1; i < nbCases + 1; i++)
+			for (int j = 1; j < nbCases + 1; j++) {
 				String id = i + "-" + j;
 				Rectangle rec = new Rectangle();
 				rec.setWidth(recTaille);
 				rec.setHeight(recTaille);
 				rec.setId(id);
 
-				if (j<=6 && i<=6)  rec.setFill(Couleur.BLEU.getCaseEcurieColor()); // CaseEcurie
-				else if (i==8 && (j>1 && j<8) ) rec.setFill(Couleur.BLEU.getCaseEchelleColor()); // CaseEchelle
-				else if (j<=7 && i<=7  ||  (i==1 && j==8)) rec.setFill(Couleur.BLEU.getCaseCheminColor()); // CaseChemin
+				Couleur c = Couleur.JAUNE;
+				if (j<=6 && i<=6) rec.setFill(c.getCaseEcurieColor()); // CaseEcurie
+				else if (i==8 && (j>1 && j<8) ) rec.setFill(c.getCaseEchelleColor()); // CaseEchelle
+				else if (j<=7 && i<=7 || (i==1 && j==8)) rec.setFill(c.getCaseCheminColor()); // CaseChemin
 
-				if (j>=10 && i<=6)  rec.setFill(Couleur.ROUGE.getCaseEcurieColor());
-				else if (j==8 && (i>1 && i<8)) rec.setFill(Couleur.ROUGE.getCaseEchelleColor());
-				else if ((j>=9 && i<=7) || (j==15 && i==8)) rec.setFill(Couleur.ROUGE.getCaseCheminColor());
+				c = Couleur.BLEU;
+				if (j>=10 && i<=6) rec.setFill(c.getCaseEcurieColor());
+				else if (j==8 && (i>1 && i<8)) rec.setFill(c.getCaseEchelleColor());
+				else if ((j>=9 && i<=7) || (j==15 && i==8)) rec.setFill(c.getCaseCheminColor());
 
-				if (j>=10 && i>=10)  rec.setFill(Couleur.JAUNE.getCaseEcurieColor());
-				else if (i==8 && (j<15 && j>8)) rec.setFill(Couleur.JAUNE.getCaseEchelleColor());
-				else if (j>=9 && i>=9 || (j==8 && i==15)) rec.setFill(Couleur.JAUNE.getCaseCheminColor());
+				c = Couleur.VERT;
+				if (j>=10 && i>=10) rec.setFill(c.getCaseEcurieColor());
+				else if (i==8 && (j<15 && j>8)) rec.setFill(c.getCaseEchelleColor());
+				else if (j>=9 && i>=9 || (j==8 && i==15)) rec.setFill(c.getCaseCheminColor());
 
-				if (j<=6 && i>=10)  rec.setFill(Couleur.VERT.getCaseEcurieColor());
-				else if (j==8 && (i<15 && i>8)) rec.setFill(Couleur.VERT.getCaseEchelleColor());
-				else if (j<=7 && i>=9  || (j==1 && i==8)) rec.setFill(Couleur.VERT.getCaseCheminColor());
+				c = Couleur.ROUGE;
+				if (j<=6 && i>=10) rec.setFill(c.getCaseEcurieColor());
+				else if (j==8 && (i<15 && i>8)) rec.setFill(c.getCaseEchelleColor());
+				else if (j<=7 && i>=9 || (j==1 && i==8)) rec.setFill(c.getCaseCheminColor());
 
 				if(j==8 && i==8)  rec.setFill(Color.BLACK);
 
@@ -93,7 +101,7 @@ public class Main extends Application {
 				GridPane.setColumnIndex(rec, j);
 				grilleContenu.getChildren().addAll(rec, t);
 				
-				affichageManager.addText(id, t);
+				affichage.addText(id, t);
 			}
 
 		stage.setScene(scene);
@@ -101,7 +109,7 @@ public class Main extends Application {
 		stage.setResizable(false);
 		stage.show();
 		
-		affichageManager.openMenuChargementSauvegarde();
+		affichage.openMenuChargementSauvegarde();
 	}
 	
 	public GererPartie getPetitsChevaux() {
@@ -120,12 +128,20 @@ public class Main extends Application {
 		return infoContenu;
 	}
 	
-	public static Main getInstance() {
-		return instance;
-	}
-
 	public SaveManager getSaveManager() {
 		return saveManager;
+	}
+	
+	public static Affichage getAffStatic() {
+		return getInstance().affichage;
+	}
+	
+	public static Popup getPopStatic() {
+		return getInstance().popup;
+	}
+	
+	public static Main getInstance() {
+		return instance;
 	}
 }
 

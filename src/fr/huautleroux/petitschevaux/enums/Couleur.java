@@ -1,24 +1,23 @@
 package fr.huautleroux.petitschevaux.enums;
 
-import fr.huautleroux.petitschevaux.utils.Utils;
 import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE('j', Utils.YELLOW_BRIGHT, Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
-	BLEU('b', Utils.CYAN_BRIGHT, Color.BLUE, Color.DODGERBLUE, Color.LIGHTBLUE),
-	VERT('v', Utils.GREEN_BRIGHT, Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
-	ROUGE('r', Utils.RED_BRIGHT, Color.RED, Color.ORANGERED, Color.PINK);
+	JAUNE('j', Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
+	BLEU('b', Color.BLUE, Color.DODGERBLUE, Color.LIGHTBLUE),
+	VERT('v', Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
+	ROUGE('r', Color.RED, Color.ORANGERED, Color.PINK);
 	
 	private char symbol;
-	private String textColor;
+	private Color principalColor;
 	private Color caseEcurieColor;
 	private Color caseEchelleColor;
 	private Color caseCheminColor;
 	
-	private Couleur(char c, String textColor, Color caseEcurieColor, Color caseEchelleColor, Color caseCheminColor) {
+	private Couleur(char c, Color caseEcurieColor, Color caseEchelleColor, Color caseCheminColor) {
 		this.symbol = c;
-		this.textColor = textColor;
+		this.principalColor = caseEcurieColor;
 		this.caseEcurieColor = caseEcurieColor;
 		this.caseEchelleColor = caseEchelleColor;
 		this.caseCheminColor = caseCheminColor;
@@ -28,8 +27,8 @@ public enum Couleur {
 		return this.symbol;
 	}
 	
-	public String getTextColor() {
-		return textColor;
+	public Color getPrincipalColor() {
+		return principalColor;
 	}
 	
 	public Color getCaseEcurieColor() {

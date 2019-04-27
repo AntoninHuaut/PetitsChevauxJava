@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import fr.huautleroux.petitschevaux.Main;
-import fr.huautleroux.petitschevaux.affichage.PopupManager;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
@@ -20,13 +21,13 @@ import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.utils.Saisie;
-import fr.huautleroux.petitschevaux.utils.Utils;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 
 public class Partie {
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
-	private transient PopupManager pm = new PopupManager();
 	private Couleur couleurCommence;
 	private Plateau plateau = null;
 	private Random random = new Random();
@@ -35,19 +36,21 @@ public class Partie {
 	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
-	public void initialiserJeu() {
+	public void initialiserJeu(Consumer<Partie> callback) {
 		this.couleurCommence = tirageCouleur();
 
-		int nbJoueur = pm.getNombresJoueurs();
-		
-		initialiserJoueurs(nbJoueur, 4 - nbJoueur);
-		initialiserPlateau();
-		initialiserReference();
+		int nbJoueur = Main.getPopStatic().getNombresJoueurs();
+
+		initialiserJoueurs(nbJoueur, 4 - nbJoueur, () -> {
+			initialiserPlateau();
+			initialiserReference();
+			Main.getAffStatic().tirageAuSort(couleurCommence, joueurs.get(couleurCommence.ordinal()).toString(), () -> callback.accept(this));
+		});
 	}
 
-	public void initialiserJoueurs(int nbJoueur, int nbBot) {
-		HashMap<String, Couleur> pairs = pm.getInitialisationJoueurs(nbJoueur);
-		
+	public void initialiserJoueurs(int nbJoueur, int nbBot, Runnable callback) {
+		HashMap<String, Couleur> pairs = Main.getPopStatic().getInitialisationJoueurs(nbJoueur);
+
 		for (String nomJoueur : pairs.keySet())
 			joueurs.add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
 
@@ -55,17 +58,20 @@ public class Partie {
 			List<Couleur> couleurs = new ArrayList<Couleur>(Arrays.asList(Couleur.values()));
 			joueurs.forEach(j -> couleurs.remove(j.getCouleur()));
 
-			// TODO BUG Détection couleur
-			
 			if (couleurs.isEmpty())
 				return;
 
 			joueurs.add(new JoueurBot(couleurs.get(0)));
 		}
 
-		System.out.println(couleurCommence.getTextColor() + "C'est " + joueurs.get(couleurCommence.ordinal()) + " qui commence en premier !" + Utils.RESET);
-		System.out.println("Appuyez sur [Entrer] pour commencer la partie");
-		Saisie.asString();
+		joueurs = joueurs.stream().sorted((j1, j2) -> {
+			int diff = j1.getCouleur().ordinal() - j2.getCouleur().ordinal();
+			if (diff < 0) return -1;
+			else if (diff > 0) return 1;
+			else return 0;
+		}).collect(Collectors.toList());
+
+		callback.run();
 	}
 
 	public void initialiserPlateau() {
@@ -110,43 +116,44 @@ public class Partie {
 		cases.forEach(c -> c.getChevaux().forEach(pion -> pion.setCaseActuelle(c)));
 	}
 
-	public void startJeu() {
-		while(!estPartieTerminee() && !stopPartie) {
-			jouerUnTour();
-			idJoueurCourant = 0;
-
-			//break; // Evitez boucle infini pour les tests
-		}
-	}
-
-	public void jouerUnTour() {
-		Utils.effacerAffichage();
-		System.out.println(Utils.BLUE_BOLD + Utils.WHITE_BACKGROUND + "TOUR N°" + numeroTour + Utils.RESET);
+	public void jouerJeu() {
+		Main.getAffStatic().debutTour(numeroTour);
 
 		int idDepart = couleurCommence.ordinal();
 
 		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
+
 			int nb = i % joueurs.size();
 			this.idJoueurCourant = nb;
 
-			System.out.println(getJoueurCourant().getCouleur().getTextColor() + "Au tour de " + getJoueurCourant() + Utils.RESET);
 			jouerJoueur(false, lancerDe());
 		}
 
 		numeroTour++;
+
+		Main.getAffStatic().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
+		Main.getAffStatic().attendreToucheEntrer(() -> {
+			if(!estPartieTerminee() && !stopPartie) {
+				idJoueurCourant = 0;
+				jouerJeu();
+			}
+		});
 	}
 
 	public void jouerJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
+		if (!aDejaFaitSix)
+		Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getPrincipalColor());
+		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
+		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
 
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
 			try {
 				if(menuSauvegarde())
 					return;
 			} catch (SauvegardeException e) {
-				System.err.println("La sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
-				System.out.println("Vous pouvez changer votre action");
+				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de sauvegarde", null, "La sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
 				jouerJoueur(aDejaFaitSix, de);
 			}
 		}
@@ -155,20 +162,20 @@ public class Partie {
 			Pion pion;
 			try {
 				pion = joueurCourant.choisirPion(de, action, plateau);
-				System.out.println("");
+				Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
 				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
-				System.out.println("Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
+				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null,"Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
 			}
 		}
-		
-		else 
-			System.out.println(joueurCourant.getNom() + " passe son tour");
 
-		System.out.println("");
+		else 
+			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " passe son tour", null);
+
+		Main.getAffStatic().simpleMessage("", null);
 
 		if (de == 6 && !aDejaFaitSix) {
-			System.out.println(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n");
+			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n", null);
 			jouerJoueur(true, lancerDe());
 		}
 	}

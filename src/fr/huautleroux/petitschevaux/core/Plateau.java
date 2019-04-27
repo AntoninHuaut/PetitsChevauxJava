@@ -36,21 +36,6 @@ public class Plateau {
 		}
 	}
 
-	public void afficher() {
-		List<Case> cases = new ArrayList<Case>();
-		cases.addAll(getEcuries());
-		cases.addAll(getChemin());
-		getEchelles().forEach(c -> cases.addAll(c));
-
-		System.out.println("Affichage de Cases");
-
-		for (int i = 0; i < cases.size(); i++) // Affichage de la liste en tableau 1D =/= ce qu'on veut...
-			System.out.println(cases.get(i));
-
-
-
-	}
-
 	public void deplacerPionA(Pion pion, int de) {
 		if (pion.isDeplacementPossible(this, de)) {
 			Case ancienneCase = pion.getCaseActuelle();
