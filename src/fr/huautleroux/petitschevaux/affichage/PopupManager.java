@@ -1,10 +1,10 @@
 package fr.huautleroux.petitschevaux.affichage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +20,9 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 
 public class PopupManager {
+
+	private final String MAUVAISE_ENTREE = "red";
+	private final String BONNE_ENTREE = "green";
 
 	// Platform.runLater(() -> /* TODO */);
 
@@ -42,21 +44,11 @@ public class PopupManager {
 			} catch (NumberFormatException e) {}
 
 			okButton.setDisable(disabled);
+			tf.setStyle("-fx-text-inner-color: " + (disabled ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
 		});
 		okButton.setDisable(true);
 
 		return Integer.parseInt(dialog.showAndWait().get());
-	}
-
-	public String getChoixListString(String title, String content, String...options) {
-		ChoiceDialog<String> dialog = new ChoiceDialog<>(options[0], options);
-		dialog.setTitle(title);
-		dialog.setHeaderText(null);
-		dialog.setContentText(content);
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) return result.get();
-
-		return getChoixListString(title, content, options);
 	}
 
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
@@ -118,38 +110,55 @@ public class PopupManager {
 
 		for (TextField tfSub : pairs.keySet()) {
 			String pseudoSub = tfSub.getText().trim();
+			pseudo.add(pseudoSub);
 			String couleurSub = pairs.get(tfSub).getText().trim();
 
-			if (pseudoSub.isEmpty() || couleurSub.isEmpty())
-				disable = true;
+			disable = pseudoSub.isEmpty() || couleurSub.isEmpty() ? true : disable;
 
 			Couleur c = getCouleurString(couleurSub);
 
 			if (c == null)
 				disable = true;
-			else {
+			else
 				couleursUsed.add(c);
-				pseudo.add(pseudoSub);
-			}
+
+			tfSub.setStyle("-fx-text-inner-color: " + (pseudoSub.isEmpty() ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
+			pairs.get(tfSub).setStyle("-fx-text-inner-color: " + (c == null ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
 		}
 
 		Set<Couleur> couleurSansDouble = new HashSet<Couleur>(couleursUsed);
 		Set<String> pseudoSansDouble = new HashSet<String>(pseudo);
 
-		if (couleurSansDouble.size() != couleursUsed.size() || pseudoSansDouble.size() != pseudo.size())
+		if (couleurSansDouble.size() != couleursUsed.size()) {
 			disable = true;
+			
+			for (TextField tfValue : pairs.values()) {
+				Couleur c = getCouleurString(tfValue.getText().trim());
+				
+				if (c != null && Collections.frequency(couleursUsed, c) > 1)
+					tfValue.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
+			}
+		}
+		
+		if (pseudoSansDouble.size() != pseudo.size()) {
+			disable = true;
+
+			for (TextField tfSub : pairs.keySet())
+				if (Collections.frequency(pseudo, tfSub.getText().trim()) > 1)
+					tfSub.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
+		}
 
 		validerButton.setDisable(disable);
 	}
 
 	private Couleur getCouleurString(String couleurStr) {
-		if (couleurStr.length() == 1)
-			for (Couleur couleur : Couleur.values())
-				if (("" + couleur.getSymbol()).equals(couleurStr.toLowerCase()))
-					return couleur;
+		if (couleurStr.isEmpty())
+			return null;
+		
+		for (Couleur couleur : Couleur.values())
+			if ((couleur.name().toLowerCase()).startsWith(couleurStr.toLowerCase()))
+				return couleur;
 
-		try {
-			return Couleur.valueOf(couleurStr.toUpperCase());
-		} catch(IllegalArgumentException e) { return null; }
+		return null;
 	}
 }
