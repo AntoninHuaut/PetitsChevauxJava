@@ -18,9 +18,9 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
+import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
-import fr.huautleroux.petitschevaux.utils.Saisie;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 
@@ -128,6 +128,9 @@ public class Partie {
 
 			jouerJoueur(false, lancerDe());
 		}
+		
+		if (stopPartie)
+			return;
 
 		numeroTour++;
 
@@ -150,10 +153,20 @@ public class Partie {
 
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
 			try {
-				if(menuSauvegarde())
+				SauvegardeResultat sauvegardeResultat = Main.getPopStatic().menuSauvegarde(this);
+				
+				if (sauvegardeResultat.equals(SauvegardeResultat.ANNULER))
+					throw new SauvegardeException("Sauvegarde annulée");
+				
+				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
+				Main.getAffStatic().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
+				
+				if(stopPartie) {
+					Main.getAffStatic().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
 					return;
-			} catch (SauvegardeException e) {
-				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de sauvegarde", null, "La sauvegarde n'a pas pu s'effectuer : " + e.getMessage());
+				}
+			} catch (SauvegardeException ex) {
+				Main.getAffStatic().simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", Color.MEDIUMPURPLE);
 				jouerJoueur(aDejaFaitSix, de);
 			}
 		}
@@ -178,26 +191,6 @@ public class Partie {
 			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n", null);
 			jouerJoueur(true, lancerDe());
 		}
-	}
-
-	private boolean menuSauvegarde() throws SauvegardeException {
-		System.out.println("Entrez le nom souhaité pour la sauvegarde");
-		String nomSauvegarde = Saisie.asStringNoEmpty();
-		nomSauvegarde = Main.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
-		boolean overwrite = false;
-
-		if (Main.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
-			System.out.println("Une sauvegarde existe avec ce nom, souhaitez-vous l'écraser ? (Oui/Non)");
-			overwrite = Saisie.asBoolean();
-		}
-
-		Main.getInstance().getSaveManager().sauvegarderPartie(this, nomSauvegarde, overwrite);
-		System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
-
-		System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
-		stopPartie = Saisie.asBoolean();
-
-		return stopPartie;
 	}
 
 	public boolean estPartieTerminee() {

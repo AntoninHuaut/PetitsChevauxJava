@@ -27,7 +27,7 @@ public class Affichage {
 	private Font font = new Font(14);
 	private HashMap<String, Text> texts = new HashMap<String, Text>();
 
-	private TextFlow tourActuel;
+	private TextFlow tourActuel = null;
 
 	public Affichage(Main javaFx) {
 		this.main = javaFx;
@@ -126,7 +126,7 @@ public class Affichage {
 		if (couleur != null) {
 			if (couleur.equals(Color.GOLD))
 				couleur = Color.ORANGE;
-			
+
 			simpleMessage.setFill(couleur);
 		}
 		simpleMessage.setFont(font);

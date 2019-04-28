@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.security.krb5.internal.PAData;
 
 public class Main extends Application {
 
@@ -62,8 +61,8 @@ public class Main extends Application {
 		root.getChildren().addAll(grilleContenu, infoContenu);
 		scene = new Scene(root, tailleCarre + 500, tailleCarre);
 
-		for (int i = 1; i < nbCases + 1; i++)
-			for (int j = 1; j < nbCases + 1; j++) {
+		for (int i = 1; i <= nbCases; i++)
+			for (int j = 1; j <= nbCases; j++) {
 				String id = i + "-" + j;
 				Rectangle rec = new Rectangle();
 				rec.setWidth(recTaille);
@@ -110,6 +109,10 @@ public class Main extends Application {
 		stage.show();
 		
 		affichage.openMenuChargementSauvegarde();
+	}
+	
+	public Popup getPopup() {
+		return popup;
 	}
 	
 	public GererPartie getPetitsChevaux() {

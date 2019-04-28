@@ -5,12 +5,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
+import fr.huautleroux.petitschevaux.enums.BooleanResultat;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
+import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
+import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -30,8 +36,63 @@ public class Popup {
 	private final String MAUVAISE_ENTREE = "red";
 	private final String BONNE_ENTREE = "green";
 
-	// Platform.runLater(() -> /* TODO */);
-	
+	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Menu Sauvegarde");
+		dialog.setHeaderText(null);
+		dialog.setContentText("Entrez le nom de la sauvegarde souhaitée : ");
+
+		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+		okButton.setText("Valider");
+		dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
+		TextField tf = dialog.getEditor();
+		tf.textProperty().addListener((observable) -> okButton.setDisable(tf.getText().trim().isEmpty()));
+		okButton.setDisable(true);
+		tf.requestFocus();
+
+		Optional<String> optionalSauvegarde = dialog.showAndWait();
+		
+		if (!optionalSauvegarde.isPresent())
+			return SauvegardeResultat.ANNULER;
+		
+		String nomSauvegarde = optionalSauvegarde.get();
+		nomSauvegarde = Main.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
+		boolean overwrite = false;
+
+		if (Main.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
+			BooleanResultat booleanResultat = getOuiNon("Menu Sauvegarde", "Une sauvegarde sous le nom de " + nomSauvegarde + " existe déjà", "Souhaitez-vous l'écraser ?");
+			if (booleanResultat.equals(BooleanResultat.ANNULER))
+				return SauvegardeResultat.ANNULER;
+			overwrite = booleanResultat.equals(BooleanResultat.OUI);
+		}
+
+		Main.getInstance().getSaveManager().sauvegarderPartie(partie, nomSauvegarde, overwrite);
+		BooleanResultat booleanResultat = getOuiNon("Menu Sauvegarde", "La sauvegarde s'est terminée avec succès", "Souhaitez-vous quitter la partie en cours ?");
+		if (booleanResultat.equals(BooleanResultat.ANNULER))
+			return SauvegardeResultat.ANNULER;
+		boolean quitter = booleanResultat.equals(BooleanResultat.OUI);
+		
+		return quitter ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
+	}
+
+	public BooleanResultat getOuiNon(String title, String header, String content) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+
+		ButtonType buttonOui = new ButtonType("Oui");
+		ButtonType buttonNon = new ButtonType("Non");
+		alert.getButtonTypes().setAll(buttonOui, buttonNon);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (!result.isPresent())
+			return BooleanResultat.ANNULER;
+		
+		return result.get().equals(buttonOui) ? BooleanResultat.OUI : BooleanResultat.NON;
+	}
+
 	public JoueurAction getJoueurAction(int de, List<JoueurAction> actionsDispo, JoueurAction actionDefaut, Joueur joueur) {
 		List<String> actionsDispoStr = new ArrayList<String>();
 		actionsDispo.forEach(action -> actionsDispoStr.add(action.getNom()));
@@ -43,7 +104,7 @@ public class Popup {
 		String actionStr =  dialog.showAndWait().get();
 		return getJoueurActionByNom(actionStr);
 	}
-	
+
 	public Pion getJoueurPion(JoueurAction action, List<Pion> pionsDispo, Joueur joueur) {
 		List<String> pionsDispoStr = new ArrayList<String>();
 		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
@@ -78,9 +139,13 @@ public class Popup {
 			tf.setStyle("-fx-text-inner-color: " + (disabled ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
 		});
 		okButton.setDisable(true);
-
 		tf.requestFocus();
-		return Integer.parseInt(dialog.showAndWait().get());
+		
+		Optional<String> optional = dialog.showAndWait();
+		
+		if (!optional.isPresent())
+			return getNombresJoueurs();
+		return Integer.parseInt(optional.get());
 	}
 
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
@@ -108,6 +173,9 @@ public class Popup {
 			grid.add(couleurJoueur, 3, i);
 
 			pairs.put(nomJoueur, couleurJoueur);
+			
+			if (i == 0)
+				nomJoueur.requestFocus();
 		}
 
 		Node validerButton = dialog.getDialogPane().lookupButton(validerButtonType);
@@ -131,11 +199,14 @@ public class Popup {
 
 			return null;
 		});
-
-		pairs.keySet().iterator().next().requestFocus();
-		return dialog.showAndWait().get();
+		
+		Optional<HashMap<String, Couleur>> optional = dialog.showAndWait();
+		
+		if (!optional.isPresent())
+			return getInitialisationJoueurs(nbJoueur);
+		return optional.get();
 	}
-	
+
 	public void showPopup(AlertType type, String title, String header, String message) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
@@ -172,15 +243,15 @@ public class Popup {
 
 		if (couleurSansDouble.size() != couleursUsed.size()) {
 			disable = true;
-			
+
 			for (TextField tfValue : pairs.values()) {
 				Couleur c = getCouleurString(tfValue.getText().trim());
-				
+
 				if (c != null && Collections.frequency(couleursUsed, c) > 1)
 					tfValue.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
 			}
 		}
-		
+
 		if (pseudoSansDouble.size() != pseudo.size()) {
 			disable = true;
 
@@ -191,7 +262,7 @@ public class Popup {
 
 		validerButton.setDisable(disable);
 	}
-	
+
 	private Pion getJoueurPionByNom(Joueur joueur, String pionStr) {
 		for (Pion pion : joueur.getChevaux())
 			if (pion.toString().equals(pionStr))
@@ -199,7 +270,7 @@ public class Popup {
 
 		return null;
 	}
-	
+
 	private JoueurAction getJoueurActionByNom(String actionStr) {
 		for (JoueurAction action : JoueurAction.values())
 			if (action.getNom().equals(actionStr))
@@ -211,7 +282,7 @@ public class Popup {
 	private Couleur getCouleurString(String couleurStr) {
 		if (couleurStr.isEmpty())
 			return null;
-		
+
 		for (Couleur couleur : Couleur.values())
 			if ((couleur.name().toLowerCase()).startsWith(couleurStr.toLowerCase()))
 				return couleur;
