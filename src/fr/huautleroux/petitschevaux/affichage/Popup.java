@@ -29,7 +29,9 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class Popup {
 
@@ -38,6 +40,7 @@ public class Popup {
 
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
 		TextInputDialog dialog = new TextInputDialog();
+		setIcon(dialog, "iconSauvegarde");
 		dialog.setTitle("Menu Sauvegarde");
 		dialog.setHeaderText(null);
 		dialog.setContentText("Entrez le nom de la sauvegarde souhaitée : ");
@@ -51,32 +54,33 @@ public class Popup {
 		tf.requestFocus();
 
 		Optional<String> optionalSauvegarde = dialog.showAndWait();
-		
+
 		if (!optionalSauvegarde.isPresent())
 			return SauvegardeResultat.ANNULER;
-		
+
 		String nomSauvegarde = optionalSauvegarde.get();
 		nomSauvegarde = Main.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
 		boolean overwrite = false;
 
 		if (Main.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
-			BooleanResultat booleanResultat = getOuiNon("Menu Sauvegarde", "Une sauvegarde sous le nom de " + nomSauvegarde + " existe déjà", "Souhaitez-vous l'écraser ?");
+			BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "Une sauvegarde sous le nom de " + nomSauvegarde + " existe déjà", "Souhaitez-vous l'écraser ?");
 			if (booleanResultat.equals(BooleanResultat.ANNULER))
 				return SauvegardeResultat.ANNULER;
 			overwrite = booleanResultat.equals(BooleanResultat.OUI);
 		}
 
 		Main.getInstance().getSaveManager().sauvegarderPartie(partie, nomSauvegarde, overwrite);
-		BooleanResultat booleanResultat = getOuiNon("Menu Sauvegarde", "La sauvegarde s'est terminée avec succès", "Souhaitez-vous quitter la partie en cours ?");
+		BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "La sauvegarde s'est terminée avec succès", "Souhaitez-vous quitter la partie en cours ?");
 		if (booleanResultat.equals(BooleanResultat.ANNULER))
 			return SauvegardeResultat.ANNULER;
 		boolean quitter = booleanResultat.equals(BooleanResultat.OUI);
-		
+
 		return quitter ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
 	}
 
-	public BooleanResultat getOuiNon(String title, String header, String content) {
+	public BooleanResultat getBooleanSauvegarde(String title, String header, String content) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		setIcon(alert, "iconSauvegarde");
 		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(content);
@@ -86,10 +90,10 @@ public class Popup {
 		alert.getButtonTypes().setAll(buttonOui, buttonNon);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		
+
 		if (!result.isPresent())
 			return BooleanResultat.ANNULER;
-		
+
 		return result.get().equals(buttonOui) ? BooleanResultat.OUI : BooleanResultat.NON;
 	}
 
@@ -97,28 +101,37 @@ public class Popup {
 		List<String> actionsDispoStr = new ArrayList<String>();
 		actionsDispo.forEach(action -> actionsDispoStr.add(action.getNom()));
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(actionDefaut.getNom(), actionsDispoStr);
+		setIcon(dialog, "iconAutre");
 		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
 		dialog.setTitle("Au tour de " + joueurInfos);
 		dialog.setHeaderText(joueurInfos + "\nVous avez fait " + de);
 		dialog.setContentText("Choisissez une action");	
-		String actionStr =  dialog.showAndWait().get();
-		return getJoueurActionByNom(actionStr);
+		Optional<String> optional = dialog.showAndWait();
+		if (!optional.isPresent())
+			return getJoueurAction(de, actionsDispo, actionDefaut, joueur);
+		else
+			return getJoueurActionByNom(optional.get());
 	}
 
 	public Pion getJoueurPion(JoueurAction action, List<Pion> pionsDispo, Joueur joueur) {
 		List<String> pionsDispoStr = new ArrayList<String>();
 		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(pionsDispoStr.get(0), pionsDispoStr);
+		setIcon(dialog, "iconAutre");
 		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
 		dialog.setTitle("Au tour de " + joueurInfos);
 		dialog.setHeaderText(joueurInfos + "\nQuel pion choisir pour l'action : " + action.getNom());
 		dialog.setContentText("Choisissez un pion");
-		String pionStr =  dialog.showAndWait().get();
-		return getJoueurPionByNom(joueur, pionStr);
+		Optional<String> optional = dialog.showAndWait();
+		if (!optional.isPresent())
+			return getJoueurPion(action, pionsDispo, joueur);
+		else
+			return getJoueurPionByNom(joueur, optional.get());
 	}
 
 	public Integer getNombresJoueurs() {
 		TextInputDialog dialog = new TextInputDialog();
+		setIcon(dialog, "iconConfiguration");
 		dialog.setTitle("Nouvelle partie : Configuration");
 		dialog.setHeaderText("Le nombre de joueurs doit être compris en 0 et 4");
 		dialog.setContentText("Nombre de joueurs : ");
@@ -140,9 +153,9 @@ public class Popup {
 		});
 		okButton.setDisable(true);
 		tf.requestFocus();
-		
+
 		Optional<String> optional = dialog.showAndWait();
-		
+
 		if (!optional.isPresent())
 			return getNombresJoueurs();
 		return Integer.parseInt(optional.get());
@@ -150,6 +163,7 @@ public class Popup {
 
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
 		Dialog<HashMap<String, Couleur>> dialog = new Dialog<>();
+		setIcon(dialog, "iconConfiguration");
 		dialog.setTitle("Nouvelle partie : Configuration");
 		dialog.setHeaderText("Veuillez entrer le pseudo unique et sa couleur unique (Jaune/Bleu/Rouge/Vert) de chaque joueur");
 
@@ -173,7 +187,7 @@ public class Popup {
 			grid.add(couleurJoueur, 3, i);
 
 			pairs.put(nomJoueur, couleurJoueur);
-			
+
 			if (i == 0)
 				nomJoueur.requestFocus();
 		}
@@ -199,9 +213,9 @@ public class Popup {
 
 			return null;
 		});
-		
+
 		Optional<HashMap<String, Couleur>> optional = dialog.showAndWait();
-		
+
 		if (!optional.isPresent())
 			return getInitialisationJoueurs(nbJoueur);
 		return optional.get();
@@ -276,7 +290,7 @@ public class Popup {
 			if (action.getNom().equals(actionStr))
 				return action;
 
-		return null;
+		return JoueurAction.RIEN_FAIRE;
 	}
 
 	private Couleur getCouleurString(String couleurStr) {
@@ -288,5 +302,9 @@ public class Popup {
 				return couleur;
 
 		return null;
+	}
+	
+	private void setIcon(Dialog<?> dialog, String nom) {
+		((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResource("/ressources/" + nom + ".png").toExternalForm()));
 	}
 }

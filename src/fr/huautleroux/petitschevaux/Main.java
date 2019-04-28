@@ -10,6 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -43,10 +44,10 @@ public class Main extends Application {
 		GridPane grilleContenu = new GridPane();
 		infoContenu = new GridPane();
 
-		int nbCases = 15;
-		int recTaille = 50;
-		int espacement = 2;
-		int marge = 20;
+		double nbCases = 15;
+		double recTaille = 60;
+		double espacement = 2.5;
+		double marge = 20;
 
 		grilleContenu.setPadding(new Insets(marge));
 		grilleContenu.setHgap(espacement);
@@ -55,7 +56,7 @@ public class Main extends Application {
 		infoContenu.setHgap(espacement);
 		infoContenu.setVgap(espacement);
 
-		int tailleCarre = (recTaille+espacement)*nbCases + 2*marge;
+		double tailleCarre = (recTaille+espacement)*nbCases + 2*marge;
 		infoContenu.setTranslateX(tailleCarre);
 		
 		root.getChildren().addAll(grilleContenu, infoContenu);
@@ -103,6 +104,7 @@ public class Main extends Application {
 				affichage.addText(id, t);
 			}
 
+		stage.getIcons().add(new Image(getClass().getResource("/ressources/iconMain.png").toExternalForm()));
 		stage.setScene(scene);
 		stage.setTitle("Jeu des petits chevaux");
 		stage.setResizable(false);

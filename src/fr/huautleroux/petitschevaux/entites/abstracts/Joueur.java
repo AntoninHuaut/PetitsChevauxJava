@@ -59,16 +59,15 @@ public abstract class Joueur {
 		List<JoueurAction> actionDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
 
 		if(hasToutPionEcurie(plateau)) {
-			if(de == 6) {
+			if(de == 6)
 				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
-			}
 		}
 
 		else {
 			if(de == 6 && hasPionEcurie(plateau))
 				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 
-			actionDispo.add(2, JoueurAction.DEPLACER_CHEVAL);
+			actionDispo.add(actionDispo.size() - 1, JoueurAction.DEPLACER_CHEVAL);
 		}
 
 		return actionDispo;
