@@ -3,7 +3,7 @@
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "j",
+        "nom": "a",
         "couleur": "JAUNE"
       }
     },
@@ -15,16 +15,16 @@
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
       "data": {
-        "nom": "v",
+        "nom": "Alpha",
         "couleur": "VERT"
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "Alpha",
+        "nom": " c",
         "couleur": "ROUGE"
       }
     }
@@ -284,7 +284,12 @@
       },
       {
         "numero": 30,
-        "pions": []
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "VERT"
+          }
+        ]
       },
       {
         "numero": 31,
@@ -336,10 +341,7 @@
       },
       {
         "numero": 43,
-        "pions": [{
-            "id": 0,
-            "couleur": "ROUGE"
-          }]
+        "pions": []
       },
       {
         "numero": 44,
@@ -371,6 +373,22 @@
       },
       {
         "numero": 51,
+        "pions": []
+      },
+      {
+        "numero": 52,
+        "pions": []
+      },
+      {
+        "numero": 53,
+        "pions": []
+      },
+      {
+        "numero": 54,
+        "pions": []
+      },
+      {
+        "numero": 55,
         "pions": []
       }
     ],
@@ -424,10 +442,6 @@
         "numero": 2,
         "pions": [
           {
-            "id": 0,
-            "couleur": "VERT"
-          },
-          {
             "id": 1,
             "couleur": "VERT"
           },
@@ -446,6 +460,10 @@
         "numero": 3,
         "pions": [
           {
+            "id": 0,
+            "couleur": "ROUGE"
+          },
+          {
             "id": 1,
             "couleur": "ROUGE"
           },
@@ -462,11 +480,11 @@
     ]
   },
   "random": {
-    "seed": 14613949094657,
+    "seed": 130338272612393,
     "nextNextGaussian": 0.0,
     "haveNextNextGaussian": false
   },
-  "idJoueurCourant": 0,
-  "numeroTour": 1,
+  "idJoueurCourant": 1,
+  "numeroTour": 2,
   "stopPartie": false
 }

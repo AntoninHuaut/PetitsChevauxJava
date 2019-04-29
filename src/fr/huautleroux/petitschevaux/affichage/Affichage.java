@@ -140,6 +140,10 @@ public class Affichage {
 	public void addText(String id, Text text) {
 		texts.put(id, text);
 	}
+	
+	public HashMap<String, Text> getTexts() {
+		return texts;
+	}
 
 	public void showPopup(AlertType type, String title, String message) {
 		Alert alert = new Alert(type);

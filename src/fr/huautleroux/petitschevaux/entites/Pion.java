@@ -78,7 +78,7 @@ public class Pion implements Comparable<Pion> {
 		} else {
 			List<CaseEchelle> echelles = plateau.getEchelles().get(indiceJoueur);
 
-			if (caseActuelle.getNumero() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
+			if (((CaseEchelle) caseActuelle).getNumeroLocal() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
 				throw new PionFinParcoursException();
 
 			return echelles.get(caseActuelle.getNumero() + 1);

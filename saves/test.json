@@ -3,35 +3,33 @@
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "Jean jauni",
+        "nom": "a",
         "couleur": "JAUNE"
       }
     },
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "Jean bleuti",
+        "nom": "b",
         "couleur": "BLEU"
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
       "data": {
-        "nom": "Jean verdi",
+        "nom": "Alpha",
         "couleur": "VERT"
       }
     },
     {
       "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
-        "nom": "Jean rougi",
+        "nom": " c",
         "couleur": "ROUGE"
       }
     }
   ],
-  "idJoueurCourant": 1,
   "couleurCommence": "VERT",
-  "numeroTour": 2,
   "plateau": {
     "echelles": [
       [
@@ -170,12 +168,7 @@
       },
       {
         "numero": 1,
-        "pions": [
-          {
-            "id": 0,
-            "couleur": "JAUNE"
-          }
-        ]
+        "pions": []
       },
       {
         "numero": 2,
@@ -376,6 +369,22 @@
       {
         "numero": 51,
         "pions": []
+      },
+      {
+        "numero": 52,
+        "pions": []
+      },
+      {
+        "numero": 53,
+        "pions": []
+      },
+      {
+        "numero": 54,
+        "pions": []
+      },
+      {
+        "numero": 55,
+        "pions": []
       }
     ],
     "ecurie": [
@@ -383,6 +392,10 @@
         "couleur": "JAUNE",
         "numero": 0,
         "pions": [
+          {
+            "id": 0,
+            "couleur": "JAUNE"
+          },
           {
             "id": 1,
             "couleur": "JAUNE"
@@ -466,10 +479,11 @@
     ]
   },
   "random": {
-    "seed": 244017486368584,
+    "seed": 60919783539662,
     "nextNextGaussian": 0.0,
     "haveNextNextGaussian": false
   },
-  "nbJoueurHumain": 4,
+  "idJoueurCourant": 3,
+  "numeroTour": 1,
   "stopPartie": false
 }

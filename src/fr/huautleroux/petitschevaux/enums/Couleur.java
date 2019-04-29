@@ -1,13 +1,14 @@
+
 package fr.huautleroux.petitschevaux.enums;
 
 import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE('j', Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
-	BLEU('b', Color.BLUE, Color.DODGERBLUE, Color.LIGHTBLUE),
-	VERT('v', Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
-	ROUGE('r', Color.RED, Color.ORANGERED, Color.PINK);
+	JAUNE('◼', Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
+	BLEU('▲', Color.DODGERBLUE, Color.DEEPSKYBLUE, Color.LIGHTBLUE),
+	VERT('◆', Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
+	ROUGE('⚫', Color.RED, Color.ORANGERED, Color.PINK);
 	
 	private char symbol;
 	private Color principalColor;
@@ -21,6 +22,7 @@ public enum Couleur {
 		this.caseEcurieColor = caseEcurieColor;
 		this.caseEchelleColor = caseEchelleColor;
 		this.caseCheminColor = caseCheminColor;
+
 	}
 	
 	public char getSymbol() {

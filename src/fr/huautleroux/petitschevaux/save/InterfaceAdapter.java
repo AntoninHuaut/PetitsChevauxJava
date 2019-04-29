@@ -1,4 +1,4 @@
-package fr.huautleroux.petitschevaux.utils.save;
+package fr.huautleroux.petitschevaux.save;
 
 import java.lang.reflect.Type;
 

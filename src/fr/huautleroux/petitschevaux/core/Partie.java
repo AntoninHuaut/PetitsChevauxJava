@@ -117,18 +117,18 @@ public class Partie {
 	}
 
 	public void jouerJeu() {
+		plateau.updateAffichage();
 		Main.getAffStatic().debutTour(numeroTour);
-
 		int idDepart = couleurCommence.ordinal();
 
 		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
-
 			int nb = i % joueurs.size();
 			this.idJoueurCourant = nb;
 
+			plateau.updateAffichage();
 			jouerJoueur(false, lancerDe());
 		}
-		
+
 		if (stopPartie)
 			return;
 
@@ -146,7 +146,7 @@ public class Partie {
 	public void jouerJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
 		if (!aDejaFaitSix)
-		Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getPrincipalColor());
+			Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getPrincipalColor());
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
@@ -154,13 +154,13 @@ public class Partie {
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
 			try {
 				SauvegardeResultat sauvegardeResultat = Main.getPopStatic().menuSauvegarde(this);
-				
+
 				if (sauvegardeResultat.equals(SauvegardeResultat.ANNULER))
 					throw new SauvegardeException("Sauvegarde annulée");
-				
+
 				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
 				Main.getAffStatic().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
-				
+
 				if(stopPartie) {
 					Main.getAffStatic().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
 					return;
@@ -189,6 +189,7 @@ public class Partie {
 
 		if (de == 6 && !aDejaFaitSix) {
 			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n", null);
+			plateau.updateAffichage();
 			jouerJoueur(true, lancerDe());
 		}
 	}

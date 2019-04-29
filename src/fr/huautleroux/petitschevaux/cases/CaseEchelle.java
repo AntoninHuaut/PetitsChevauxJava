@@ -10,6 +10,10 @@ public class CaseEchelle extends CaseColoree {
 		super(couleur, numero);
 	}
 	
+	public int getNumeroLocal() {
+		return getNumero() % 6;
+	}
+	
 	@Override
 	public boolean peutPasser(Pion pion) {
 		return getChevaux().isEmpty();
@@ -17,7 +21,7 @@ public class CaseEchelle extends CaseColoree {
 
 	@Override
 	public boolean peutSArreter(Pion pion, int de) {
-		return getChevaux().isEmpty() && getNumero() + 1 == de;
+		return getChevaux().isEmpty() && getNumeroLocal () + 1 == de;
 	}
 	
 	@Override

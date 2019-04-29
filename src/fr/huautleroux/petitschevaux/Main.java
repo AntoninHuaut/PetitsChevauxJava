@@ -4,7 +4,7 @@ import fr.huautleroux.petitschevaux.affichage.Affichage;
 import fr.huautleroux.petitschevaux.affichage.Popup;
 import fr.huautleroux.petitschevaux.core.GererPartie;
 import fr.huautleroux.petitschevaux.enums.Couleur;
-import fr.huautleroux.petitschevaux.utils.save.SaveManager;
+import fr.huautleroux.petitschevaux.save.SaveManager;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -62,43 +62,44 @@ public class Main extends Application {
 		root.getChildren().addAll(grilleContenu, infoContenu);
 		scene = new Scene(root, tailleCarre + 500, tailleCarre);
 
-		for (int i = 1; i <= nbCases; i++)
-			for (int j = 1; j <= nbCases; j++) {
-				String id = i + "-" + j;
+		for (int y = 0; y < nbCases; y++)
+			for (int x = 0; x < nbCases; x++) {
+				String id = x + "-" + y;
 				Rectangle rec = new Rectangle();
 				rec.setWidth(recTaille);
 				rec.setHeight(recTaille);
-				rec.setId(id);
+				rec.setId("rec-" + id);
 
 				Couleur c = Couleur.JAUNE;
-				if (j<=6 && i<=6) rec.setFill(c.getCaseEcurieColor()); // CaseEcurie
-				else if (i==8 && (j>1 && j<8) ) rec.setFill(c.getCaseEchelleColor()); // CaseEchelle
-				else if (j<=7 && i<=7 || (i==1 && j==8)) rec.setFill(c.getCaseCheminColor()); // CaseChemin
-
-				c = Couleur.BLEU;
-				if (j>=10 && i<=6) rec.setFill(c.getCaseEcurieColor());
-				else if (j==8 && (i>1 && i<8)) rec.setFill(c.getCaseEchelleColor());
-				else if ((j>=9 && i<=7) || (j==15 && i==8)) rec.setFill(c.getCaseCheminColor());
-
-				c = Couleur.VERT;
-				if (j>=10 && i>=10) rec.setFill(c.getCaseEcurieColor());
-				else if (i==8 && (j<15 && j>8)) rec.setFill(c.getCaseEchelleColor());
-				else if (j>=9 && i>=9 || (j==8 && i==15)) rec.setFill(c.getCaseCheminColor());
+				
+				if (y <= 5 && x <= 5) rec.setFill(c.getCaseEcurieColor()); // CaseEcurie
+				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getCaseEchelleColor()); // CaseEchelle
+				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCaseCheminColor()); // CaseChemin
 
 				c = Couleur.ROUGE;
-				if (j<=6 && i>=10) rec.setFill(c.getCaseEcurieColor());
-				else if (j==8 && (i<15 && i>8)) rec.setFill(c.getCaseEchelleColor());
-				else if (j<=7 && i>=9 || (j==1 && i==8)) rec.setFill(c.getCaseCheminColor());
+				if (y >= 9 && x <= 5) rec.setFill(c.getCaseEcurieColor());
+				else if (x == 7 && (y < 14 && y > 7)) rec.setFill(c.getCaseEchelleColor());
+				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) rec.setFill(c.getCaseCheminColor());
 
-				if(j==8 && i==8)  rec.setFill(Color.BLACK);
+				c = Couleur.VERT;
+				if (y >= 9 && x >= 9) rec.setFill(c.getCaseEcurieColor());
+				else if (y == 7 && (x < 14 && x > 7)) rec.setFill(c.getCaseEchelleColor());
+				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) rec.setFill(c.getCaseCheminColor());
+
+				c = Couleur.BLEU;
+				if (y <= 5 && x >= 9) rec.setFill(c.getCaseEcurieColor());
+				else if (x == 7 && (y > 0 && y < 7)) rec.setFill(c.getCaseEchelleColor());
+				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) rec.setFill(c.getCaseCheminColor());
+
+				if(y == 7 && x == 7)  rec.setFill(Color.BLACK);
 
 				Text t = new Text();
-				GridPane.setRowIndex(t, i);
 				GridPane.setHalignment(t, HPos.CENTER);
 				GridPane.setValignment(t, VPos.CENTER);
-				GridPane.setColumnIndex(t, j);
-				GridPane.setRowIndex(rec, i);
-				GridPane.setColumnIndex(rec, j);
+				GridPane.setRowIndex(t, y);
+				GridPane.setRowIndex(rec, y);
+				GridPane.setColumnIndex(t, x);
+				GridPane.setColumnIndex(rec, x);
 				grilleContenu.getChildren().addAll(rec, t);
 				
 				affichage.addText(id, t);
