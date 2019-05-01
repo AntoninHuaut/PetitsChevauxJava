@@ -89,6 +89,7 @@ public class Partie {
 			}
 
 			tourJoueur(aDejaFaitSix, de);
+			return;
 		}
 
 		else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
