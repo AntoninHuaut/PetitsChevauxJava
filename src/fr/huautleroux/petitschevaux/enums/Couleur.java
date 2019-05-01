@@ -5,10 +5,10 @@ import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE(Color.ORANGE, Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
-	BLEU(Color.DODGERBLUE, Color.DEEPSKYBLUE, Color.LIGHTBLUE),
-	VERT(Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
-	ROUGE(Color.RED, Color.ORANGERED, Color.PINK);
+	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE),
+	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff")),
+	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN),
+	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK);
 	
 	public static String symbol = "🐎";
 	private Color textCouleur;
@@ -16,16 +16,15 @@ public enum Couleur {
 	private Color caseEchelleCouleur;
 	private Color caseCheminCouleur;
 	
-	private Couleur(Color textCouleur, Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur) {
-		this.textCouleur = textCouleur;
+	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur, Color textCouleur) {
 		this.caseEcurieCouleur = caseEcurieCouleur;
 		this.caseEchelleCouleur = caseEchelleCouleur;
 		this.caseCheminCouleur = caseCheminCouleur;
-
+		this.textCouleur = textCouleur;
 	}
 	
 	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur) {
-		this(caseEcurieCouleur, caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur);
+		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur);
 	}
 
 	public Color getTextCouleur() {

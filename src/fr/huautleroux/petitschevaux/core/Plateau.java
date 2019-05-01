@@ -107,11 +107,11 @@ public class Plateau {
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
 			if (ancienneCase instanceof CaseEcurie)
-				Main.getAffStatic().simpleMessage("Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
+				Main.getAffStatic().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
 			else
-				Main.getAffStatic().simpleMessage("Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
+				Main.getAffStatic().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
 		} else
-			Main.getAffStatic().simpleMessage("Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
+			Main.getAffStatic().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
 	}
 
 	public void mangerLesPions(Couleur couleur, Case caseCible) {
@@ -124,7 +124,7 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			Main.getAffStatic().simpleMessage("Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
+			Main.getAffStatic().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
 		}
 	}
 

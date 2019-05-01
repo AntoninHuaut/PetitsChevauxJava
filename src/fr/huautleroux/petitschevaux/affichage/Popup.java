@@ -31,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Popup {
@@ -40,6 +41,7 @@ public class Popup {
 
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
 		TextInputDialog dialog = new TextInputDialog();
+		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconSauvegarde");
 		dialog.setTitle("Menu Sauvegarde");
 		dialog.setHeaderText(null);
@@ -79,17 +81,18 @@ public class Popup {
 	}
 
 	public BooleanResultat getBooleanSauvegarde(String title, String header, String content) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		setIcon(alert, "iconSauvegarde");
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
+		Alert dialog = new Alert(AlertType.CONFIRMATION);
+		dialog.initModality(Modality.WINDOW_MODAL);
+		setIcon(dialog, "iconSauvegarde");
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(content);
 
 		ButtonType buttonOui = new ButtonType("Oui");
 		ButtonType buttonNon = new ButtonType("Non");
-		alert.getButtonTypes().setAll(buttonOui, buttonNon);
+		dialog.getButtonTypes().setAll(buttonOui, buttonNon);
 
-		Optional<ButtonType> result = alert.showAndWait();
+		Optional<ButtonType> result = dialog.showAndWait();
 
 		if (!result.isPresent())
 			return BooleanResultat.ANNULER;
@@ -101,6 +104,7 @@ public class Popup {
 		List<String> actionsDispoStr = new ArrayList<String>();
 		actionsDispo.forEach(action -> actionsDispoStr.add(action.getNom()));
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(actionDefaut.getNom(), actionsDispoStr);
+		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconAutre");
 		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
 		dialog.setTitle("Au tour de " + joueurInfos);
@@ -117,6 +121,7 @@ public class Popup {
 		List<String> pionsDispoStr = new ArrayList<String>();
 		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(pionsDispoStr.get(0), pionsDispoStr);
+		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconAutre");
 		String joueurInfos = joueur.getNom() + " (" + joueur.getCouleur() + ")";
 		dialog.setTitle("Au tour de " + joueurInfos);
@@ -131,6 +136,7 @@ public class Popup {
 
 	public Integer getNombresJoueurs() {
 		TextInputDialog dialog = new TextInputDialog();
+		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconConfiguration");
 		dialog.setTitle("Nouvelle partie : Configuration");
 		dialog.setHeaderText("Le nombre de joueurs doit être compris en 0 et 4");
@@ -163,6 +169,7 @@ public class Popup {
 
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
 		Dialog<HashMap<String, Couleur>> dialog = new Dialog<>();
+		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconConfiguration");
 		dialog.setTitle("Nouvelle partie : Configuration");
 		dialog.setHeaderText("Veuillez entrer le pseudo unique et sa couleur unique (Jaune/Bleu/Rouge/Vert) de chaque joueur");
@@ -222,11 +229,12 @@ public class Popup {
 	}
 
 	public void showPopup(AlertType type, String title, String header, String message) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(message);
-		alert.showAndWait();
+		Alert dialog = new Alert(type);
+		dialog.initModality(Modality.WINDOW_MODAL);
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(message);
+		dialog.showAndWait();
 	}
 
 	private void checkInitJoueurs(HashMap<TextField, TextField> pairs, Node validerButton) {

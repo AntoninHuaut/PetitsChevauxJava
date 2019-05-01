@@ -310,15 +310,16 @@
       },
       {
         "numero": 31,
-        "pions": [
-        {
-            "id": 0,
-            "couleur": "ROUGE"
-          }]
+        "pions": []
       },
       {
         "numero": 32,
-        "pions": []
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "ROUGE"
+          }
+        ]
       },
       {
         "numero": 33,
