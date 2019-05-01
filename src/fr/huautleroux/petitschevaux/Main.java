@@ -72,24 +72,24 @@ public class Main extends Application {
 
 				Couleur c = Couleur.JAUNE;
 				
-				if (y <= 5 && x <= 5) rec.setFill(c.getCaseEcurieColor()); // CaseEcurie
-				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getCaseEchelleColor()); // CaseEchelle
-				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCaseCheminColor()); // CaseChemin
+				if (y <= 5 && x <= 5) rec.setFill(c.getCaseEcurieCouleur()); // CaseEcurie
+				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getCaseEchelleCouleur()); // CaseEchelle
+				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCaseCheminCouleur()); // CaseChemin
 
 				c = Couleur.ROUGE;
-				if (y >= 9 && x <= 5) rec.setFill(c.getCaseEcurieColor());
-				else if (x == 7 && (y < 14 && y > 7)) rec.setFill(c.getCaseEchelleColor());
-				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) rec.setFill(c.getCaseCheminColor());
+				if (y >= 9 && x <= 5) rec.setFill(c.getCaseEcurieCouleur());
+				else if (x == 7 && (y < 14 && y > 7)) rec.setFill(c.getCaseEchelleCouleur());
+				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) rec.setFill(c.getCaseCheminCouleur());
 
 				c = Couleur.VERT;
-				if (y >= 9 && x >= 9) rec.setFill(c.getCaseEcurieColor());
-				else if (y == 7 && (x < 14 && x > 7)) rec.setFill(c.getCaseEchelleColor());
-				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) rec.setFill(c.getCaseCheminColor());
+				if (y >= 9 && x >= 9) rec.setFill(c.getCaseEcurieCouleur());
+				else if (y == 7 && (x < 14 && x > 7)) rec.setFill(c.getCaseEchelleCouleur());
+				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) rec.setFill(c.getCaseCheminCouleur());
 
 				c = Couleur.BLEU;
-				if (y <= 5 && x >= 9) rec.setFill(c.getCaseEcurieColor());
-				else if (x == 7 && (y > 0 && y < 7)) rec.setFill(c.getCaseEchelleColor());
-				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) rec.setFill(c.getCaseCheminColor());
+				if (y <= 5 && x >= 9) rec.setFill(c.getCaseEcurieCouleur());
+				else if (x == 7 && (y > 0 && y < 7)) rec.setFill(c.getCaseEchelleCouleur());
+				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) rec.setFill(c.getCaseCheminCouleur());
 
 				if(y == 7 && x == 7)  rec.setFill(Color.BLACK);
 

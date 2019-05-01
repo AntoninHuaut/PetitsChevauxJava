@@ -5,44 +5,43 @@ import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE('◼', Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
-	BLEU('▲', Color.DODGERBLUE, Color.DEEPSKYBLUE, Color.LIGHTBLUE),
-	VERT('◆', Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
-	ROUGE('⚫', Color.RED, Color.ORANGERED, Color.PINK);
+	JAUNE(Color.ORANGE, Color.GOLD, Color.YELLOW, Color.LIGHTGOLDENRODYELLOW),
+	BLEU(Color.DODGERBLUE, Color.DEEPSKYBLUE, Color.LIGHTBLUE),
+	VERT(Color.GREEN, Color.GREENYELLOW, Color.LIGHTGREEN),
+	ROUGE(Color.RED, Color.ORANGERED, Color.PINK);
 	
-	private char symbol;
-	private Color principalColor;
-	private Color caseEcurieColor;
-	private Color caseEchelleColor;
-	private Color caseCheminColor;
+	public static String symbol = "🐎";
+	private Color textCouleur;
+	private Color caseEcurieCouleur;
+	private Color caseEchelleCouleur;
+	private Color caseCheminCouleur;
 	
-	private Couleur(char c, Color caseEcurieColor, Color caseEchelleColor, Color caseCheminColor) {
-		this.symbol = c;
-		this.principalColor = caseEcurieColor;
-		this.caseEcurieColor = caseEcurieColor;
-		this.caseEchelleColor = caseEchelleColor;
-		this.caseCheminColor = caseCheminColor;
+	private Couleur(Color textCouleur, Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur) {
+		this.textCouleur = textCouleur;
+		this.caseEcurieCouleur = caseEcurieCouleur;
+		this.caseEchelleCouleur = caseEchelleCouleur;
+		this.caseCheminCouleur = caseCheminCouleur;
 
 	}
 	
-	public char getSymbol() {
-		return this.symbol;
-	}
-	
-	public Color getPrincipalColor() {
-		return principalColor;
-	}
-	
-	public Color getCaseEcurieColor() {
-		return caseEcurieColor;
+	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur) {
+		this(caseEcurieCouleur, caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur);
 	}
 
-	public Color getCaseEchelleColor() {
-		return caseEchelleColor;
+	public Color getTextCouleur() {
+		return textCouleur;
+	}
+	
+	public Color getCaseEcurieCouleur() {
+		return caseEcurieCouleur;
 	}
 
-	public Color getCaseCheminColor() {
-		return caseCheminColor;
+	public Color getCaseEchelleCouleur() {
+		return caseEchelleCouleur;
+	}
+
+	public Color getCaseCheminCouleur() {
+		return caseCheminCouleur;
 	}
 	
 	@Override

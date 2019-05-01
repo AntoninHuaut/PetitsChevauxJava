@@ -33,7 +33,10 @@ public class Pion implements Comparable<Pion> {
 			do {
 				caseTmp = getCaseCible(plateau, i);
 
-				if (!caseTmp.peutPasser(this) || !caseTmp.peutSArreter(this, de))
+				if (i == de && !caseTmp.peutSArreter(this, de))
+					deplacementPossible = false;
+				
+				if (i != de && !caseTmp.peutPasser(this))
 					deplacementPossible = false;
 
 				i++;
@@ -63,13 +66,13 @@ public class Pion implements Comparable<Pion> {
 			List<CaseChemin> chemins = plateau.getChemin();
 			CaseChemin caseChemin = (CaseChemin) caseActuelle;
 			int caseNumero = caseChemin.getNumero();
-
+			
 			// Le joueur va effectuer la transition
-			if (caseChemin.isAccesEchelle())
+			if (caseChemin.isAccesEchelle(indiceJoueur))
 				return plateau.getEchelles().get(indiceJoueur).get(0);
-
+			
 			// Le joueur atteint la case de transition
-			if (isTransition(caseNumero, nbDeplacement))
+			if (isTransition(caseNumero, nbDeplacement, indiceJoueur))
 				return chemins.get(indiceJoueur * 14); // Le joueur est limité à la case de transition
 
 			caseNumero += nbDeplacement;
@@ -77,17 +80,18 @@ public class Pion implements Comparable<Pion> {
 
 		} else {
 			List<CaseEchelle> echelles = plateau.getEchelles().get(indiceJoueur);
+			CaseEchelle caseEchelle = (CaseEchelle) caseActuelle;
 
-			if (((CaseEchelle) caseActuelle).getNumeroLocal() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
+			if (caseEchelle.getNumeroLocal() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
 				throw new PionFinParcoursException();
 
-			return echelles.get(caseActuelle.getNumero() + 1);
+			return echelles.get(caseEchelle.getNumeroLocal() + 1);
 		}
 	}
 
-	private boolean isTransition(int caseNumero, int de) {
+	private boolean isTransition(int caseNumero, int de, int indiceJoueur) {
 		for (int i = 1; i < de + 1; i++)
-			if((caseNumero + de) % 14 == 0)
+			if((caseNumero + i) % 14 == 0 && (caseNumero + i) == indiceJoueur * 14)
 				return true;
 
 		return false;

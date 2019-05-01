@@ -1,14 +1,14 @@
 {
   "joueurs": [
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
       "data": {
         "nom": "a",
         "couleur": "JAUNE"
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
       "data": {
         "nom": "b",
         "couleur": "BLEU"
@@ -22,7 +22,7 @@
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
       "data": {
         "nom": " c",
         "couleur": "ROUGE"
@@ -78,22 +78,38 @@
         {
           "couleur": "BLEU",
           "numero": 8,
-          "pions": []
+          "pions": [
+           {
+            "id": 3,
+            "couleur": "BLEU"
+          }]
         },
         {
           "couleur": "BLEU",
           "numero": 9,
-          "pions": []
+          "pions": [
+           {
+            "id": 2,
+            "couleur": "BLEU"
+          }]
         },
         {
           "couleur": "BLEU",
           "numero": 10,
-          "pions": []
+          "pions": [
+           {
+            "id": 1,
+            "couleur": "BLEU"
+          }]
         },
         {
           "couleur": "BLEU",
           "numero": 11,
-          "pions": []
+          "pions": [
+           {
+            "id": 0,
+            "couleur": "BLEU"
+          }]
         }
       ],
       [
@@ -284,7 +300,12 @@
       },
       {
         "numero": 30,
-        "pions": []
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "VERT"
+          }
+        ]
       },
       {
         "numero": 31,
@@ -328,7 +349,10 @@
       },
       {
         "numero": 41,
-        "pions": []
+        "pions": [{
+            "id": 0,
+            "couleur": "ROUGE"
+          }]
       },
       {
         "numero": 42,
@@ -414,32 +438,12 @@
         "couleur": "BLEU",
         "numero": 1,
         "pions": [
-          {
-            "id": 0,
-            "couleur": "BLEU"
-          },
-          {
-            "id": 1,
-            "couleur": "BLEU"
-          },
-          {
-            "id": 2,
-            "couleur": "BLEU"
-          },
-          {
-            "id": 3,
-            "couleur": "BLEU"
-          }
         ]
       },
       {
         "couleur": "VERT",
         "numero": 2,
         "pions": [
-          {
-            "id": 0,
-            "couleur": "VERT"
-          },
           {
             "id": 1,
             "couleur": "VERT"
@@ -459,10 +463,6 @@
         "numero": 3,
         "pions": [
           {
-            "id": 0,
-            "couleur": "ROUGE"
-          },
-          {
             "id": 1,
             "couleur": "ROUGE"
           },
@@ -479,11 +479,11 @@
     ]
   },
   "random": {
-    "seed": 60919783539662,
+    "seed": 130338272612393,
     "nextNextGaussian": 0.0,
     "haveNextNextGaussian": false
   },
-  "idJoueurCourant": 3,
-  "numeroTour": 1,
+  "idJoueurCourant": 1,
+  "numeroTour": 2,
   "stopPartie": false
 }

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.huautleroux.petitschevaux.Main;
-import fr.huautleroux.petitschevaux.core.Partie;
+import fr.huautleroux.petitschevaux.core.GererPartie;
+import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import javafx.collections.FXCollections;
@@ -54,7 +55,7 @@ public class Affichage {
 		resultat.setFont(font);
 		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
 		touche.setFont(font);
-		resultat.setFill(c.getPrincipalColor());
+		resultat.setFill(c.getTextCouleur());
 		flow.getChildren().addAll(tirage, resultat, touche);
 
 		attendreToucheEntrer(() -> callback.run());
@@ -67,7 +68,7 @@ public class Affichage {
 		List<String> sauvegardes = main.getSaveManager().getSauvegardes();
 
 		if (sauvegardes.isEmpty()) {
-			main.getPetitsChevaux().demarrerPartie(null);
+			main.getPetitsChevaux().demarrerPartie(true);
 			return;
 		}
 
@@ -85,10 +86,10 @@ public class Affichage {
 				String save = "" + ((ComboBox<?>) e.getTarget()).getValue();
 
 				try {
-					Partie partie = main.getSaveManager().chargerPartie(save);
-					partie.initialiserReference();
 					supprimerAffichageInfo();
-					main.getPetitsChevaux().demarrerPartie(partie);
+					
+					GererPartie gererPartie = main.getSaveManager().chargerPartie(save);
+					gererPartie.demarrerPartie(false);
 				} catch (ChargementSauvegardeException e1) {
 					showPopup(AlertType.ERROR, "Chargement de la sauvegarde", "Le chargement de la sauvegarde " + save + " a échoué");
 				}
@@ -100,7 +101,7 @@ public class Affichage {
 		nouvellePartie.setTranslateX(comboBox.getMaxWidth() + 50);
 		nouvellePartie.setOnMouseClicked(e -> {
 			supprimerAffichageInfo();
-			main.getPetitsChevaux().demarrerPartie(null);
+			main.getPetitsChevaux().demarrerPartie(true);
 		});
 
 		main.getInfoContenu().getChildren().addAll(labelSauvegarde, comboBox, nouvellePartie);
@@ -123,14 +124,35 @@ public class Affichage {
 
 	public void simpleMessage(String msg, Color couleur) {
 		Text simpleMessage = new Text("\n" + msg);
-		if (couleur != null) {
-			if (couleur.equals(Color.GOLD))
-				couleur = Color.ORANGE;
-
+		if (couleur != null)
 			simpleMessage.setFill(couleur);
-		}
+		
 		simpleMessage.setFont(font);
 		tourActuel.getChildren().add(simpleMessage);
+	}
+	
+	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
+		supprimerAffichageInfo();
+		tourActuel = new TextFlow();
+		
+		Text infoTour = new Text("FIN DE PARTIE\n\n");
+		infoTour.setFont(new Font(font.getSize() + 16));
+		infoTour.setFill(Color.MEDIUMPURPLE);
+
+		Text gagnant = new Text(joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n");
+		gagnant.setFont(new Font(font.getSize() + 4));
+		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleur());
+		
+		Button rejouer = new Button("Recommencer une nouvelle partie");
+		rejouer.setOnMouseClicked(e -> {
+			openMenuChargementSauvegarde();
+			
+			for (Text text : texts.values())
+				text.setText("");
+		});
+		
+		tourActuel.getChildren().addAll(infoTour, gagnant, rejouer);
+		main.getInfoContenu().getChildren().add(tourActuel);
 	}
 
 	public void supprimerAffichageInfo() {

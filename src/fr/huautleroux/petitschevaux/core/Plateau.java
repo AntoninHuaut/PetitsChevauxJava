@@ -17,8 +17,6 @@ import javafx.scene.text.Text;
 
 public class Plateau {
 
-	private final boolean DEBUG = false;
-
 	private transient Partie partie;
 	private List<List<CaseEchelle>> echelles = new ArrayList<List<CaseEchelle>>();
 	private List<CaseChemin> chemin = new ArrayList<CaseChemin>();
@@ -49,7 +47,7 @@ public class Plateau {
 				Text text = Main.getAffStatic().getTexts().get(id);
 				text.setText("");
 				Case caseGet = getCaseParCordonnee(x, y);
-				
+
 				if (caseGet == null)
 					continue;
 
@@ -69,48 +67,27 @@ public class Plateau {
 							p = pGet;
 
 					if (p != null)
-						text.setText(p.getCouleur().getSymbol() + " " + (p.getId() + 1));
+						text.setText(Couleur.symbol + " " + (p.getId() + 1));
 				} else {
 					String numeroCases = "";
 					Couleur couleur = null;
-					
+
 					for (Pion p : caseGet.getChevaux()) {
 						couleur = p.getCouleur();
-						numeroCases += (numeroCases.isEmpty() ? couleur.getSymbol() + " " : ", ") + (p.getId() + 1);
+						numeroCases += (numeroCases.isEmpty() ? Couleur.symbol + " " : ", ") + (p.getId() + 1);
 					}
-					
+
 					if (!numeroCases.isEmpty()) {
 						text.setText(numeroCases);
-						text.setFill(couleur.getPrincipalColor());
+						text.setFill(couleur.getTextCouleur());
 					}
 				}
-
-				if (DEBUG) {
-					if (caseGet instanceof CaseEchelle)
-						text.setText("" + ((CaseEchelle) caseGet).getNumeroLocal());
-					else
-						text.setText("" + caseGet.getNumero());
-				}
 			}
-		
-		updateSymboleEcurie(0, 0, Couleur.JAUNE);
-		updateSymboleEcurie(9, 0, Couleur.BLEU);
-		updateSymboleEcurie(9, 9, Couleur.VERT);
-		updateSymboleEcurie(0, 9, Couleur.ROUGE);
-	}
 
-	public void updateSymboleEcurie(int xDebut, int yDebut, Couleur couleur) {
-		for (int y = yDebut; y < yDebut + 6; y++)
-			for (int x = xDebut; x < xDebut + 6; x++) {
-				if (x != xDebut && y != yDebut && x != 5+xDebut && y != 5+yDebut)
-					continue;
-
-				String id = x + "-" + y;
-				Text text = Main.getAffStatic().getTexts().get(id);
-				text.setText(couleur.getSymbol() + "");
-				text.setFill(Color.WHITE);
-				text.setFont(new Font(30));
-			}
+		Text text = Main.getAffStatic().getTexts().get("7-7");
+		text.setText(Couleur.symbol);
+		text.setFill(Color.WHITE);
+		text.setFont(new Font(40));
 	}
 
 	public void deplacerPionA(Pion pion, int de) {
@@ -127,26 +104,27 @@ public class Plateau {
 
 			ancienneCase.retirerCheval(pion);
 			nouvelleCase.ajouteCheval(pion);
+			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
 			if (ancienneCase instanceof CaseEcurie)
-				Main.getAffStatic().simpleMessage("Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getPrincipalColor());
+				Main.getAffStatic().simpleMessage("Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
 			else
-				Main.getAffStatic().simpleMessage("Votre " + pion + " s'est déplacé", pion.getCouleur().getPrincipalColor());
-
-			if (!(nouvelleCase instanceof CaseEchelle))
-				mangerLesPions(pion.getCouleur(), nouvelleCase);
+				Main.getAffStatic().simpleMessage("Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
 		} else
-			Main.getAffStatic().simpleMessage("Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getPrincipalColor());
+			Main.getAffStatic().simpleMessage("Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
 	}
 
 	public void mangerLesPions(Couleur couleur, Case caseCible) {
-		for (Pion pion : caseCible.getChevaux()) {
+		List<Pion> pions = new ArrayList<Pion>(caseCible.getChevaux());
+		
+		for (Pion pion : pions) {
 			if (pion.getCouleur().equals(couleur))
 				continue;
 
 			pion.getCaseActuelle().retirerCheval(pion);
-			getEcuries().get(couleur.ordinal()).ajouteCheval(pion);
-			Main.getAffStatic().simpleMessage("Le " + pion + " " + couleur + " a été renvoyé à l'écurie", couleur.getPrincipalColor());
+			Couleur couleurPionRenvoye = pion.getCouleur();
+			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
+			Main.getAffStatic().simpleMessage("Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
 		}
 	}
 

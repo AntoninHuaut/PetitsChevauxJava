@@ -1,19 +1,12 @@
 package fr.huautleroux.petitschevaux.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import fr.huautleroux.petitschevaux.Main;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
-import fr.huautleroux.petitschevaux.cases.abstracts.Case;
-import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
-import fr.huautleroux.petitschevaux.entites.JoueurBot;
-import fr.huautleroux.petitschevaux.entites.JoueurHumain;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -36,88 +29,9 @@ public class Partie {
 	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
-	public void initialiserJeu(Consumer<Partie> callback) {
-		this.couleurCommence = tirageCouleur();
-
-		int nbJoueur = Main.getPopStatic().getNombresJoueurs();
-
-		initialiserJoueurs(nbJoueur, 4 - nbJoueur, () -> {
-			initialiserPlateau();
-			initialiserReference();
-			Main.getAffStatic().tirageAuSort(couleurCommence, joueurs.get(couleurCommence.ordinal()).toString(), () -> callback.accept(this));
-		});
-	}
-
-	public void initialiserJoueurs(int nbJoueur, int nbBot, Runnable callback) {
-		HashMap<String, Couleur> pairs = Main.getPopStatic().getInitialisationJoueurs(nbJoueur);
-
-		for (String nomJoueur : pairs.keySet())
-			joueurs.add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
-
-		for (int i = 0; i < nbBot; i++) {
-			List<Couleur> couleurs = new ArrayList<Couleur>(Arrays.asList(Couleur.values()));
-			joueurs.forEach(j -> couleurs.remove(j.getCouleur()));
-
-			if (couleurs.isEmpty())
-				return;
-
-			joueurs.add(new JoueurBot(couleurs.get(0)));
-		}
-
-		joueurs = joueurs.stream().sorted((j1, j2) -> {
-			int diff = j1.getCouleur().ordinal() - j2.getCouleur().ordinal();
-			if (diff < 0) return -1;
-			else if (diff > 0) return 1;
-			else return 0;
-		}).collect(Collectors.toList());
-
-		callback.run();
-	}
-
-	public void initialiserPlateau() {
-		this.plateau = new Plateau();
-
-		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++)
-			for(int idCheval = 0; idCheval < 4; idCheval++) {
-				Pion pion = new Pion(idCheval, Couleur.values()[idJoueur]);
-				plateau.getEcuries().get(idJoueur).ajouteCheval(pion);
-			}
-	}
-
-	/*
-	 * On initialise des listes avec des objets déjà crées
-	 * Méthode indépendance pour qu'elle puisse être appelée par le système de chargement de sauvegarde
-	 */
-	public void initialiserReference() {
-		this.plateau.setPartie(this);
-
-		List<Case> cases = new ArrayList<Case>();
-		cases.addAll(plateau.getEcuries());
-		cases.addAll(plateau.getChemin());
-		this.plateau.getEchelles().forEach(c -> cases.addAll(c));
-
-		for(int idJoueur = 0; idJoueur < joueurs.size(); idJoueur++) {
-			final int idJoueurFinal = idJoueur;
-			Joueur j = joueurs.get(idJoueur);
-			j.setCaseDeDepart(plateau.getChemin().get(1 + idJoueur * 14));
-			j.initialisationReference();
-
-			cases.forEach(c -> {
-				if (c instanceof CaseColoree && ((CaseColoree) c).getCouleur().ordinal() != idJoueurFinal)
-					return;
-
-				c.getChevaux().forEach(pion -> {
-					if (pion.getCouleur().equals(j.getCouleur()))
-						j.ajouterCheval(pion);
-				});
-			});
-		}
-
-		cases.forEach(c -> c.getChevaux().forEach(pion -> pion.setCaseActuelle(c)));
-	}
-
 	public void jouerJeu() {
 		plateau.updateAffichage();
+		
 		Main.getAffStatic().debutTour(numeroTour);
 		int idDepart = couleurCommence.ordinal();
 
@@ -125,8 +39,13 @@ public class Partie {
 			int nb = i % joueurs.size();
 			this.idJoueurCourant = nb;
 
+			tourJoueur(false, lancerDe());
 			plateau.updateAffichage();
-			jouerJoueur(false, lancerDe());
+
+			if (estPartieTerminee()) {
+				Main.getAffStatic().finDePartie(numeroTour, getJoueurGagnant());
+				return;
+			}
 		}
 
 		if (stopPartie)
@@ -143,10 +62,10 @@ public class Partie {
 		});
 	}
 
-	public void jouerJoueur(boolean aDejaFaitSix, int de) {
+	public void tourJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
 		if (!aDejaFaitSix)
-			Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getPrincipalColor());
+			Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleur());
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
@@ -167,8 +86,9 @@ public class Partie {
 				}
 			} catch (SauvegardeException ex) {
 				Main.getAffStatic().simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", Color.MEDIUMPURPLE);
-				jouerJoueur(aDejaFaitSix, de);
 			}
+
+			tourJoueur(aDejaFaitSix, de);
 		}
 
 		else if (action.equals(JoueurAction.SORTIR_CHEVAL) || action.equals(JoueurAction.DEPLACER_CHEVAL)) {
@@ -190,39 +110,52 @@ public class Partie {
 		if (de == 6 && !aDejaFaitSix) {
 			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n", null);
 			plateau.updateAffichage();
-			jouerJoueur(true, lancerDe());
+			tourJoueur(true, lancerDe());
 		}
 	}
 
 	public boolean estPartieTerminee() {
-		return !getJoueurGagnant().isEmpty();
+		return getJoueurGagnant() != null;
 	}
 
-	public List<Joueur> getJoueurGagnant() {
-		List<Joueur> gagnants = new ArrayList<Joueur>();
-
+	public Joueur getJoueurGagnant() {
 		for (Joueur j : joueurs) {
 			boolean pionBienPlace = true;
 
-			int countPion = 0;
+			int comptagePion = 0;
 			List<CaseEchelle> echelles = plateau.getEchelles().get(j.getCouleur().ordinal());
 
 			for (int i = 0; i < echelles.size() && pionBienPlace; i++) {
 				CaseEchelle caseEchelle = echelles.get(i);
-				countPion += caseEchelle.getChevaux().size();
+				boolean aPionEchelle = !caseEchelle.getChevaux().isEmpty();
+				comptagePion += aPionEchelle ? 1 : 0;
 
 				// Si le pion est sur un case de l'échelle qui n'est pas 3-4-5-6
 				// L'indice 1 correspond à la case 2
-				if(i <= 1)
+				if(i <= 1 && aPionEchelle)
 					pionBienPlace = false;
 			}
 
 			// Si tous les pions du joueur sont à l'échelles et que les pions sont dans placés dans les cases 3-4-5-6
-			if(countPion == 4 && pionBienPlace)
-				gagnants.add(j);
+			if(comptagePion == 4 && pionBienPlace)
+				return j;
 		}
 
-		return gagnants;
+		return null;
+	}
+	
+	private int lancerDe() {
+		int lanceN = random.nextInt(6) + 1;
+		return lanceN;
+	}
+	
+	public void trierOrdreJoueurs() {
+		joueurs = joueurs.stream().sorted((j1, j2) -> {
+			int diff = j1.getCouleur().ordinal() - j2.getCouleur().ordinal();
+			if (diff < 0) return -1;
+			else if (diff > 0) return 1;
+			else return 0;
+		}).collect(Collectors.toList());
 	}
 
 	public Joueur getJoueurCourant() {
@@ -232,6 +165,10 @@ public class Partie {
 	public Plateau getPlateau() {
 		return plateau;
 	}
+	
+	public void setPlateau(Plateau plateau) {
+		this.plateau = plateau;
+	}
 
 	public List<Joueur> getJoueurs() {
 		return joueurs;
@@ -240,16 +177,16 @@ public class Partie {
 	public void setStopPartie(boolean stopPartie) {
 		this.stopPartie = stopPartie;
 	}
-
-	private int lancerDe() {
-		int lanceN = random.nextInt(6) + 1;
-		return lanceN;
+	
+	public Couleur getCouleurCommence() {
+		return couleurCommence;
 	}
-
-
-	private Couleur tirageCouleur(){
-		int de = random.nextInt(4);
-		Couleur[] couleurs = Couleur.values();
-		return couleurs[de];
+	
+	public void setCouleurCommence(Couleur couleurCommence) {
+		this.couleurCommence = couleurCommence;
+	}
+	
+	public Random getRandom() {
+		return random;
 	}
 }

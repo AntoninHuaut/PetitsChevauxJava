@@ -14,6 +14,7 @@ import com.google.gson.JsonSyntaxException;
 
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
+import fr.huautleroux.petitschevaux.core.GererPartie;
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
@@ -50,7 +51,7 @@ public class SaveManager {
 	 * @return Partie
 	 * @throws ChargementSauvegardeException Erreur générée si le chargement échoue
 	 */
-	public Partie chargerPartie(String saveName) throws ChargementSauvegardeException {
+	public GererPartie chargerPartie(String saveName) throws ChargementSauvegardeException {
 		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
 
@@ -68,8 +69,9 @@ public class SaveManager {
 
 		try {
 			Partie partie = gson.fromJson(json, Partie.class);
-			partie.initialiserReference();
-			return partie;
+			GererPartie gererPartie = new GererPartie();
+			gererPartie.setPartie(partie);
+			return gererPartie;
 		} catch(JsonSyntaxException e) {
 			e.printStackTrace();
 			throw new ChargementSauvegardeException("La sauvegarde " + saveName + " n'est pas valide");

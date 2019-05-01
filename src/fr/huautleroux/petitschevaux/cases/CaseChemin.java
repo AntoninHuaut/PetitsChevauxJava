@@ -28,7 +28,7 @@ public class CaseChemin extends Case {
 		return getClass().getName() + toStringPions();
 	}
 	
-	public boolean isAccesEchelle() {
-		return getNumero() % 14 == 0;
+	public boolean isAccesEchelle(int idJoueur) {
+		return getNumero() % 14 == 0 && idJoueur * 14 == getNumero();
 	}
 }
