@@ -66,6 +66,9 @@ public class Partie {
 		Joueur joueurCourant = getJoueurCourant();
 		if (!aDejaFaitSix)
 			Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleur());
+		else
+			Main.getAffStatic().simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
+		
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
 		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
@@ -99,7 +102,7 @@ public class Partie {
 				Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
 				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
-				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null,"Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
+				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null, "Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
 			}
 		}
 
@@ -109,7 +112,6 @@ public class Partie {
 		Main.getAffStatic().simpleMessage("", null);
 
 		if (de == 6 && !aDejaFaitSix) {
-			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " peut rejouer une deuxième fois !\n", null);
 			plateau.updateAffichage();
 			tourJoueur(true, lancerDe());
 		}
@@ -151,12 +153,7 @@ public class Partie {
 	}
 	
 	public void trierOrdreJoueurs() {
-		joueurs = joueurs.stream().sorted((j1, j2) -> {
-			int diff = j1.getCouleur().ordinal() - j2.getCouleur().ordinal();
-			if (diff < 0) return -1;
-			else if (diff > 0) return 1;
-			else return 0;
-		}).collect(Collectors.toList());
+		joueurs = joueurs.stream().sorted((j1, j2) -> j1.compareTo(j2)).collect(Collectors.toList());
 	}
 
 	public Joueur getJoueurCourant() {

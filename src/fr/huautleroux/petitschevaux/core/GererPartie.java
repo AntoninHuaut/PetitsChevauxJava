@@ -36,13 +36,12 @@ public class GererPartie {
 
 	public void initialiserJeu(Consumer<Partie> callback) {
 		partie.setCouleurCommence(tirageCouleur());
-
 		int nbJoueur = Main.getPopStatic().getNombresJoueurs();
 
 		initialiserJoueurs(nbJoueur, 4 - nbJoueur, () -> {
 			initialiserPlateau();
 			initialiserReference();
-			Main.getAffStatic().tirageAuSort(partie.getCouleurCommence(), partie.getJoueurs().get(partie.getCouleurCommence().ordinal()).toString(), () -> callback.accept(partie));
+			Main.getAffStatic().tirageAuSort(partie.getCouleurCommence(), "" + partie.getJoueurs().get(partie.getCouleurCommence().ordinal()), () -> callback.accept(partie));
 		});
 	}
 
@@ -65,7 +64,6 @@ public class GererPartie {
 		}
 
 		partie.trierOrdreJoueurs();
-
 		callback.run();
 	}
 
@@ -92,11 +90,11 @@ public class GererPartie {
 		partie.getPlateau().getEchelles().forEach(c -> cases.addAll(c));
 
 		for(int idJoueur = 0; idJoueur < partie.getJoueurs().size(); idJoueur++) {
-			final int idJoueurFinal = idJoueur;
 			Joueur j = partie.getJoueurs().get(idJoueur);
 			j.setCaseDeDepart(partie.getPlateau().getChemin().get(1 + idJoueur * 14));
 			j.initialisationReference();
 
+			final int idJoueurFinal = idJoueur;
 			cases.forEach(c -> {
 				if (c instanceof CaseColoree && ((CaseColoree) c).getCouleur().ordinal() != idJoueurFinal)
 					return;

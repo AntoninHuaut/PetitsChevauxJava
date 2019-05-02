@@ -50,10 +50,10 @@ public class Popup {
 		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
 		okButton.setText("Valider");
 		dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
-		TextField tf = dialog.getEditor();
-		tf.textProperty().addListener((observable) -> okButton.setDisable(tf.getText().trim().isEmpty()));
+		TextField textField = dialog.getEditor();
+		textField.textProperty().addListener((o) -> okButton.setDisable(textField.getText().trim().isEmpty()));
 		okButton.setDisable(true);
-		tf.requestFocus();
+		textField.requestFocus();
 
 		Optional<String> optionalSauvegarde = dialog.showAndWait();
 
@@ -61,22 +61,25 @@ public class Popup {
 			return SauvegardeResultat.ANNULER;
 
 		String nomSauvegarde = optionalSauvegarde.get();
-		nomSauvegarde = Main.getInstance().getSaveManager().convertSaveName(nomSauvegarde);
-		boolean overwrite = false;
+		nomSauvegarde = Main.getInstance().getGestionSauvegarde().convertSaveName(nomSauvegarde);
+		boolean ecraserSauvegarde = false;
 
-		if (Main.getInstance().getSaveManager().estSauvegardeValide(nomSauvegarde)) {
+		if (Main.getInstance().getGestionSauvegarde().estSauvegardeValide(nomSauvegarde)) {
 			BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "Une sauvegarde sous le nom de " + nomSauvegarde + " existe déjà", "Souhaitez-vous l'écraser ?");
+			
 			if (booleanResultat.equals(BooleanResultat.ANNULER))
 				return SauvegardeResultat.ANNULER;
-			overwrite = booleanResultat.equals(BooleanResultat.OUI);
+			
+			ecraserSauvegarde = booleanResultat.equals(BooleanResultat.OUI);
 		}
 
-		Main.getInstance().getSaveManager().sauvegarderPartie(partie, nomSauvegarde, overwrite);
+		Main.getInstance().getGestionSauvegarde().sauvegarderPartie(partie, nomSauvegarde, ecraserSauvegarde);
 		BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "La sauvegarde s'est terminée avec succès", "Souhaitez-vous quitter la partie en cours ?");
+		
 		if (booleanResultat.equals(BooleanResultat.ANNULER))
 			return SauvegardeResultat.ANNULER;
+		
 		boolean quitter = booleanResultat.equals(BooleanResultat.OUI);
-
 		return quitter ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
 	}
 
@@ -92,12 +95,12 @@ public class Popup {
 		ButtonType buttonNon = new ButtonType("Non");
 		dialog.getButtonTypes().setAll(buttonOui, buttonNon);
 
-		Optional<ButtonType> result = dialog.showAndWait();
+		Optional<ButtonType> optionalBouton = dialog.showAndWait();
 
-		if (!result.isPresent())
+		if (!optionalBouton.isPresent())
 			return BooleanResultat.ANNULER;
 
-		return result.get().equals(buttonOui) ? BooleanResultat.OUI : BooleanResultat.NON;
+		return optionalBouton.get().equals(buttonOui) ? BooleanResultat.OUI : BooleanResultat.NON;
 	}
 
 	public JoueurAction getJoueurAction(int de, List<JoueurAction> actionsDispo, JoueurAction actionDefaut, Joueur joueur) {
@@ -110,16 +113,18 @@ public class Popup {
 		dialog.setTitle("Au tour de " + joueurInfos);
 		dialog.setHeaderText(joueurInfos + "\nVous avez fait " + de);
 		dialog.setContentText("Choisissez une action");	
-		Optional<String> optional = dialog.showAndWait();
-		if (!optional.isPresent())
+		
+		Optional<String> optionalJoueurAction = dialog.showAndWait();
+		if (!optionalJoueurAction.isPresent())
 			return getJoueurAction(de, actionsDispo, actionDefaut, joueur);
 		else
-			return getJoueurActionByNom(optional.get());
+			return getJoueurActionByNom(optionalJoueurAction.get());
 	}
 
 	public Pion getJoueurPion(JoueurAction action, List<Pion> pionsDispo, Joueur joueur) {
 		List<String> pionsDispoStr = new ArrayList<String>();
 		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
+		
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(pionsDispoStr.get(0), pionsDispoStr);
 		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconAutre");
@@ -127,11 +132,12 @@ public class Popup {
 		dialog.setTitle("Au tour de " + joueurInfos);
 		dialog.setHeaderText(joueurInfos + "\nQuel pion choisir pour l'action : " + action.getNom());
 		dialog.setContentText("Choisissez un pion");
-		Optional<String> optional = dialog.showAndWait();
-		if (!optional.isPresent())
+		
+		Optional<String> optionalPion = dialog.showAndWait();
+		if (!optionalPion.isPresent())
 			return getJoueurPion(action, pionsDispo, joueur);
 		else
-			return getJoueurPionByNom(joueur, optional.get());
+			return getJoueurPionByNom(joueur, optionalPion.get());
 	}
 
 	public Integer getNombresJoueurs() {
@@ -142,29 +148,30 @@ public class Popup {
 		dialog.setHeaderText("Le nombre de joueurs doit être compris en 0 et 4");
 		dialog.setContentText("Nombre de joueurs : ");
 
-		Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-		okButton.setText("Valider");
+		Button buttonOk = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+		buttonOk.setText("Valider");
 		dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
-		TextField tf = dialog.getEditor();
-		tf.textProperty().addListener((observable) -> {
-			boolean disabled = true;
+		TextField textField = dialog.getEditor();
+		textField.textProperty().addListener((o) -> {
+			boolean desactiver = true;
 
 			try {
-				int get = Integer.parseInt(tf.getText().trim());
-				disabled = get < 0 || get > 4;
+				int valeur = Integer.parseInt(textField.getText().trim());
+				desactiver = valeur < 0 || valeur > 4;
 			} catch (NumberFormatException e) {}
 
-			okButton.setDisable(disabled);
-			tf.setStyle("-fx-text-inner-color: " + (disabled ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
+			buttonOk.setDisable(desactiver);
+			textField.setStyle("-fx-text-inner-color: " + (desactiver ? MAUVAISE_ENTREE : BONNE_ENTREE) + ";");
 		});
-		okButton.setDisable(true);
-		tf.requestFocus();
+		
+		buttonOk.setDisable(true);
+		textField.requestFocus();
 
-		Optional<String> optional = dialog.showAndWait();
+		Optional<String> optionalNombreJoueurs = dialog.showAndWait();
 
-		if (!optional.isPresent())
+		if (!optionalNombreJoueurs.isPresent())
 			return getNombresJoueurs();
-		return Integer.parseInt(optional.get());
+		return Integer.parseInt(optionalNombreJoueurs.get());
 	}
 
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
@@ -202,9 +209,9 @@ public class Popup {
 		Node validerButton = dialog.getDialogPane().lookupButton(validerButtonType);
 		validerButton.setDisable(true);
 
-		for (TextField tf : pairs.keySet()) {
-			tf.textProperty().addListener((observable) -> checkInitJoueurs(pairs, validerButton));
-			pairs.get(tf).textProperty().addListener((observable) -> checkInitJoueurs(pairs, validerButton));
+		for (TextField textField : pairs.keySet()) {
+			textField.textProperty().addListener((o) -> checkInitialisationJoueurs(pairs, validerButton));
+			pairs.get(textField).textProperty().addListener((o) -> checkInitialisationJoueurs(pairs, validerButton));
 		}
 
 		dialog.getDialogPane().setContent(grid);
@@ -212,8 +219,8 @@ public class Popup {
 			if (dialogButton == validerButtonType) {
 				HashMap<String, Couleur> resultats = new HashMap<String, Couleur>();
 
-				for (TextField tf : pairs.keySet())
-					resultats.put(tf.getText(), getCouleurString(pairs.get(tf).getText()));
+				for (TextField textField : pairs.keySet())
+					resultats.put(textField.getText(), getCouleurString(pairs.get(textField).getText()));
 
 				return resultats;
 			}
@@ -221,11 +228,11 @@ public class Popup {
 			return null;
 		});
 
-		Optional<HashMap<String, Couleur>> optional = dialog.showAndWait();
+		Optional<HashMap<String, Couleur>> optionalPairs = dialog.showAndWait();
 
-		if (!optional.isPresent())
+		if (!optionalPairs.isPresent())
 			return getInitialisationJoueurs(nbJoueur);
-		return optional.get();
+		return optionalPairs.get();
 	}
 
 	public void showPopup(AlertType type, String title, String header, String message) {
@@ -237,22 +244,22 @@ public class Popup {
 		dialog.showAndWait();
 	}
 
-	private void checkInitJoueurs(HashMap<TextField, TextField> pairs, Node validerButton) {
+	private void checkInitialisationJoueurs(HashMap<TextField, TextField> pairs, Node validerButton) {
 		List<Couleur> couleursUsed = new ArrayList<Couleur>();
 		List<String> pseudo = new ArrayList<String>();
-		boolean disable = false;
+		boolean desactiver = false;
 
 		for (TextField tfSub : pairs.keySet()) {
 			String pseudoSub = tfSub.getText().trim();
 			pseudo.add(pseudoSub);
 			String couleurSub = pairs.get(tfSub).getText().trim();
 
-			disable = pseudoSub.isEmpty() || couleurSub.isEmpty() ? true : disable;
+			desactiver = pseudoSub.isEmpty() || couleurSub.isEmpty() ? true : desactiver;
 
 			Couleur c = getCouleurString(couleurSub);
 
 			if (c == null)
-				disable = true;
+				desactiver = true;
 			else
 				couleursUsed.add(c);
 
@@ -264,25 +271,25 @@ public class Popup {
 		Set<String> pseudoSansDouble = new HashSet<String>(pseudo);
 
 		if (couleurSansDouble.size() != couleursUsed.size()) {
-			disable = true;
+			desactiver = true;
 
 			for (TextField tfValue : pairs.values()) {
-				Couleur c = getCouleurString(tfValue.getText().trim());
+				Couleur couleur = getCouleurString(tfValue.getText().trim());
 
-				if (c != null && Collections.frequency(couleursUsed, c) > 1)
+				if (couleur != null && Collections.frequency(couleursUsed, couleur) > 1)
 					tfValue.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
 			}
 		}
 
 		if (pseudoSansDouble.size() != pseudo.size()) {
-			disable = true;
+			desactiver = true;
 
 			for (TextField tfSub : pairs.keySet())
 				if (Collections.frequency(pseudo, tfSub.getText().trim()) > 1)
 					tfSub.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
 		}
 
-		validerButton.setDisable(disable);
+		validerButton.setDisable(desactiver);
 	}
 
 	private Pion getJoueurPionByNom(Joueur joueur, String pionStr) {

@@ -4,7 +4,7 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public abstract class CaseColoree extends Case {
 	
-	private Couleur couleur;
+	private final Couleur couleur;
 	
 	public CaseColoree(Couleur couleur, int numero) {
 		super(numero);
@@ -17,6 +17,6 @@ public abstract class CaseColoree extends Case {
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + " " + couleur + toStringPions();
+		return couleur + super.toString();
 	}
 }

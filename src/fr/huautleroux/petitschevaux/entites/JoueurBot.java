@@ -22,16 +22,16 @@ public class JoueurBot extends Joueur {
 
 	@Override
 	public JoueurAction choixAction(int de, Plateau plateau) {
-		List<JoueurAction> actionDispo = getActionDisponible(de, plateau);
-		actionDispo.remove(JoueurAction.SAUVEGARDER);
-		actionDispo.remove(JoueurAction.RIEN_FAIRE);
+		List<JoueurAction> actionsDispo = getActionsDisponible(de, plateau);
+		actionsDispo.remove(JoueurAction.SAUVEGARDER);
+		actionsDispo.remove(JoueurAction.RIEN_FAIRE);
 
 		JoueurAction choixAction;
 		
-		if (actionDispo.isEmpty())
+		if (actionsDispo.isEmpty())
 			choixAction = JoueurAction.RIEN_FAIRE;
-		else if (actionDispo.size() == 1) {
-			choixAction = actionDispo.get(0);
+		else if (actionsDispo.size() == 1) {
+			choixAction = actionsDispo.get(0);
 			
 			if(choixAction.equals(JoueurAction.DEPLACER_CHEVAL) && !hasPionDeplacable(de, plateau))
 				choixAction = JoueurAction.RIEN_FAIRE;
@@ -87,7 +87,7 @@ public class JoueurBot extends Joueur {
 
 	private Pion getPionDeplacable(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux())
-			if (pion.isDeplacementPossible(plateau, de)) 
+			if (plateau.isDeplacementPossible(pion, de)) 
 				return pion;
 
 		throw new AucunPionException("Aucun pion déplaçable trouvé");
@@ -95,16 +95,17 @@ public class JoueurBot extends Joueur {
 
 	private Pion getPionQuiPeutManger(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux()) {
-			if(!pion.isDeplacementPossible(plateau, de))
+			if(!plateau.isDeplacementPossible(pion, de))
 				continue;
 
 			try {
-				Case caseCible = pion.getCaseCible(plateau, de);
+				Case caseCible = plateau.getCaseCible(pion, de);
 				
-				boolean hasPionEnemy = !caseCible.getChevaux().stream().filter(enemy -> !enemy.getCouleur().equals(getCouleur())).collect(Collectors.toList()).isEmpty();
+				boolean hasPionEnnemi = !caseCible.getChevaux().stream().filter(ennemi -> !ennemi.getCouleur().equals(getCouleur())).collect(Collectors.toList()).isEmpty();
 
-				if (hasPionEnemy)
+				if (hasPionEnnemi)
 					return pion;
+				
 			} catch (PionFinParcoursException e) {}
 		}
 

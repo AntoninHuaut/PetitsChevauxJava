@@ -4,7 +4,7 @@ import fr.huautleroux.petitschevaux.affichage.Affichage;
 import fr.huautleroux.petitschevaux.affichage.Popup;
 import fr.huautleroux.petitschevaux.core.GererPartie;
 import fr.huautleroux.petitschevaux.enums.Couleur;
-import fr.huautleroux.petitschevaux.save.SaveManager;
+import fr.huautleroux.petitschevaux.save.GestionSauvegarde;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -29,7 +29,7 @@ public class Main extends Application {
 	private Popup popup = new Popup();
 	
 	private GererPartie petitsChevaux = new GererPartie();
-	private SaveManager saveManager = new SaveManager("saves");
+	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde("sauvegardes");
 	private Scene scene;
 	private Stage stage;
 	private GridPane infoContenu;
@@ -134,8 +134,8 @@ public class Main extends Application {
 		return infoContenu;
 	}
 	
-	public SaveManager getSaveManager() {
-		return saveManager;
+	public GestionSauvegarde getGestionSauvegarde() {
+		return gestionSauvegarde;
 	}
 	
 	public static Affichage getAffStatic() {

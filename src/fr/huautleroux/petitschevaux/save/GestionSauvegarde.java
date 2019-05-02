@@ -20,7 +20,7 @@ import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 
-public class SaveManager {
+public class GestionSauvegarde {
 
 	private static final String EXT = ".json";
 	private static final char[] invalideCaracteres = new char[] {' ', '/', '\\', '>', '<', ':', '|', '"', '?', '*'};
@@ -32,7 +32,7 @@ public class SaveManager {
 	 * Initialise la gestion des sauvegardes
 	 * @param folderName Nom du sous dossier contenant les sauvegardes
 	 */
-	public SaveManager(String folderName) {
+	public GestionSauvegarde(String folderName) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Case.class, new InterfaceAdapter<Case>());
 		gsonBuilder.registerTypeAdapter(CaseColoree.class, new InterfaceAdapter<CaseColoree>());

@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fr.huautleroux.petitschevaux.cases.CaseChemin;
-import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.Plateau;
@@ -15,7 +13,7 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.JoueurAction;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 
-public abstract class Joueur {
+public abstract class Joueur implements Comparable<Joueur> {
 
 	private transient List<Pion> chevaux;
 	private transient Case caseDepart = null;
@@ -55,22 +53,22 @@ public abstract class Joueur {
 		this.chevaux = new ArrayList<Pion>();
 	}
 
-	protected List<JoueurAction> getActionDisponible(int de, Plateau plateau) {
-		List<JoueurAction> actionDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
+	protected List<JoueurAction> getActionsDisponible(int de, Plateau plateau) {
+		List<JoueurAction> actionsDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
 
 		if(hasToutPionEcurie(plateau)) {
 			if(de == 6)
-				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
+				actionsDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 		}
 
 		else {
 			if(de == 6 && hasPionEcurie(plateau))
-				actionDispo.add(1, JoueurAction.SORTIR_CHEVAL);
+				actionsDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 
-			actionDispo.add(actionDispo.size() - 1, JoueurAction.DEPLACER_CHEVAL);
+			actionsDispo.add(actionsDispo.size() - 1, JoueurAction.DEPLACER_CHEVAL);
 		}
 
-		return actionDispo;
+		return actionsDispo;
 	}
 	
 	protected List<Pion> getPionsParAction(JoueurAction action) {
@@ -82,7 +80,7 @@ public abstract class Joueur {
 			if (action.equals(JoueurAction.SORTIR_CHEVAL) && caseActuelle instanceof CaseEcurie)
 				pionsAction.add(pion);
 
-			else if (action.equals(JoueurAction.DEPLACER_CHEVAL) && (caseActuelle instanceof CaseChemin || caseActuelle instanceof CaseEchelle))
+			else if (action.equals(JoueurAction.DEPLACER_CHEVAL) && !(caseActuelle instanceof CaseEcurie))
 				pionsAction.add(pion);
 		}
 
@@ -92,6 +90,11 @@ public abstract class Joueur {
 	@Override
 	public String toString() {
 		return getNom() + " (" + getCouleur() + ")";
+	}
+	
+	@Override
+	public int compareTo(Joueur joueur) {
+		return Integer.valueOf(this.getCouleur().ordinal()).compareTo(Integer.valueOf(joueur.getCouleur().ordinal()));
 	}
 
 	public Case getCaseDeDepart() {

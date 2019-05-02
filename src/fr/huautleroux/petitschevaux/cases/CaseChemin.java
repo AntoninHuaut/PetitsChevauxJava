@@ -25,7 +25,7 @@ public class CaseChemin extends Case {
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + toStringPions();
+		return getClass().getName() + " " + toString();
 	}
 	
 	public boolean isAccesEchelle(int idJoueur) {

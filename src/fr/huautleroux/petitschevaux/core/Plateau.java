@@ -46,12 +46,13 @@ public class Plateau {
 				String id = x + "-" + y;
 				Text text = Main.getAffStatic().getTexts().get(id);
 				text.setText("");
-				Case caseGet = getCaseParCordonnee(x, y);
+				
+				Case caseCible = getCaseParCordonnee(x, y);
 
-				if (caseGet == null)
+				if (caseCible == null)
 					continue;
 
-				if (caseGet instanceof CaseEcurie) {
+				if (caseCible instanceof CaseEcurie) {
 					int numeroCheval = 0;
 					numeroCheval += x <= 3 ? x%2 : x%11;
 					int yTemp = (y <= 3 ? y%2 : y%11);
@@ -62,19 +63,19 @@ public class Plateau {
 
 					Pion p = null;
 
-					for (Pion pGet : caseGet.getChevaux())
+					for (Pion pGet : caseCible.getChevaux())
 						if (pGet.getId() == numeroCheval)
 							p = pGet;
 
 					if (p != null)
-						text.setText(Couleur.symbol + " " + (p.getId() + 1));
+						text.setText(Couleur.SYMBOL + " " + (p.getId() + 1));
 				} else {
 					String numeroCases = "";
 					Couleur couleur = null;
 
-					for (Pion p : caseGet.getChevaux()) {
+					for (Pion p : caseCible.getChevaux()) {
 						couleur = p.getCouleur();
-						numeroCases += (numeroCases.isEmpty() ? Couleur.symbol + " " : ", ") + (p.getId() + 1);
+						numeroCases += (numeroCases.isEmpty() ? Couleur.SYMBOL + " " : ", ") + (p.getId() + 1);
 					}
 
 					if (!numeroCases.isEmpty()) {
@@ -85,18 +86,18 @@ public class Plateau {
 			}
 
 		Text text = Main.getAffStatic().getTexts().get("7-7");
-		text.setText(Couleur.symbol);
+		text.setText(Couleur.SYMBOL);
 		text.setFill(Color.WHITE);
 		text.setFont(new Font(40));
 	}
 
 	public void deplacerPionA(Pion pion, int de) {
-		if (pion.isDeplacementPossible(this, de)) {
+		if (isDeplacementPossible(pion, de)) {
 			Case ancienneCase = pion.getCaseActuelle();
 			Case nouvelleCase;
 
 			try {
-				nouvelleCase = pion.getCaseCible(this, de);
+				nouvelleCase = getCaseCible(pion, de);
 			} catch (PionFinParcoursException e) {
 				System.err.println(e.getMessage());
 				return;
@@ -114,7 +115,7 @@ public class Plateau {
 			Main.getAffStatic().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
 	}
 
-	public void mangerLesPions(Couleur couleur, Case caseCible) {
+	private void mangerLesPions(Couleur couleur, Case caseCible) {
 		List<Pion> pions = new ArrayList<Pion>(caseCible.getChevaux());
 		
 		for (Pion pion : pions) {
@@ -127,8 +128,76 @@ public class Plateau {
 			Main.getAffStatic().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
 		}
 	}
+	
+	public boolean isDeplacementPossible(Pion pion, int de) {
+		try {
+			Case caseCible = getCaseCible(pion, de);
+			boolean deplacementPossible = true;
 
-	public Case getCaseParCordonnee(int x, int y) {
+			Case caseTmp;
+			int i = 1;
+
+			do {
+				caseTmp = getCaseCible(pion, i);
+
+				if (i == de && !caseTmp.peutSArreter(pion, de))
+					deplacementPossible = false;
+				
+				if (i != de && !caseTmp.peutPasser(pion))
+					deplacementPossible = false;
+
+				i++;
+			} while (caseTmp != caseCible && deplacementPossible);
+
+			return deplacementPossible;
+		} catch (PionFinParcoursException e) {
+			return false;
+		}
+	}
+
+	public Case getCaseCible(Pion pion, int nbDeplacement) throws PionFinParcoursException {
+		Case caseActuelle = pion.getCaseActuelle();
+		int indiceJoueur = pion.getCouleur().ordinal();
+
+		if (caseActuelle instanceof CaseEcurie)
+			return getPartie().getJoueurCourant().getCaseDeDepart();
+
+		if (caseActuelle instanceof CaseChemin) {
+			List<CaseChemin> chemins = getChemin();
+			CaseChemin caseChemin = (CaseChemin) caseActuelle;
+			int caseNumero = caseChemin.getNumero();
+			
+			// Le joueur va effectuer la transition
+			if (caseChemin.isAccesEchelle(indiceJoueur))
+				return getEchelles().get(indiceJoueur).get(0);
+			
+			// Le joueur atteint la case de transition
+			if (isTransition(caseNumero, nbDeplacement, indiceJoueur))
+				return chemins.get(indiceJoueur * 14); // Le joueur est limité à la case de transition
+
+			caseNumero += nbDeplacement;
+			return chemins.get(caseNumero % chemins.size());
+
+		} else {
+			List<CaseEchelle> echelles = getEchelles().get(indiceJoueur);
+			CaseEchelle caseEchelle = (CaseEchelle) caseActuelle;
+
+			if (caseEchelle.getNumeroLocal() == echelles.size() - 1) // Son Pion est sur la dernière case de l'échelle
+				throw new PionFinParcoursException();
+
+			return echelles.get(caseEchelle.getNumeroLocal() + 1);
+		}
+	}
+
+	private boolean isTransition(int caseNumero, int de, int indiceJoueur) {
+		for (int i = 1; i < de + 1; i++)
+			if((caseNumero + i) % 14 == 0 && (caseNumero + i) == indiceJoueur * 14)
+				return true;
+
+		return false;
+	}
+
+	private Case getCaseParCordonnee(int x, int y) {
 		// Cases plateaux standards (sauf cases pré-échelles)
 
 		if (y == 6) {

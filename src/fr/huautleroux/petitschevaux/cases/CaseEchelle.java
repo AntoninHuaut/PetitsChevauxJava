@@ -26,6 +26,6 @@ public class CaseEchelle extends CaseColoree {
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + " " + getCouleur() + toStringPions();
+		return getClass().getName() + " " + toString();
 	}
 }

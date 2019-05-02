@@ -10,7 +10,7 @@ public enum Couleur {
 	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN),
 	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK);
 	
-	public static String symbol = "🐎";
+	public static final String SYMBOL = "🐎";
 	private Color textCouleur;
 	private Color caseEcurieCouleur;
 	private Color caseEchelleCouleur;

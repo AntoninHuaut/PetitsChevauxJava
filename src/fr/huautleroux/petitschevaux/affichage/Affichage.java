@@ -25,7 +25,7 @@ import javafx.scene.text.TextFlow;
 public class Affichage {
 
 	private Main main;
-	private Font font = new Font(14);
+	private Font policeBase = new Font(14);
 	private HashMap<String, Text> texts = new HashMap<String, Text>();
 
 	private TextFlow tourActuel = null;
@@ -39,7 +39,7 @@ public class Affichage {
 		tourActuel = new TextFlow();
 
 		Text infoTour = new Text("TOUR N°" + numeroTour);
-		infoTour.setFont(new Font(font.getSize() + 4));
+		infoTour.setFont(new Font(policeBase.getSize() + 4));
 		infoTour.setFill(Color.MEDIUMPURPLE);
 		tourActuel.getChildren().add(infoTour);
 
@@ -50,11 +50,11 @@ public class Affichage {
 		supprimerAffichageInfo();
 		TextFlow flow = new TextFlow();
 		Text tirage = new Text("Tirage aléatoire : ");
-		tirage.setFont(font);
+		tirage.setFont(policeBase);
 		Text resultat = new Text("C'est " + nomJoueur + " qui commence en premier !");
-		resultat.setFont(font);
+		resultat.setFont(policeBase);
 		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
-		touche.setFont(font);
+		touche.setFont(policeBase);
 		resultat.setFill(c.getTextCouleur());
 		flow.getChildren().addAll(tirage, resultat, touche);
 
@@ -65,7 +65,7 @@ public class Affichage {
 
 	public void openMenuChargementSauvegarde() {
 		supprimerAffichageInfo();
-		List<String> sauvegardes = main.getSaveManager().getSauvegardes();
+		List<String> sauvegardes = main.getGestionSauvegarde().getSauvegardes();
 
 		if (sauvegardes.isEmpty()) {
 			main.getPetitsChevaux().demarrerPartie(true);
@@ -73,7 +73,7 @@ public class Affichage {
 		}
 
 		Text labelSauvegarde = new Text("Choisissez une sauvegarde à charger ou lancez une nouvelle partie");
-		labelSauvegarde.setFont(font);
+		labelSauvegarde.setFont(policeBase);
 		ObservableList<String> options = FXCollections.observableArrayList(sauvegardes);
 
 		ComboBox<String> comboBox = new ComboBox<String>(options);
@@ -83,15 +83,15 @@ public class Affichage {
 
 		comboBox.setOnAction(e -> {
 			if(e.getTarget() instanceof ComboBox) {
-				String save = "" + ((ComboBox<?>) e.getTarget()).getValue();
+				String sauvegarde = "" + ((ComboBox<?>) e.getTarget()).getValue();
 
 				try {
 					supprimerAffichageInfo();
 					
-					GererPartie gererPartie = main.getSaveManager().chargerPartie(save);
+					GererPartie gererPartie = main.getGestionSauvegarde().chargerPartie(sauvegarde);
 					gererPartie.demarrerPartie(false);
 				} catch (ChargementSauvegardeException e1) {
-					showPopup(AlertType.ERROR, "Chargement de la sauvegarde", "Le chargement de la sauvegarde " + save + " a échoué");
+					showPopup(AlertType.ERROR, "Chargement de la sauvegarde", "Le chargement de la sauvegarde " + sauvegarde + " a échoué");
 				}
 			}
 		});
@@ -127,7 +127,7 @@ public class Affichage {
 		if (couleur != null)
 			simpleMessage.setFill(couleur);
 		
-		simpleMessage.setFont(font);
+		simpleMessage.setFont(policeBase);
 		tourActuel.getChildren().add(simpleMessage);
 	}
 	
@@ -136,11 +136,11 @@ public class Affichage {
 		tourActuel = new TextFlow();
 		
 		Text infoTour = new Text("FIN DE PARTIE\n\n");
-		infoTour.setFont(new Font(font.getSize() + 16));
+		infoTour.setFont(new Font(policeBase.getSize() + 16));
 		infoTour.setFill(Color.MEDIUMPURPLE);
 
 		Text gagnant = new Text(joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n");
-		gagnant.setFont(new Font(font.getSize() + 4));
+		gagnant.setFont(new Font(policeBase.getSize() + 4));
 		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleur());
 		
 		Button rejouer = new Button("Recommencer une nouvelle partie");
@@ -163,15 +163,15 @@ public class Affichage {
 		texts.put(id, text);
 	}
 	
-	public HashMap<String, Text> getTexts() {
-		return texts;
-	}
-
-	public void showPopup(AlertType type, String title, String message) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
+	public void showPopup(AlertType typeAlert, String titre, String message) {
+		Alert alert = new Alert(typeAlert);
+		alert.setTitle(titre);
 		alert.setHeaderText(null);
 		alert.setContentText(message);
 		alert.showAndWait();
+	}
+	
+	public HashMap<String, Text> getTexts() {
+		return texts;
 	}
 }

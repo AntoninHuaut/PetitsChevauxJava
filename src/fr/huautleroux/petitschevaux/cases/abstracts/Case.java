@@ -25,23 +25,23 @@ public abstract class Case {
 
 	public abstract boolean peutPasser(Pion pion);
 	public abstract boolean peutSArreter(Pion pion, int de);
-
-	public List<Pion> getChevaux() {
-		return pions;
-	}
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + toStringPions();
+		return toStringPions();
 	}
 	
-	public String toStringPions() {
+	private String toStringPions() {
 		String s = "";
 		
 		for (Pion pion : pions)
 			s += "\n" + pion;
 		
 		return s;
+	}
+	
+	public List<Pion> getChevaux() {
+		return pions;
 	}
 	
 	public int getNumero() {

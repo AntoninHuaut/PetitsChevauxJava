@@ -16,7 +16,7 @@ public class JoueurHumain extends Joueur {
 
 	@Override
 	public JoueurAction choixAction(int de, Plateau plateau) {
-		List<JoueurAction> actionsDispo = getActionDisponible(de, plateau);
+		List<JoueurAction> actionsDispo = getActionsDisponible(de, plateau);
 		
 		JoueurAction actionDefaut = JoueurAction.RIEN_FAIRE;
 		
