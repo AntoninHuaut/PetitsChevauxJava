@@ -67,6 +67,11 @@ public class JoueurBot extends Joueur {
 		return "Bot " + super.toString();
 	}
 
+	/**
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param plateau Instance du plateau
+	 * @return Si un des pions du joueur peut manger un cheval ennemi
+	 */
 	private boolean hasPionQuiPeutManger(int de, Plateau plateau) {
 		try {
 			getPionQuiPeutManger(de, plateau);
@@ -76,6 +81,11 @@ public class JoueurBot extends Joueur {
 		}
 	}
 
+	/**
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param plateau Instance du plateau
+	 * @return Si un des pions du joueur peut se déplacer
+	 */
 	private boolean hasPionDeplacable(int de, Plateau plateau) {
 		try {
 			getPionDeplacable(de, plateau);
@@ -85,6 +95,11 @@ public class JoueurBot extends Joueur {
 		}
 	}
 
+	/**
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param plateau Instance du plateau
+	 * @return Un pion déplacable du joueur
+	 */
 	private Pion getPionDeplacable(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux())
 			if (plateau.isDeplacementPossible(pion, de)) 
@@ -93,6 +108,11 @@ public class JoueurBot extends Joueur {
 		throw new AucunPionException("Aucun pion déplaçable trouvé");
 	}
 
+	/**
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param plateau Instance du plateau
+	 * @return Un pion du joueur qui peut manger un pion ennemi
+	 */
 	private Pion getPionQuiPeutManger(int de, Plateau plateau) throws AucunPionException {
 		for (Pion pion : getChevaux()) {
 			if(!plateau.isDeplacementPossible(pion, de))

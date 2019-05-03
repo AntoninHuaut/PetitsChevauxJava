@@ -31,13 +31,14 @@ public class Main extends Application {
 	private GererPartie petitsChevaux = new GererPartie();
 	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde("sauvegardes");
 	private Scene scene;
-	private Stage stage;
 	private GridPane infoContenu;
 
+	/**
+	 * Initialisation de l'interface graphique
+	 */
 	@Override
 	public void start(Stage stage) {
 		instance = this;
-		this.stage = stage;
 		affichage = new Affichage(this);
 		
 		GridPane root = new GridPane();
@@ -114,20 +115,12 @@ public class Main extends Application {
 		affichage.openMenuChargementSauvegarde();
 	}
 	
-	public Popup getPopup() {
-		return popup;
-	}
-	
 	public GererPartie getPetitsChevaux() {
 		return petitsChevaux;
 	}
 	
 	public Scene getScene() {
 		return scene;
-	}
-	
-	public Stage getStage() {
-		return stage;
 	}
 
 	public GridPane getInfoContenu() {
@@ -138,12 +131,12 @@ public class Main extends Application {
 		return gestionSauvegarde;
 	}
 	
-	public static Affichage getAffStatic() {
-		return getInstance().affichage;
+	public Popup getPopup() {
+		return popup;
 	}
 	
-	public static Popup getPopStatic() {
-		return getInstance().popup;
+	public Affichage getAffichage() {
+		return affichage;
 	}
 	
 	public static Main getInstance() {

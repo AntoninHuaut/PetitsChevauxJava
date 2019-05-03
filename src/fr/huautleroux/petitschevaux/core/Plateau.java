@@ -22,6 +22,9 @@ public class Plateau {
 	private List<CaseChemin> chemin = new ArrayList<CaseChemin>();
 	private List<CaseEcurie> ecurie = new ArrayList<CaseEcurie>();
 
+	/**
+	 * Initialisation des cases
+	 */
 	public Plateau() {
 		Couleur[] couleurs = Couleur.values();
 
@@ -40,11 +43,14 @@ public class Plateau {
 		}
 	}
 
+	/**
+	 * Met à jour l'affichage graphique du plateau
+	 */
 	public void updateAffichage() {
 		for (int y = 0; y < 15; y++)
 			for (int x = 0; x < 15; x++) {
 				String id = x + "-" + y;
-				Text text = Main.getAffStatic().getTexts().get(id);
+				Text text = Main.getInstance().getAffichage().getTexts().get(id);
 				text.setText("");
 				
 				Case caseCible = getCaseParCordonnee(x, y);
@@ -85,12 +91,17 @@ public class Plateau {
 				}
 			}
 
-		Text text = Main.getAffStatic().getTexts().get("7-7");
+		Text text = Main.getInstance().getAffichage().getTexts().get("7-7");
 		text.setText(Couleur.SYMBOL);
 		text.setFill(Color.WHITE);
 		text.setFont(new Font(40));
 	}
 
+	/**
+	 * Tente le déplacement un pion
+	 * @param pion Pion à ajouter
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 */
 	public void deplacerPionA(Pion pion, int de) {
 		if (isDeplacementPossible(pion, de)) {
 			Case ancienneCase = pion.getCaseActuelle();
@@ -108,13 +119,18 @@ public class Plateau {
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
 			if (ancienneCase instanceof CaseEcurie)
-				Main.getAffStatic().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
+				Main.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
 			else
-				Main.getAffStatic().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
+				Main.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
 		} else
-			Main.getAffStatic().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
+			Main.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
 	}
 
+	/**
+	 * Mange les pions des autres joueurs sur une case donnée
+	 * @param couleur Couleur du pion qui se déplace
+	 * @param caseCible Case où le pion se déplace
+	 */
 	private void mangerLesPions(Couleur couleur, Case caseCible) {
 		List<Pion> pions = new ArrayList<Pion>(caseCible.getChevaux());
 		
@@ -125,10 +141,16 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			Main.getAffStatic().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
+			Main.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
 		}
 	}
 	
+	/**
+	 * Teste si le déplacement est possible
+	 * @param pion Pion à ajouter
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @return Si le déplacement est possible
+	 */
 	public boolean isDeplacementPossible(Pion pion, int de) {
 		try {
 			Case caseCible = getCaseCible(pion, de);
@@ -155,6 +177,13 @@ public class Plateau {
 		}
 	}
 
+	/**
+	 * Obtient la case ciblée
+	 * @param pion Pion à ajouter
+	 * @param nbDeplacement Nombre de déplacements que le cheval doit effectuer
+	 * @return Case ciblée
+	 * @throws PionFinParcoursException Erreur générée si le pion ne peut plus avancer car il est a la dernière case
+	 */
 	public Case getCaseCible(Pion pion, int nbDeplacement) throws PionFinParcoursException {
 		Case caseActuelle = pion.getCaseActuelle();
 		int indiceJoueur = pion.getCouleur().ordinal();
@@ -189,6 +218,13 @@ public class Plateau {
 		}
 	}
 
+	/**
+	 * Teste si en se déplacant, la case ciblé est une case de transition pour le joueur
+	 * @param caseNumero Numéro de la case
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param indiceJoueur Numéro du joueur
+	 * @return Si une case est une case de transition
+	 */
 	private boolean isTransition(int caseNumero, int de, int indiceJoueur) {
 		for (int i = 1; i < de + 1; i++)
 			if((caseNumero + i) % 14 == 0 && (caseNumero + i) == indiceJoueur * 14)
@@ -197,6 +233,12 @@ public class Plateau {
 		return false;
 	}
 
+	/**
+	 * Transition entre la position d'une case sur le plateau et une instance de case
+	 * @param x Indice x
+	 * @param y Indice y
+	 * @return Case a la position donnée
+	 */
 	private Case getCaseParCordonnee(int x, int y) {
 		// Cases plateaux standards (sauf cases pré-échelles)
 

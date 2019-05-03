@@ -36,18 +36,18 @@ public class GererPartie {
 
 	public void initialiserJeu(Consumer<Partie> callback) {
 		partie.setCouleurCommence(tirageCouleur());
-		int nbJoueur = Main.getPopStatic().getNombresJoueurs();
+		int nbJoueur = Main.getInstance().getPopup().getNombresJoueurs();
 
 		initialiserJoueurs(nbJoueur, 4 - nbJoueur, () -> {
 			initialiserPlateau();
 			initialiserReference();
-			Main.getAffStatic().tirageAuSort(partie.getCouleurCommence(), "" + partie.getJoueurs().get(partie.getCouleurCommence().ordinal()), () -> callback.accept(partie));
+			Main.getInstance().getAffichage().tirageAuSort(partie.getCouleurCommence(), "" + partie.getJoueurs().get(partie.getCouleurCommence().ordinal()), () -> callback.accept(partie));
 		});
 	}
 
 	public void initialiserJoueurs(int nbJoueur, int nbBot, Runnable callback) {
 		if (nbJoueur > 0) {
-			HashMap<String, Couleur> pairs = Main.getPopStatic().getInitialisationJoueurs(nbJoueur);
+			HashMap<String, Couleur> pairs = Main.getInstance().getPopup().getInitialisationJoueurs(nbJoueur);
 
 			for (String nomJoueur : pairs.keySet())
 				partie.getJoueurs().add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
@@ -92,7 +92,7 @@ public class GererPartie {
 		for(int idJoueur = 0; idJoueur < partie.getJoueurs().size(); idJoueur++) {
 			Joueur j = partie.getJoueurs().get(idJoueur);
 			j.setCaseDeDepart(partie.getPlateau().getChemin().get(1 + idJoueur * 14));
-			j.initialisationReference();
+			j.initialisationChevaux();
 
 			final int idJoueurFinal = idJoueur;
 			cases.forEach(c -> {

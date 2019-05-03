@@ -1,5 +1,8 @@
 package fr.huautleroux.petitschevaux.exceptions;
 
+/**
+ * Erreur générée lorsque qu'un chargement de sauvegarde a échoué
+ */
 @SuppressWarnings("serial")
 public class ChargementSauvegardeException extends Exception {
 	

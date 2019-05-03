@@ -25,16 +25,19 @@ public class Pion implements Comparable<Pion> {
 		return Integer.valueOf(this.getId()).compareTo(Integer.valueOf(pion.getId()));
 	}
 
+	/**
+	 * @return Permet de savoir si le cheval se trouve actuellement à l'écurie
+	 **/
+	public boolean isDansEcurie() {
+		return caseActuelle instanceof CaseEcurie;
+	}
+
 	public Case getCaseActuelle() {
 		return caseActuelle;
 	}
 
 	public void setCaseActuelle(Case caseActuelle) {
 		this.caseActuelle = caseActuelle;
-	}
-
-	public boolean isDansEcurie() {
-		return caseActuelle instanceof CaseEcurie;
 	}
 
 	public int getId() {

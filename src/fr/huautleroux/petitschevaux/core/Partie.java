@@ -32,7 +32,7 @@ public class Partie {
 	public void jouerJeu() {
 		plateau.updateAffichage();
 		
-		Main.getAffStatic().debutTour(numeroTour);
+		Main.getInstance().getAffichage().debutTour(numeroTour);
 		int idDepart = couleurCommence.ordinal();
 
 		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
@@ -43,7 +43,7 @@ public class Partie {
 			plateau.updateAffichage();
 
 			if (estPartieTerminee()) {
-				Main.getAffStatic().finDePartie(numeroTour, getJoueurGagnant());
+				Main.getInstance().getAffichage().finDePartie(numeroTour, getJoueurGagnant());
 				return;
 			}
 		}
@@ -53,8 +53,8 @@ public class Partie {
 
 		numeroTour++;
 
-		Main.getAffStatic().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
-		Main.getAffStatic().attendreToucheEntrer(() -> {
+		Main.getInstance().getAffichage().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
+		Main.getInstance().getAffichage().attendreToucheEntrer(() -> {
 			if(!estPartieTerminee() && !stopPartie) {
 				idJoueurCourant = 0;
 				jouerJeu();
@@ -65,30 +65,30 @@ public class Partie {
 	public void tourJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
 		if (!aDejaFaitSix)
-			Main.getAffStatic().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleur());
+			Main.getInstance().getAffichage().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleur());
 		else
-			Main.getAffStatic().simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
+			Main.getInstance().getAffichage().simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
 		
-		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
+		Main.getInstance().getAffichage().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
-		Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
+		Main.getInstance().getAffichage().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
 
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
 			try {
-				SauvegardeResultat sauvegardeResultat = Main.getPopStatic().menuSauvegarde(this);
+				SauvegardeResultat sauvegardeResultat = Main.getInstance().getPopup().menuSauvegarde(this);
 
 				if (sauvegardeResultat.equals(SauvegardeResultat.ANNULER))
 					throw new SauvegardeException("Sauvegarde annulée");
 
 				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
-				Main.getAffStatic().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
+				Main.getInstance().getAffichage().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
 
 				if(stopPartie) {
-					Main.getAffStatic().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
+					Main.getInstance().getAffichage().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
 					return;
 				}
 			} catch (SauvegardeException ex) {
-				Main.getAffStatic().simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", Color.MEDIUMPURPLE);
+				Main.getInstance().getAffichage().simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", Color.MEDIUMPURPLE);
 			}
 
 			tourJoueur(aDejaFaitSix, de);
@@ -99,17 +99,17 @@ public class Partie {
 			Pion pion;
 			try {
 				pion = joueurCourant.choisirPion(de, action, plateau);
-				Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
+				Main.getInstance().getAffichage().simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
 				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
-				Main.getPopStatic().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null, "Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
+				Main.getInstance().getPopup().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null, "Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
 			}
 		}
 
 		else 
-			Main.getAffStatic().simpleMessage(joueurCourant.getNom() + " passe son tour", null);
+			Main.getInstance().getAffichage().simpleMessage(joueurCourant.getNom() + " passe son tour", null);
 
-		Main.getAffStatic().simpleMessage("", null);
+		Main.getInstance().getAffichage().simpleMessage("", null);
 
 		if (de == 6 && !aDejaFaitSix) {
 			plateau.updateAffichage();

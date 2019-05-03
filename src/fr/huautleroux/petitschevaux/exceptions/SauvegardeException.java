@@ -1,5 +1,8 @@
 package fr.huautleroux.petitschevaux.exceptions;
 
+/**
+ * Erreur générée lorsque qu'une sauvegarde a échoué
+ */
 @SuppressWarnings("serial")
 public class SauvegardeException extends Exception {
 	
