@@ -40,7 +40,7 @@ public class GererPartie {
 	 */
 	public void initialiserJeu(Consumer<Partie> callback) {
 		partie.setCouleurCommence(tirageCouleur());
-		int nbJoueurHumain = Main.getInstance().getPopup().getNombresJoueurs();
+		int nbJoueurHumain = Main.getInstance().getPopup().getNombres(4, "Nouvelle partie : Configuration", "Le nombre de joueurs doit être compris en 0 et 4", "Nombre de joueurs : ");
 
 		initialiserJoueurs(nbJoueurHumain, () -> {
 			initialiserPlateau();
@@ -50,7 +50,7 @@ public class GererPartie {
 	}
 
 	/**
-	 * Initialise les joueurs (humains & bots) d'une partie
+	 * Initialise les joueurs (humains et bots) d'une partie
 	 * @param nbJoueurHumain Nombre de joueurs humains
 	 * @param callback Bloc à exécuter lorsque l'initialisation est terminée
 	 */

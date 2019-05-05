@@ -169,16 +169,20 @@ public class Popup {
 	}
 
 	/**
-	 * Fenêtre demandant le nombre de joueurs humains qui va participer
-	 * @return Nombre entier entre 0 et 4
+	 * Fenêtre demandant un nombre à l'utilisateur
+	 * @param nombreMax Nombre max a ne pas dépasser
+	 * @param title Titre de la fenêtre
+	 * @param header Header de la fenêtre
+	 * @param message Message de la fenêtre
+	 * @return Nombre entier entre 0 et nombreMax
 	 */
-	public Integer getNombresJoueurs() {
+	public Integer getNombres(int nombreMax, String title, String header, String content) {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.initModality(Modality.WINDOW_MODAL);
 		setIcon(dialog, "iconConfiguration");
-		dialog.setTitle("Nouvelle partie : Configuration");
-		dialog.setHeaderText("Le nombre de joueurs doit être compris en 0 et 4");
-		dialog.setContentText("Nombre de joueurs : ");
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(content);
 
 		Button buttonOk = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
 		buttonOk.setText("Valider");
@@ -189,7 +193,7 @@ public class Popup {
 
 			try {
 				int valeur = Integer.parseInt(textField.getText().trim());
-				desactiver = valeur < 0 || valeur > 4;
+				desactiver = valeur < 0 || valeur > nombreMax;
 			} catch (NumberFormatException e) {}
 
 			buttonOk.setDisable(desactiver);
@@ -202,7 +206,7 @@ public class Popup {
 		Optional<String> optionalNombreJoueurs = dialog.showAndWait();
 
 		if (!optionalNombreJoueurs.isPresent())
-			return getNombresJoueurs();
+			return getNombres(nombreMax, title, header, content);
 		return Integer.parseInt(optionalNombreJoueurs.get());
 	}
 

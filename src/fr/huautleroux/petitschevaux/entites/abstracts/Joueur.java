@@ -39,6 +39,7 @@ public abstract class Joueur implements Comparable<Joueur> {
 	 * @param choix Choix choisi par le joueur
 	 * @param plateau Instance du plateau
 	 * @return Pion choisi par le joueur
+	 * @throws AucunPionException Erreur generée si aucun pion ne rempli les conditions
 	 */
 	public abstract Pion choisirPion(int de, JoueurAction choix, Plateau plateau) throws AucunPionException;
 

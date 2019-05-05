@@ -20,14 +20,19 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	private static Main instance;
-	
+	public static boolean DE_TRUQUE = false;
+
 	public static void main(String[] args) {
+		for (String arg : args)
+			if (arg.equals("-de"))
+				DE_TRUQUE = true;
+		
 		Application.launch(args);
 	}
 
 	private Affichage affichage;
 	private Popup popup = new Popup();
-	
+
 	private GererPartie petitsChevaux = new GererPartie();
 	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde("sauvegardes");
 	private Scene scene;
@@ -40,7 +45,7 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		instance = this;
 		affichage = new Affichage(this);
-		
+
 		GridPane root = new GridPane();
 		GridPane grilleContenu = new GridPane();
 		infoContenu = new GridPane();
@@ -59,7 +64,7 @@ public class Main extends Application {
 
 		double tailleCarre = (recTaille+espacement)*nbCases + 2*marge;
 		infoContenu.setTranslateX(tailleCarre);
-		
+
 		root.getChildren().addAll(grilleContenu, infoContenu);
 		scene = new Scene(root, tailleCarre + 500, tailleCarre);
 
@@ -72,7 +77,7 @@ public class Main extends Application {
 				rec.setId("rec-" + id);
 
 				Couleur c = Couleur.JAUNE;
-				
+
 				if (y <= 5 && x <= 5) rec.setFill(c.getCaseEcurieCouleur()); // CaseEcurie
 				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getCaseEchelleCouleur()); // CaseEchelle
 				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCaseCheminCouleur()); // CaseChemin
@@ -102,7 +107,7 @@ public class Main extends Application {
 				GridPane.setColumnIndex(t, x);
 				GridPane.setColumnIndex(rec, x);
 				grilleContenu.getChildren().addAll(rec, t);
-				
+
 				affichage.addText(id, t);
 			}
 
@@ -111,14 +116,14 @@ public class Main extends Application {
 		stage.setTitle("Jeu des petits chevaux");
 		stage.setResizable(false);
 		stage.show();
-		
+
 		affichage.openMenuChargementSauvegarde();
 	}
-	
+
 	public GererPartie getPetitsChevaux() {
 		return petitsChevaux;
 	}
-	
+
 	public Scene getScene() {
 		return scene;
 	}
@@ -126,19 +131,19 @@ public class Main extends Application {
 	public GridPane getInfoContenu() {
 		return infoContenu;
 	}
-	
+
 	public GestionSauvegarde getGestionSauvegarde() {
 		return gestionSauvegarde;
 	}
-	
+
 	public Popup getPopup() {
 		return popup;
 	}
-	
+
 	public Affichage getAffichage() {
 		return affichage;
 	}
-	
+
 	public static Main getInstance() {
 		return instance;
 	}

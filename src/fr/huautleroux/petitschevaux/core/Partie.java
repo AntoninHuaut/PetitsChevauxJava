@@ -72,6 +72,10 @@ public class Partie {
 	 */
 	public void tourJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
+		
+		if (Main.DE_TRUQUE)
+			de = Main.getInstance().getPopup().getNombres(999, "De truqué", "Dé original : " + de, "Entrez la valeur du dé truquée : ");
+		
 		if (!aDejaFaitSix)
 			Main.getInstance().getAffichage().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleur());
 		else
