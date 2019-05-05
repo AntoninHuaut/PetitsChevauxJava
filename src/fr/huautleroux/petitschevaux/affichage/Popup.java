@@ -173,7 +173,7 @@ public class Popup {
 	 * @param nombreMax Nombre max a ne pas dépasser
 	 * @param title Titre de la fenêtre
 	 * @param header Header de la fenêtre
-	 * @param message Message de la fenêtre
+	 * @param content Message de la fenêtre
 	 * @return Nombre entier entre 0 et nombreMax
 	 */
 	public Integer getNombres(int nombreMax, String title, String header, String content) {
