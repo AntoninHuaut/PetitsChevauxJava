@@ -29,6 +29,9 @@ public class Partie {
 	private int numeroTour = 1;
 	private boolean stopPartie = false;
 
+	/**
+	 * Lance le jeu
+	 */
 	public void jouerJeu() {
 		plateau.updateAffichage();
 		
@@ -62,6 +65,11 @@ public class Partie {
 		});
 	}
 
+	/**
+	 * Effectue le tour de jeu du joueur courant
+	 * @param aDejaFaitSix Si le joueur a été rejoué
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 */
 	public void tourJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
 		if (!aDejaFaitSix)
@@ -117,10 +125,18 @@ public class Partie {
 		}
 	}
 
+	/**
+	 * Savoir si une partie est terminée
+	 * @return Vrai si la partie est terminée
+	 */
 	public boolean estPartieTerminee() {
 		return getJoueurGagnant() != null;
 	}
 
+	/**
+	 * Obtient le gagnant de la partie
+	 * @return Joueur gagnant
+	 */
 	public Joueur getJoueurGagnant() {
 		for (Joueur j : joueurs) {
 			boolean pionBienPlace = true;
@@ -147,11 +163,18 @@ public class Partie {
 		return null;
 	}
 	
+	/**
+	 * Simule un lancé de dé
+	 * @return Nombre entier entre 1 et 6
+	 */
 	private int lancerDe() {
 		int lanceN = random.nextInt(6) + 1;
 		return lanceN;
 	}
 	
+	/**
+	 * Trie l'ordre des joueurs pour qu'il soit dans l'ordre des couleurs
+	 */
 	public void trierOrdreJoueurs() {
 		joueurs = joueurs.stream().sorted((j1, j2) -> j1.compareTo(j2)).collect(Collectors.toList());
 	}

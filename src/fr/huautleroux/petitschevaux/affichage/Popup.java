@@ -39,6 +39,12 @@ public class Popup {
 	private final String MAUVAISE_ENTREE = "red";
 	private final String BONNE_ENTREE = "green";
 
+	/**
+	 * Ouvre le menu de sauvegarde
+	 * @param partie Partie à sauvegarder
+	 * @return Résultat de la sauvegarde
+	 * @throws SauvegardeException Erreur générée si la sauvegarde a échoué
+	 */
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.initModality(Modality.WINDOW_MODAL);
@@ -83,6 +89,13 @@ public class Popup {
 		return quitter ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
 	}
 
+	/**
+	 * Fenêtre demandant un choix Oui/Non
+	 * @param title Nom de la fenêtre
+	 * @param header Header de la fenêtre
+	 * @param content Message de la fenêtre
+	 * @return Résultat choisi par l'utilisateur
+	 */
 	public BooleanResultat getBooleanSauvegarde(String title, String header, String content) {
 		Alert dialog = new Alert(AlertType.CONFIRMATION);
 		dialog.initModality(Modality.WINDOW_MODAL);
@@ -103,6 +116,14 @@ public class Popup {
 		return optionalBouton.get().equals(buttonOui) ? BooleanResultat.OUI : BooleanResultat.NON;
 	}
 
+	/**
+	 * Fenêtre affichant les actions disponibles pour un joueur
+	 * @param de Nombre de déplacements que le cheval doit effectuer
+	 * @param actionsDispo Liste des actions disponibles pour le joueur
+	 * @param actionDefaut Action par défaut
+	 * @param joueur Joueur
+	 * @return Action choisie par le joueur
+	 */
 	public JoueurAction getJoueurAction(int de, List<JoueurAction> actionsDispo, JoueurAction actionDefaut, Joueur joueur) {
 		List<String> actionsDispoStr = new ArrayList<String>();
 		actionsDispo.forEach(action -> actionsDispoStr.add(action.getNom()));
@@ -121,6 +142,13 @@ public class Popup {
 			return getJoueurActionByNom(optionalJoueurAction.get());
 	}
 
+	/**
+	 * Fenêtre affichant les pions disponibles pour l'action choisie par un joueur
+	 * @param action Action choisie par le joueur
+	 * @param pionsDispo Liste des pions disponibles
+	 * @param joueur Joueur
+	 * @return Pion choisie par le joueur
+	 */
 	public Pion getJoueurPion(JoueurAction action, List<Pion> pionsDispo, Joueur joueur) {
 		List<String> pionsDispoStr = new ArrayList<String>();
 		pionsDispo.forEach(pion -> pionsDispoStr.add(pion.toString()));
@@ -140,6 +168,10 @@ public class Popup {
 			return getJoueurPionByNom(joueur, optionalPion.get());
 	}
 
+	/**
+	 * Fenêtre demandant le nombre de joueurs humains qui va participer
+	 * @return Nombre entier entre 0 et 4
+	 */
 	public Integer getNombresJoueurs() {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.initModality(Modality.WINDOW_MODAL);
@@ -174,6 +206,11 @@ public class Popup {
 		return Integer.parseInt(optionalNombreJoueurs.get());
 	}
 
+	/**
+	 * Fenêtre permettant la configuration des joueurs (Pseudo + Couleur)
+	 * @param nbJoueur Nombre de joueurs humains
+	 * @return HashMap associant le pseudo de chaque joueur à sa couleur
+	 */
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueur) {
 		Dialog<HashMap<String, Couleur>> dialog = new Dialog<>();
 		dialog.initModality(Modality.WINDOW_MODAL);
@@ -235,6 +272,13 @@ public class Popup {
 		return optionalPairs.get();
 	}
 
+	/**
+	 * Affiche une fenêtre d'information
+	 * @param type Type de la fenêtre
+	 * @param title Titre de la fenêtre
+	 * @param header Header de la fenêtre
+	 * @param message Message de la fenêtre
+	 */
 	public void showPopup(AlertType type, String title, String header, String message) {
 		Alert dialog = new Alert(type);
 		dialog.initModality(Modality.WINDOW_MODAL);
@@ -244,6 +288,11 @@ public class Popup {
 		dialog.showAndWait();
 	}
 
+	/**
+	 * Vérifie que les valeurs entrées par l'utilisateur sont correctes
+	 * @param pairs HashMap associant le pseudo de chaque joueur à sa couleur
+	 * @param validerButton Bouton permettant la validation des données
+	 */
 	private void checkInitialisationJoueurs(HashMap<TextField, TextField> pairs, Node validerButton) {
 		List<Couleur> couleursUsed = new ArrayList<Couleur>();
 		List<String> pseudo = new ArrayList<String>();
@@ -292,6 +341,12 @@ public class Popup {
 		validerButton.setDisable(desactiver);
 	}
 
+	/**
+	 * Retourne le pion d'un joueur par son nom
+	 * @param joueur Joueur
+	 * @param pionStr Nom du pion
+	 * @return Pion
+	 */
 	private Pion getJoueurPionByNom(Joueur joueur, String pionStr) {
 		for (Pion pion : joueur.getChevaux())
 			if (pion.toString().equals(pionStr))
@@ -300,6 +355,11 @@ public class Popup {
 		return null;
 	}
 
+	/**
+	 * Retourne l'action par son nom
+	 * @param actionStr Nom de l'action
+	 * @return Action d'un joueur
+	 */
 	private JoueurAction getJoueurActionByNom(String actionStr) {
 		for (JoueurAction action : JoueurAction.values())
 			if (action.getNom().equals(actionStr))
@@ -308,6 +368,11 @@ public class Popup {
 		return JoueurAction.RIEN_FAIRE;
 	}
 
+	/**
+	 * Retourne la couleur par son nom
+	 * @param couleurStr Nom de la couleur
+	 * @return Couleur
+	 */
 	private Couleur getCouleurString(String couleurStr) {
 		if (couleurStr.isEmpty())
 			return null;
@@ -319,6 +384,11 @@ public class Popup {
 		return null;
 	}
 	
+	/**
+	 * Définie l'icône d'une fenêtre
+	 * @param dialog Fenêtre
+	 * @param nom Nom de l'icone
+	 */
 	private void setIcon(Dialog<?> dialog, String nom) {
 		((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResource("/ressources/" + nom + ".png").toExternalForm()));
 	}

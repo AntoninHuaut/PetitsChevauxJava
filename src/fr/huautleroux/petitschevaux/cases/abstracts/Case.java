@@ -14,11 +14,19 @@ public abstract class Case {
 		this.numero = numero;
 	}
 
+	/**
+	 * Ajoute un cheval sur la case
+	 * @param pion Pion à ajouter
+	 */
 	public void ajouteCheval(Pion pion) {
 		pion.setCaseActuelle(this);
 		pions.add(pion);
 	}
 	
+	/**
+	 * Retire un cheval sur le case
+	 * @param pion Pion à retirer
+	 */
 	public void retirerCheval(Pion pion) {
 		pions.remove(pion);
 	}
@@ -31,6 +39,10 @@ public abstract class Case {
 		return toStringPions();
 	}
 	
+	/**
+	 * Liste les pions sur la case
+	 * @return Chaîne de caractère des pions sur la case
+	 */
 	private String toStringPions() {
 		String s = "";
 		

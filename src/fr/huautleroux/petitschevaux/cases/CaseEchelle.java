@@ -10,6 +10,10 @@ public class CaseEchelle extends CaseColoree {
 		super(couleur, numero);
 	}
 	
+	/**
+	 * Retourne le numéro de l'échelle du joueur
+	 * @return Nombre entier en 1 et 6
+	 */
 	public int getNumeroLocal() {
 		return getNumero() % 6;
 	}

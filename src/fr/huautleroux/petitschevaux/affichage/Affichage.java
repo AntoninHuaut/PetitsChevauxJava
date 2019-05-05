@@ -11,7 +11,6 @@ import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -34,6 +33,10 @@ public class Affichage {
 		this.main = javaFx;
 	}
 
+	/**
+	 * Affiche le message de début du tour
+	 * @param numeroTour Numéro du tour
+	 */
 	public void debutTour(int numeroTour) {
 		supprimerAffichageInfo();
 		tourActuel = new TextFlow();
@@ -46,7 +49,13 @@ public class Affichage {
 		main.getInfoContenu().getChildren().add(tourActuel);
 	}
 
-	public void tirageAuSort(Couleur c, String nomJoueur, Runnable callback) {
+	/**
+	 * Affiche le message du tirage au sort et attend une interaction
+	 * @param couleur Couleur
+	 * @param nomJoueur Nom du joueur qui va jouer
+	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
+	 */
+	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
 		supprimerAffichageInfo();
 		TextFlow flow = new TextFlow();
 		Text tirage = new Text("Tirage aléatoire : ");
@@ -55,7 +64,7 @@ public class Affichage {
 		resultat.setFont(policeBase);
 		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
 		touche.setFont(policeBase);
-		resultat.setFill(c.getTextCouleur());
+		resultat.setFill(couleur.getTextCouleur());
 		flow.getChildren().addAll(tirage, resultat, touche);
 
 		attendreToucheEntrer(() -> callback.run());
@@ -63,6 +72,9 @@ public class Affichage {
 		main.getInfoContenu().getChildren().add(flow);
 	}
 
+	/**
+	 * Affiche le menu de chargement de sauvegarde
+	 */
 	public void openMenuChargementSauvegarde() {
 		supprimerAffichageInfo();
 		List<String> sauvegardes = main.getGestionSauvegarde().getSauvegardes();
@@ -91,7 +103,7 @@ public class Affichage {
 					GererPartie gererPartie = main.getGestionSauvegarde().chargerPartie(sauvegarde);
 					gererPartie.demarrerPartie(false);
 				} catch (ChargementSauvegardeException e1) {
-					showPopup(AlertType.ERROR, "Chargement de la sauvegarde", "Le chargement de la sauvegarde " + sauvegarde + " a échoué");
+					main.getPopup().showPopup(AlertType.ERROR, "Chargement de la sauvegarde", null, "Le chargement de la sauvegarde " + sauvegarde + " a échoué");
 				}
 			}
 		});
@@ -107,6 +119,10 @@ public class Affichage {
 		main.getInfoContenu().getChildren().addAll(labelSauvegarde, comboBox, nouvellePartie);
 	} 
 
+	/**
+	 * Exécute un bloc lorsqu'une interaction est effectuée
+	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
+	 */
 	public void attendreToucheEntrer(Runnable callback) {
 		EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
 			@Override 
@@ -122,6 +138,11 @@ public class Affichage {
 		main.getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
 	}
 
+	/**
+	 * Affiche un message à la suite
+	 * @param msg Message
+	 * @param couleur Couleur du message (Facultatif)
+	 */
 	public void simpleMessage(String msg, Color couleur) {
 		Text simpleMessage = new Text("\n" + msg);
 		if (couleur != null)
@@ -131,6 +152,11 @@ public class Affichage {
 		tourActuel.getChildren().add(simpleMessage);
 	}
 	
+	/**
+	 * Affiche le message de fin de partie quand un joueur a gagné
+	 * @param numeroTour Numéro du tour en cours
+	 * @param joueurGagnant Joueur gagnant
+	 */
 	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
 		supprimerAffichageInfo();
 		tourActuel = new TextFlow();
@@ -155,22 +181,22 @@ public class Affichage {
 		main.getInfoContenu().getChildren().add(tourActuel);
 	}
 
+	/**
+	 * Supprime les messages
+	 */
 	public void supprimerAffichageInfo() {
 		main.getInfoContenu().getChildren().clear();
 	}
 
+	/**
+	 * Ajoute un Text d'une case a un id
+	 * @param id Id de la case ('x-y')
+	 * @param text Text de la case
+	 */
 	public void addText(String id, Text text) {
 		texts.put(id, text);
 	}
-	
-	public void showPopup(AlertType typeAlert, String titre, String message) {
-		Alert alert = new Alert(typeAlert);
-		alert.setTitle(titre);
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-	
+
 	public HashMap<String, Text> getTexts() {
 		return texts;
 	}

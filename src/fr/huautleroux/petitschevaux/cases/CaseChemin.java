@@ -28,6 +28,11 @@ public class CaseChemin extends Case {
 		return getClass().getName() + " " + toString();
 	}
 	
+	/**
+	 * Vérifie si la case permet l'accès à l'échelle pour un joueur
+	 * @param idJoueur Numéro du joueur
+	 * @return Vrai si le case permet l'accès à l'échelle
+	 */
 	public boolean isAccesEchelle(int idJoueur) {
 		return getNumero() % 14 == 0 && idJoueur * 14 == getNumero();
 	}

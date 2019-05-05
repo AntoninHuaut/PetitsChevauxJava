@@ -19,10 +19,10 @@ public class GererPartie {
 
 	private Partie partie;
 	
-	public void setPartie(Partie partie) {
-		this.partie = partie;
-	}
-	
+	/**
+	 * Démarre ou charge une (nouvelle) partie, l'initialise et la lance
+	 * @param nouvellePartie Indique si on doit démarrer une nouvelle partie
+	 */
 	public void demarrerPartie(boolean nouvellePartie) {
 		if (nouvellePartie) {
 			setPartie(new Partie());
@@ -34,26 +34,37 @@ public class GererPartie {
 		}
 	}
 
+	/**
+	 * Gère l'initialisation complète d'une partie
+	 * @param callback Bloc à exécuter lorsque l'initialisation est terminée
+	 */
 	public void initialiserJeu(Consumer<Partie> callback) {
 		partie.setCouleurCommence(tirageCouleur());
-		int nbJoueur = Main.getInstance().getPopup().getNombresJoueurs();
+		int nbJoueurHumain = Main.getInstance().getPopup().getNombresJoueurs();
 
-		initialiserJoueurs(nbJoueur, 4 - nbJoueur, () -> {
+		initialiserJoueurs(nbJoueurHumain, () -> {
 			initialiserPlateau();
 			initialiserReference();
 			Main.getInstance().getAffichage().tirageAuSort(partie.getCouleurCommence(), "" + partie.getJoueurs().get(partie.getCouleurCommence().ordinal()), () -> callback.accept(partie));
 		});
 	}
 
-	public void initialiserJoueurs(int nbJoueur, int nbBot, Runnable callback) {
-		if (nbJoueur > 0) {
-			HashMap<String, Couleur> pairs = Main.getInstance().getPopup().getInitialisationJoueurs(nbJoueur);
+	/**
+	 * Initialise les joueurs (humains & bots) d'une partie
+	 * @param nbJoueurHumain Nombre de joueurs humains
+	 * @param callback Bloc à exécuter lorsque l'initialisation est terminée
+	 */
+	public void initialiserJoueurs(int nbJoueurHumain, Runnable callback) {
+		int nbJoueurBot = 4 - nbJoueurHumain;
+		
+		if (nbJoueurHumain > 0) {
+			HashMap<String, Couleur> pairs = Main.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
 
 			for (String nomJoueur : pairs.keySet())
 				partie.getJoueurs().add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
 		}
 
-		for (int i = 0; i < nbBot; i++) {
+		for (int i = 0; i < nbJoueurBot; i++) {
 			List<Couleur> couleurs = new ArrayList<Couleur>(Arrays.asList(Couleur.values()));
 			partie.getJoueurs().forEach(j -> couleurs.remove(j.getCouleur()));
 
@@ -67,6 +78,9 @@ public class GererPartie {
 		callback.run();
 	}
 
+	/**
+	 * Initialise le plateau de la partie
+	 */
 	public void initialiserPlateau() {
 		partie.setPlateau(new Plateau());
 
@@ -77,9 +91,8 @@ public class GererPartie {
 			}
 	}
 
-	/*
-	 * On initialise des listes avec des objets déjà crées
-	 * Méthode indépendance pour qu'elle puisse être appelée par le système de chargement de sauvegarde
+	/**
+	 * Initialise des variables d'instances par des objets déjà existants dans d'autres instances
 	 */
 	public void initialiserReference() {
 		partie.getPlateau().setPartie(partie);
@@ -108,7 +121,19 @@ public class GererPartie {
 
 		cases.forEach(c -> c.getChevaux().forEach(pion -> pion.setCaseActuelle(c)));
 	}
+	
+	/**
+	 * Définie la partie qui va être utilisée
+	 * @param partie Partie
+	 */
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
 
+	/**
+	 * Tire une couleur au hasard
+	 * @return Couleur
+	 */
 	private Couleur tirageCouleur(){
 		int de = partie.getRandom().nextInt(4);
 		Couleur[] couleurs = Couleur.values();
