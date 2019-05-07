@@ -1,4 +1,4 @@
-package fr.huautleroux.petitschevaux.affichage;
+package fr.huautleroux.petitschevaux.affichage.graphique;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.console.Utils;
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
@@ -67,10 +67,10 @@ public class Popup {
 			return SauvegardeResultat.ANNULER;
 
 		String nomSauvegarde = optionalSauvegarde.get();
-		nomSauvegarde = Main.getInstance().getGestionSauvegarde().convertSaveName(nomSauvegarde);
+		nomSauvegarde = IGraphique.getInstance().getGestionSauvegarde().convertSaveName(nomSauvegarde);
 		boolean ecraserSauvegarde = false;
 
-		if (Main.getInstance().getGestionSauvegarde().estSauvegardeValide(nomSauvegarde)) {
+		if (IGraphique.getInstance().getGestionSauvegarde().estSauvegardeValide(nomSauvegarde)) {
 			BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "Une sauvegarde sous le nom de " + nomSauvegarde + " existe déjà", "Souhaitez-vous l'écraser ?");
 			
 			if (booleanResultat.equals(BooleanResultat.ANNULER))
@@ -79,7 +79,7 @@ public class Popup {
 			ecraserSauvegarde = booleanResultat.equals(BooleanResultat.OUI);
 		}
 
-		Main.getInstance().getGestionSauvegarde().sauvegarderPartie(partie, nomSauvegarde, ecraserSauvegarde);
+		IGraphique.getInstance().getGestionSauvegarde().sauvegarderPartie(partie, nomSauvegarde, ecraserSauvegarde);
 		BooleanResultat booleanResultat = getBooleanSauvegarde("Menu Sauvegarde", "La sauvegarde s'est terminée avec succès", "Souhaitez-vous quitter la partie en cours ?");
 		
 		if (booleanResultat.equals(BooleanResultat.ANNULER))
@@ -261,7 +261,7 @@ public class Popup {
 				HashMap<String, Couleur> resultats = new HashMap<String, Couleur>();
 
 				for (TextField textField : pairs.keySet())
-					resultats.put(textField.getText(), getCouleurString(pairs.get(textField).getText()));
+					resultats.put(textField.getText(), Utils.getCouleurString(pairs.get(textField).getText()));
 
 				return resultats;
 			}
@@ -309,7 +309,7 @@ public class Popup {
 
 			desactiver = pseudoSub.isEmpty() || couleurSub.isEmpty() ? true : desactiver;
 
-			Couleur c = getCouleurString(couleurSub);
+			Couleur c = Utils.getCouleurString(couleurSub);
 
 			if (c == null)
 				desactiver = true;
@@ -327,7 +327,7 @@ public class Popup {
 			desactiver = true;
 
 			for (TextField tfValue : pairs.values()) {
-				Couleur couleur = getCouleurString(tfValue.getText().trim());
+				Couleur couleur = Utils.getCouleurString(tfValue.getText().trim());
 
 				if (couleur != null && Collections.frequency(couleursUsed, couleur) > 1)
 					tfValue.setStyle("-fx-text-inner-color: " + MAUVAISE_ENTREE + ";");
@@ -370,22 +370,6 @@ public class Popup {
 				return action;
 
 		return JoueurAction.RIEN_FAIRE;
-	}
-
-	/**
-	 * Retourne la couleur par son nom
-	 * @param couleurStr Nom de la couleur
-	 * @return Couleur
-	 */
-	private Couleur getCouleurString(String couleurStr) {
-		if (couleurStr.isEmpty())
-			return null;
-
-		for (Couleur couleur : Couleur.values())
-			if ((couleur.name().toLowerCase()).startsWith(couleurStr.toLowerCase()))
-				return couleur;
-
-		return null;
 	}
 	
 	/**

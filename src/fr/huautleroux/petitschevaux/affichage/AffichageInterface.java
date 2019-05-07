@@ -1,0 +1,16 @@
+package fr.huautleroux.petitschevaux.affichage;
+
+import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
+import fr.huautleroux.petitschevaux.enums.Couleur;
+import javafx.scene.paint.Color;
+
+public interface AffichageInterface {
+
+	public void debutTour(int numeroTour);
+	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback);
+	public void attendreToucheEntrer(Runnable callback);
+	public void finDePartie(int numeroTour, Joueur joueurGagnant);
+	public void effacerAffichage();
+	public void simpleMessage(String msg, Color color);
+	
+}

@@ -32,7 +32,7 @@ public class GestionSauvegarde {
 	 * Initialise la gestion des sauvegardes
 	 * @param folderName Nom du sous dossier contenant les sauvegardes
 	 */
-	public GestionSauvegarde(String folderName) {
+	public GestionSauvegarde() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Case.class, new InterfaceAdapter<Case>());
 		gsonBuilder.registerTypeAdapter(CaseColoree.class, new InterfaceAdapter<CaseColoree>());
@@ -40,7 +40,7 @@ public class GestionSauvegarde {
 		gsonBuilder.setPrettyPrinting();
 		this.gson = gsonBuilder.create();
 
-		this.folder = new File(folderName);
+		this.folder = new File("sauvegardes");
 		if(!folder.exists())
 			folder.mkdir();
 	}

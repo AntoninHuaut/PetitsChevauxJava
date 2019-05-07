@@ -3,7 +3,7 @@ package fr.huautleroux.petitschevaux.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
@@ -50,7 +50,7 @@ public class Plateau {
 		for (int y = 0; y < 15; y++)
 			for (int x = 0; x < 15; x++) {
 				String id = x + "-" + y;
-				Text text = Main.getInstance().getAffichage().getTexts().get(id);
+				Text text = IGraphique.getInstance().getAffichage().getTexts().get(id);
 				text.setText("");
 				
 				Case caseCible = getCaseParCordonnee(x, y);
@@ -86,12 +86,12 @@ public class Plateau {
 
 					if (!numeroCases.isEmpty()) {
 						text.setText(numeroCases);
-						text.setFill(couleur.getTextCouleur());
+						text.setFill(couleur.getTextCouleurIG());
 					}
 				}
 			}
 
-		Text text = Main.getInstance().getAffichage().getTexts().get("7-7");
+		Text text = IGraphique.getInstance().getAffichage().getTexts().get("7-7");
 		text.setText(Couleur.SYMBOL);
 		text.setFill(Color.WHITE);
 		text.setFont(new Font(40));
@@ -119,11 +119,11 @@ public class Plateau {
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
 			if (ancienneCase instanceof CaseEcurie)
-				Main.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleur());
+				IGraphique.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
 			else
-				Main.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleur());
+				IGraphique.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
 		} else
-			Main.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleur());
+			IGraphique.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			Main.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleur());
+			IGraphique.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
 		}
 	}
 	

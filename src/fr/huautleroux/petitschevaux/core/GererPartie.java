@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.console.IConsole;
+import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
 import fr.huautleroux.petitschevaux.entites.JoueurBot;
@@ -17,7 +19,7 @@ import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class GererPartie {
 
-	private Partie partie;
+	private Partie partie = null;
 	
 	/**
 	 * Démarre ou charge une (nouvelle) partie, l'initialise et la lance
@@ -40,12 +42,17 @@ public class GererPartie {
 	 */
 	public void initialiserJeu(Consumer<Partie> callback) {
 		partie.setCouleurCommence(tirageCouleur());
-		int nbJoueurHumain = Main.getInstance().getPopup().getNombres(4, "Nouvelle partie : Configuration", "Le nombre de joueurs doit être compris en 0 et 4", "Nombre de joueurs : ");
+		int nbJoueurHumain;
+		
+		if (Main.utilise_Interface())
+			nbJoueurHumain = IGraphique.getInstance().getPopup().getNombres(4, "Nouvelle partie : Configuration", "Le nombre de joueurs doit être compris en 0 et 4", "Nombre de joueurs : ");
+		else
+			nbJoueurHumain = new IConsole().getNombreJoueurs();
 
 		initialiserJoueurs(nbJoueurHumain, () -> {
 			initialiserPlateau();
 			initialiserReference();
-			Main.getInstance().getAffichage().tirageAuSort(partie.getCouleurCommence(), "" + partie.getJoueurs().get(partie.getCouleurCommence().ordinal()), () -> callback.accept(partie));
+			callback.accept(partie);
 		});
 	}
 
@@ -58,7 +65,7 @@ public class GererPartie {
 		int nbJoueurBot = 4 - nbJoueurHumain;
 		
 		if (nbJoueurHumain > 0) {
-			HashMap<String, Couleur> pairs = Main.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
+			HashMap<String, Couleur> pairs = IGraphique.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
 
 			for (String nomJoueur : pairs.keySet())
 				partie.getJoueurs().add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));

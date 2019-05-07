@@ -1,46 +1,54 @@
 
 package fr.huautleroux.petitschevaux.enums;
 
+import fr.huautleroux.petitschevaux.affichage.console.Utils;
 import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE),
-	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff")),
-	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN),
-	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK);
+	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE, Utils.YELLOW_BRIGHT),
+	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff"), Utils.BLUE_BRIGHT),
+	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN, Utils.GREEN_BRIGHT),
+	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK, Utils.RED_BRIGHT);
 	
 	public static final String SYMBOL = "🐎";
-	private Color textCouleur;
-	private Color caseEcurieCouleur;
-	private Color caseEchelleCouleur;
-	private Color caseCheminCouleur;
 	
-	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur, Color textCouleur) {
-		this.caseEcurieCouleur = caseEcurieCouleur;
-		this.caseEchelleCouleur = caseEchelleCouleur;
-		this.caseCheminCouleur = caseCheminCouleur;
-		this.textCouleur = textCouleur;
-	}
+	private Color ecurieCouleurIG;
+	private Color echelleCouleurIG;
+	private Color cheminCouleurIG;
+	private Color textCouleurIG;
+	private String textCouleurIC;
 	
-	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur) {
-		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur);
-	}
-
-	public Color getTextCouleur() {
-		return textCouleur;
+	private Couleur(Color ecurieCouleurIG, Color echelleCouleurIG, Color cheminCouleurIG, Color textCouleurIG, String textCouleurIC) {
+		this.ecurieCouleurIG = ecurieCouleurIG;
+		this.echelleCouleurIG = echelleCouleurIG;
+		this.cheminCouleurIG = cheminCouleurIG;
+		this.textCouleurIG = textCouleurIG;
+		this.textCouleurIC = textCouleurIC;
 	}
 	
-	public Color getCaseEcurieCouleur() {
-		return caseEcurieCouleur;
+	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur, String textCouleurIC) {
+		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur, textCouleurIC);
 	}
 
-	public Color getCaseEchelleCouleur() {
-		return caseEchelleCouleur;
+	public Color getTextCouleurIG() {
+		return textCouleurIG;
+	}
+	
+	public String getTextCouleurIC() {
+		return textCouleurIC;
+	}
+	
+	public Color getEcurieCouleurIG() {
+		return ecurieCouleurIG;
 	}
 
-	public Color getCaseCheminCouleur() {
-		return caseCheminCouleur;
+	public Color getEchelleCouleurIG() {
+		return echelleCouleurIG;
+	}
+
+	public Color getCheminCouleurIG() {
+		return cheminCouleurIG;
 	}
 	
 	@Override

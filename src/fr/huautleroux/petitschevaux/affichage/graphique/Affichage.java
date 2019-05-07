@@ -1,9 +1,9 @@
-package fr.huautleroux.petitschevaux.affichage;
+package fr.huautleroux.petitschevaux.affichage.graphique;
 
 import java.util.HashMap;
 import java.util.List;
 
-import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.core.GererPartie;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -21,15 +21,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-public class Affichage {
+public class Affichage implements AffichageInterface {
 
-	private Main main;
+	private IGraphique main;
 	private Font policeBase = new Font(14);
 	private HashMap<String, Text> texts = new HashMap<String, Text>();
 
 	private TextFlow tourActuel = null;
 
-	public Affichage(Main javaFx) {
+	public Affichage(IGraphique javaFx) {
 		this.main = javaFx;
 	}
 
@@ -38,7 +38,7 @@ public class Affichage {
 	 * @param numeroTour Numéro du tour
 	 */
 	public void debutTour(int numeroTour) {
-		supprimerAffichageInfo();
+		effacerAffichage();
 		tourActuel = new TextFlow();
 
 		Text infoTour = new Text("TOUR N°" + numeroTour);
@@ -56,7 +56,7 @@ public class Affichage {
 	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
 	 */
 	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
-		supprimerAffichageInfo();
+		effacerAffichage();
 		TextFlow flow = new TextFlow();
 		Text tirage = new Text("Tirage aléatoire : ");
 		tirage.setFont(policeBase);
@@ -64,7 +64,7 @@ public class Affichage {
 		resultat.setFont(policeBase);
 		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
 		touche.setFont(policeBase);
-		resultat.setFill(couleur.getTextCouleur());
+		resultat.setFill(couleur.getTextCouleurIG());
 		flow.getChildren().addAll(tirage, resultat, touche);
 
 		attendreToucheEntrer(() -> callback.run());
@@ -76,11 +76,11 @@ public class Affichage {
 	 * Affiche le menu de chargement de sauvegarde
 	 */
 	public void openMenuChargementSauvegarde() {
-		supprimerAffichageInfo();
+		effacerAffichage();
 		List<String> sauvegardes = main.getGestionSauvegarde().getSauvegardes();
 
 		if (sauvegardes.isEmpty()) {
-			main.getPetitsChevaux().demarrerPartie(true);
+			new GererPartie().demarrerPartie(true);
 			return;
 		}
 
@@ -98,7 +98,7 @@ public class Affichage {
 				String sauvegarde = "" + ((ComboBox<?>) e.getTarget()).getValue();
 
 				try {
-					supprimerAffichageInfo();
+					effacerAffichage();
 					
 					GererPartie gererPartie = main.getGestionSauvegarde().chargerPartie(sauvegarde);
 					gererPartie.demarrerPartie(false);
@@ -112,8 +112,8 @@ public class Affichage {
 		nouvellePartie.setTranslateY(50);
 		nouvellePartie.setTranslateX(comboBox.getMaxWidth() + 50);
 		nouvellePartie.setOnMouseClicked(e -> {
-			supprimerAffichageInfo();
-			main.getPetitsChevaux().demarrerPartie(true);
+			effacerAffichage();
+			new GererPartie().demarrerPartie(true);
 		});
 
 		main.getInfoContenu().getChildren().addAll(labelSauvegarde, comboBox, nouvellePartie);
@@ -158,7 +158,7 @@ public class Affichage {
 	 * @param joueurGagnant Joueur gagnant
 	 */
 	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
-		supprimerAffichageInfo();
+		effacerAffichage();
 		tourActuel = new TextFlow();
 		
 		Text infoTour = new Text("FIN DE PARTIE\n\n");
@@ -167,7 +167,7 @@ public class Affichage {
 
 		Text gagnant = new Text(joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n");
 		gagnant.setFont(new Font(policeBase.getSize() + 4));
-		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleur());
+		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleurIG());
 		
 		Button rejouer = new Button("Recommencer une nouvelle partie");
 		rejouer.setOnMouseClicked(e -> {
@@ -184,7 +184,7 @@ public class Affichage {
 	/**
 	 * Supprime les messages
 	 */
-	public void supprimerAffichageInfo() {
+	public void effacerAffichage() {
 		main.getInfoContenu().getChildren().clear();
 	}
 

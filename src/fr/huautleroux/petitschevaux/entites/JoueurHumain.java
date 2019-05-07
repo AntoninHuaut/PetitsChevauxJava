@@ -2,7 +2,7 @@ package fr.huautleroux.petitschevaux.entites;
 
 import java.util.List;
 
-import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -25,12 +25,12 @@ public class JoueurHumain extends Joueur {
 		else if (actionsDispo.contains(JoueurAction.DEPLACER_CHEVAL))
 			actionDefaut = JoueurAction.DEPLACER_CHEVAL;
 		
-		return Main.getInstance().getPopup().getJoueurAction(de, actionsDispo, actionDefaut, this);
+		return IGraphique.getInstance().getPopup().getJoueurAction(de, actionsDispo, actionDefaut, this);
 	};
 
 	@Override
 	public Pion choisirPion(int de, JoueurAction action, Plateau plateau) {
 		List<Pion> pionsDispo = getPionsParAction(action);
-		return Main.getInstance().getPopup().getJoueurPion(action, pionsDispo, this);
+		return IGraphique.getInstance().getPopup().getJoueurPion(action, pionsDispo, this);
 	}
 }
