@@ -1,6 +1,7 @@
 package fr.huautleroux.petitschevaux.affichage.console;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.core.GererPartie;
@@ -19,7 +20,7 @@ public class IConsole implements AffichageInterface {
 
 	public void start() {
 		effacerAffichage();
-		
+
 		GererPartie partie;
 		boolean nouvellePartie = true;
 
@@ -43,7 +44,7 @@ public class IConsole implements AffichageInterface {
 				System.out.print("\033[H\033[2J");
 		} catch(IOException | InterruptedException e) {}
 	}
-	
+
 	public void debutTour(int numeroTour) {
 		System.out.println(Utils.PURPLE_BRIGHT + "TOUR N°" + numeroTour + Utils.RESET);
 	}
@@ -59,12 +60,12 @@ public class IConsole implements AffichageInterface {
 
 		return nbJoueur;
 	}
-	
+
 	public int getDeTruque(int de) {
 		int deTruque;
 
 		System.out.println("Dé original : " + de);
-		
+
 		do {
 			System.out.print("Entrez la valeur du dé truquée : ");
 			deTruque = Saisie.asInt();
@@ -73,7 +74,7 @@ public class IConsole implements AffichageInterface {
 
 		return deTruque;
 	}
-	
+
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
 		String nomSauvegarde = Saisie.asStringNoEmpty();
@@ -126,8 +127,8 @@ public class IConsole implements AffichageInterface {
 	}
 
 	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
-		System.out.println("Tirage aléatoire : ");
-		System.out.println(couleur.getTextCouleurIC() + "C'est " + nomJoueur + " qui commence en premier !" + Utils.RESET);
+		System.out.println(couleur.getTextCouleurIC() + "Tirage aléatoire : ");
+		System.out.println("C'est " + nomJoueur + " qui commence en premier !" + Utils.RESET);
 		System.out.println("\nAppuyer sur Entrer pour continuer");
 
 		attendreToucheEntrer(() -> callback.run());
@@ -148,5 +149,33 @@ public class IConsole implements AffichageInterface {
 		System.out.println("\nAppuyer sur Entrer pour relancer une partie");
 
 		attendreToucheEntrer(() -> start());
+	}
+
+	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueurHumain) {
+		HashMap<String, Couleur> joueurs = new HashMap<String, Couleur>();
+		System.out.println("Couleur : J(aune) / B(leu) / V(ert) / R(ouge)");
+
+		for (int i = 0; i < nbJoueurHumain; i++) {
+			System.out.println("Nouveau Joueur");
+
+			String pseudo;
+
+			do {
+				System.out.print("  Entrez votre pseudo : ");
+				pseudo = Saisie.asStringNoEmpty();
+			} while (joueurs.containsKey(pseudo));
+			
+			Couleur couleur;
+			
+			do {
+				System.out.print("  Entrez la couleur que vous souhaitez : ");
+				couleur = Saisie.asCouleur();
+			} while (joueurs.containsValue(couleur));
+			
+			System.out.println("");
+			joueurs.put(pseudo, couleur);
+		}
+
+		return joueurs;
 	}
 }

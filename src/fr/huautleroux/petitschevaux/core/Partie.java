@@ -44,41 +44,46 @@ public class Partie {
 		else
 			affichageInterface = new IConsole();
 
-		affichageInterface.tirageAuSort(couleurCommence, "" + getJoueurs().get(couleurCommence.ordinal()), () -> {
+		affichageInterface.tirageAuSort(couleurCommence, "" + getJoueurs().get(couleurCommence.ordinal()), () -> jouerTour());
+	}
+	
+	/**
+	 * Joue un tour
+	 */
+	public void jouerTour() {
+		plateau.updateAffichage();
+		affichageInterface.debutTour(numeroTour);
+
+		int idDepart = couleurCommence.ordinal();
+
+		for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
+			int nb = i % joueurs.size();
+			this.idJoueurCourant = nb;
+
+			tourJoueur(false, lancerDe());
 			plateau.updateAffichage();
-			affichageInterface.debutTour(numeroTour);
 
-			int idDepart = couleurCommence.ordinal();
-
-			for (int i = idDepart; i < joueurs.size() + idDepart && !stopPartie; i++) {
-				int nb = i % joueurs.size();
-				this.idJoueurCourant = nb;
-
-				tourJoueur(false, lancerDe());
-				plateau.updateAffichage();
-
-				if (estPartieTerminee()) {
-					affichageInterface.finDePartie(numeroTour, getJoueurGagnant());
-					return;
-				}
-			}
-
-			if (stopPartie)
+			if (estPartieTerminee()) {
+				affichageInterface.finDePartie(numeroTour, getJoueurGagnant());
 				return;
+			}
+		}
 
-			numeroTour++;
+		if (stopPartie)
+			return;
 
-			if (Main.utilise_Interface())
-				IGraphique.getInstance().getAffichage().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
-			else
-				affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + Utils.RESET, null);
+		numeroTour++;
 
-			affichageInterface.attendreToucheEntrer(() -> {
-				if(!estPartieTerminee() && !stopPartie) {
-					idJoueurCourant = 0;
-					jouerJeu();
-				}
-			});
+		if (Main.utilise_Interface())
+			IGraphique.getInstance().getAffichage().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
+		else
+			affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + Utils.RESET, null);
+
+		affichageInterface.attendreToucheEntrer(() -> {
+			if(!estPartieTerminee() && !stopPartie) {
+				idJoueurCourant = 0;
+				jouerTour();
+			}
 		});
 	}
 
@@ -90,21 +95,21 @@ public class Partie {
 	public void tourJoueur(boolean aDejaFaitSix, int de) {
 		Joueur joueurCourant = getJoueurCourant();
 
+		if (!aDejaFaitSix) {
+			if (Main.utilise_Interface())
+				IGraphique.getInstance().getAffichage().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleurIG());
+			else
+				affichageInterface.simpleMessage(joueurCourant.getCouleur().getTextCouleurIC() + "C'est à " + joueurCourant + " de jouer !" + Utils.RESET, null);
+		}
+		else
+			affichageInterface.simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
+		
 		if (Main.utiliser_DeTruque()) {
 			if (Main.utilise_Interface())
 				de = IGraphique.getInstance().getPopup().getNombres(999, "De truqué", "Dé original : " + de, "Entrez la valeur du dé truquée : ");
 			else
 				de = ((IConsole) affichageInterface).getDeTruque(de);
 		}
-
-		if (!aDejaFaitSix) {
-			if (Main.utilise_Interface())
-				IGraphique.getInstance().getAffichage().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleurIG());
-			else
-				((IConsole) affichageInterface).simpleMessage(Utils.PURPLE_BRIGHT + "C'est à " + joueurCourant + " de jouer !" + Utils.RESET, null);
-		}
-		else
-			affichageInterface.simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
 
 		affichageInterface.simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
@@ -127,13 +132,13 @@ public class Partie {
 				if (Main.utilise_Interface())
 					IGraphique.getInstance().getAffichage().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
 				else
-					((IConsole) affichageInterface).simpleMessage(Utils.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + Utils.RESET, null);
+					affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + Utils.RESET, null);
 
 				if(stopPartie) {
 					if (Main.utilise_Interface())
 						IGraphique.getInstance().getAffichage().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
 					else
-						((IConsole) affichageInterface).simpleMessage(Utils.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + Utils.RESET, null);
+						affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + Utils.RESET, null);
 
 					return;
 				}

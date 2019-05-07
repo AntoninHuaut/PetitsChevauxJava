@@ -3,6 +3,8 @@ package fr.huautleroux.petitschevaux.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.console.Utils;
 import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
@@ -47,12 +49,38 @@ public class Plateau {
 	 * Met à jour l'affichage graphique du plateau
 	 */
 	public void updateAffichage() {
+		if (Main.utilise_Interface())
+			updateAffichageInterface();
+		else
+			updateAffichageConsole();
+	}
+
+	private void updateAffichageConsole() {
+		System.out.println("[PLATEAU INCROYABLE]");
+		
+		for (int y = 0; y < 15; y++)
+			for (int x = 0; x < 15; x++) {
+				Case caseCible = getCaseParCordonnee(x, y);
+
+				if (caseCible == null)
+					continue;
+
+				if (caseCible instanceof CaseEcurie) {
+
+				} else {
+
+				}
+			}
+	}
+
+	private void updateAffichageInterface() {
 		for (int y = 0; y < 15; y++)
 			for (int x = 0; x < 15; x++) {
 				String id = x + "-" + y;
+
 				Text text = IGraphique.getInstance().getAffichage().getTexts().get(id);
 				text.setText("");
-				
+
 				Case caseCible = getCaseParCordonnee(x, y);
 
 				if (caseCible == null)
@@ -118,12 +146,24 @@ public class Plateau {
 			nouvelleCase.ajouteCheval(pion);
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
-			if (ancienneCase instanceof CaseEcurie)
-				IGraphique.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
+			if (ancienneCase instanceof CaseEcurie) {
+				if (Main.utilise_Interface())
+					IGraphique.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
+				else
+					partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐎 Votre " + pion + " est sorti de l'écurie" + Utils.RESET, null);
+			}
+			else {
+				if (Main.utilise_Interface())
+					IGraphique.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
+				else
+					partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() +"🏇 Votre " + pion + " s'est déplacé" + Utils.RESET, null);
+			}
+		} else {
+			if (Main.utilise_Interface())
+				IGraphique.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
 			else
-				IGraphique.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
-		} else
-			IGraphique.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
+				partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐴 Votre " + pion + " n'a pas pu se déplacer" + Utils.RESET, null);
+		}
 	}
 
 	/**
@@ -133,7 +173,7 @@ public class Plateau {
 	 */
 	private void mangerLesPions(Couleur couleur, Case caseCible) {
 		List<Pion> pions = new ArrayList<Pion>(caseCible.getChevaux());
-		
+
 		for (Pion pion : pions) {
 			if (pion.getCouleur().equals(couleur))
 				continue;
@@ -141,10 +181,14 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			IGraphique.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
+			
+			if (Main.utilise_Interface())
+				IGraphique.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
+			else
+				partie.getAffichageInterface().simpleMessage(couleurPionRenvoye.getTextCouleurIC() + "🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie" + Utils.RESET, null);
 		}
 	}
-	
+
 	/**
 	 * Teste si le déplacement est possible
 	 * @param pion Pion à ajouter
@@ -164,7 +208,7 @@ public class Plateau {
 
 				if (i == de && !caseTmp.peutSArreter(pion, de))
 					deplacementPossible = false;
-				
+
 				if (i != de && !caseTmp.peutPasser(pion))
 					deplacementPossible = false;
 
@@ -195,11 +239,11 @@ public class Plateau {
 			List<CaseChemin> chemins = getChemin();
 			CaseChemin caseChemin = (CaseChemin) caseActuelle;
 			int caseNumero = caseChemin.getNumero();
-			
+
 			// Le joueur va effectuer la transition
 			if (caseChemin.isAccesEchelle(indiceJoueur))
 				return getEchelles().get(indiceJoueur).get(0);
-			
+
 			// Le joueur atteint la case de transition
 			if (isTransition(caseNumero, nbDeplacement, indiceJoueur))
 				return chemins.get(indiceJoueur * 14); // Le joueur est limité à la case de transition

@@ -65,7 +65,12 @@ public class GererPartie {
 		int nbJoueurBot = 4 - nbJoueurHumain;
 		
 		if (nbJoueurHumain > 0) {
-			HashMap<String, Couleur> pairs = IGraphique.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
+			HashMap<String, Couleur> pairs;
+			
+			if (Main.utilise_Interface())
+				pairs = IGraphique.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
+			else
+				pairs = new IConsole().getInitialisationJoueurs(nbJoueurHumain);
 
 			for (String nomJoueur : pairs.keySet())
 				partie.getJoueurs().add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
