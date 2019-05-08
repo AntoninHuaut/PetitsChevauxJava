@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
+import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.core.GestionPartie;
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.core.Plateau;
+import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
@@ -186,20 +188,105 @@ public class IConsole implements AffichageInterface {
 	}
 
 	public void miseAJourAffichage(Plateau plateau) {
-		System.out.println("[PLATEAU INCROYABLE]");
+		Couleur couleurCourant = plateau.getPartie().getJoueurCourant().getCouleur();
 
-		for (int y = 0; y < 15; y++)
+		HashMap<Case, String> alias = new HashMap<Case, String>();
+		HashMap<Couleur, Integer> aliasCompteur = new HashMap<Couleur, Integer>();
+		for (Couleur c : Couleur.values())
+			aliasCompteur.put(c, 0);
+
+
+		for (int y = 0; y < 15; y++) {
 			for (int x = 0; x < 15; x++) {
 				Case caseCible = plateau.getCaseParCordonnee(x, y);
 
-				if (caseCible == null)
+				if (caseCible == null) {
+					System.out.print("  ");
 					continue;
+				}
 
 				if (caseCible instanceof CaseEcurie) {
+					int numeroCheval = 0;
+					numeroCheval += x <= 3 ? x%2 : x%11;
+					int yTemp = (y <= 3 ? y%2 : y%11);
+					numeroCheval += yTemp;
 
+					if (yTemp != 0)
+						numeroCheval++;
+
+					Pion p = null;
+
+					for (Pion pGet : caseCible.getChevaux())
+						if (pGet.getId() == numeroCheval)
+							p = pGet;
+
+					if (p != null)
+						if (p.getCouleur().equals(couleurCourant))
+							System.out.print(p.getId() + 1 + " ");
+						else
+							System.out.print(p.getCouleur().name().charAt(0) + " ");
+					else
+						System.out.print(". ");
 				} else {
+					String numeroCases = "";
 
+					for (Pion p : caseCible.getChevaux()) {
+						if (numeroCases.isEmpty()) {
+							if (p.getCouleur().equals(couleurCourant))
+								numeroCases = "" + (p.getId() + 1);
+							else
+								numeroCases = "" + p.getCouleur().name().charAt(0);
+						}
+						else {
+							String lettreInfos;
+
+							if (alias.containsKey(caseCible)) {
+								lettreInfos = alias.get(caseCible);
+								lettreInfos += ", " + (p.getId() + 1);
+							} else {
+								int compteur = aliasCompteur.get(p.getCouleur());
+								int lettreNumero = 'C' + (3 * p.getCouleur().ordinal()) + compteur;
+
+								if (lettreNumero > 'I') // Pour ne pas avoir le J, qui peut faire croire que c'est un pion Jaune
+									lettreNumero++;
+
+								String lettre = "" + (char) (lettreNumero);
+								lettreInfos = lettre + " - " + p.getCouleur() + " : " + (caseCible.getChevaux().get(0).getId() + 1) + ", " + (p.getId() + 1);
+								numeroCases = lettre;
+								aliasCompteur.put(p.getCouleur(), compteur + 1);
+							}
+
+							alias.put(caseCible, lettreInfos);
+						}
+					}
+
+					if (!numeroCases.isEmpty())
+						System.out.print(numeroCases + " ");
+					else if (caseCible instanceof CaseEchelle) 
+						System.out.print("# ");				
+					else
+						System.out.print("* ");
 				}
 			}
+
+			System.out.println(" ");
+		}
+
+		if (!alias.isEmpty()) {
+			System.out.println(" ");
+
+			System.out.println("Vos pions :");
+			for (String value : alias.values())
+				if (value.toUpperCase().contains(couleurCourant.name()))
+					System.out.println("  " + value);
+
+			System.out.println("\nAutres pions :");
+
+			for (String value : alias.values())
+				if (!value.toUpperCase().contains(couleurCourant.name()))
+					System.out.println("  " + value);
+		}
+
+		System.out.println("");
 	}
 }

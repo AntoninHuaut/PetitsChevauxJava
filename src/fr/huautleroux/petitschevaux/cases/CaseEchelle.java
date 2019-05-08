@@ -9,15 +9,15 @@ public class CaseEchelle extends CaseColoree {
 	public CaseEchelle(Couleur couleur, int numero) {
 		super(couleur, numero);
 	}
-	
+
 	/**
 	 * Retourne le numéro de l'échelle du joueur
-	 * @return Nombre entier en 1 et 6
+	 * @return Nombre entier en 0 et 5
 	 */
 	public int getNumeroLocal() {
 		return getNumero() % 6;
 	}
-	
+
 	@Override
 	public boolean peutPasser(Pion pion) {
 		return getChevaux().isEmpty();
@@ -27,7 +27,7 @@ public class CaseEchelle extends CaseColoree {
 	public boolean peutSArreter(Pion pion, int de) {
 		return getChevaux().isEmpty() && getNumeroLocal () + 1 == de;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getClass().getName() + " " + toString();

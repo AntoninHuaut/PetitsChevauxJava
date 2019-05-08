@@ -22,6 +22,10 @@ Reprise du jeu de plateau traditionnel, il se compose :
 Le programme a été compilé sous Java 8  
 Il utilise la bibliothèque [Gson](https://github.com/google/gson "Gson") 2.8.5 de Google pour le système de sauvegarde  
 Cette version est intégrée dans le fichier jar exécutable
+De plus, le programme utilise JavaFX, si vous utilisez une version de Java récente qui n'intègre pas JavaFX :  
+```shell
+$ sudo apt install openjfx
+```
 
 ## Téléchargement
 Téléchargez [ici](https://github.com/Manerr/PetitsChevauxJava/releases/latest "Dernière version") la dernière version  

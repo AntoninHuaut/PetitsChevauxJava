@@ -40,7 +40,7 @@ public class Partie {
 			gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
 			return;
 		}
-		
+
 		gestionPartie.getInterface().tirageAuSort(couleurCommence, "" + getJoueurs().get(couleurCommence.ordinal()), () -> jouerTour());
 	}
 
@@ -50,8 +50,7 @@ public class Partie {
 	public void jouerTour() {
 		if (!Main.utilise_Interface())
 			gestionPartie.toConsole().effacerAffichage();
-		
-		plateau.updateAffichage();
+
 		gestionPartie.getInterface().debutTour(numeroTour);
 
 		int idDepart = couleurCommence.ordinal();
@@ -60,8 +59,11 @@ public class Partie {
 			int nb = i % joueurs.size();
 			this.idJoueurCourant = nb;
 
-			tourJoueur(false, lancerDe());
 			plateau.updateAffichage();
+			tourJoueur(false, lancerDe());
+
+			if (i+1 == joueurs.size() + idDepart && !stopPartie)
+				plateau.updateAffichage();
 
 			if (estPartieTerminee()) {
 				gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
