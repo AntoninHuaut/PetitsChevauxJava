@@ -2,24 +2,26 @@
 package fr.huautleroux.petitschevaux.enums;
 
 import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
-import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE, CCouleurs.YELLOW_BRIGHT),
-	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff"), CCouleurs.BLUE_BRIGHT),
-	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN, CCouleurs.GREEN_BRIGHT),
-	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK, CCouleurs.RED_BRIGHT);
+	JAUNE("#FFD700", "#ffff33", "#FAFAD2", "#FFA500", CCouleurs.YELLOW_BRIGHT),
+	BLEU("#0073e6", "#3399ff", "#99ccff", CCouleurs.BLUE_BRIGHT),
+	VERT("#008000", "#00e600", "#90EE90", CCouleurs.GREEN_BRIGHT),
+	ROUGE("#FF0000", "#ff6666", "#FFC0CB", CCouleurs.RED_BRIGHT);
 	
 	public static final String SYMBOL = "🐎";
 	
-	private Color ecurieCouleurIG;
-	private Color echelleCouleurIG;
-	private Color cheminCouleurIG;
-	private Color textCouleurIG;
+	/* Interface graphique */
+	private String ecurieCouleurIG;
+	private String echelleCouleurIG;
+	private String cheminCouleurIG;
+	private String textCouleurIG;
+	
+	/* Console */
 	private String textCouleurIC;
 	
-	private Couleur(Color ecurieCouleurIG, Color echelleCouleurIG, Color cheminCouleurIG, Color textCouleurIG, String textCouleurIC) {
+	private Couleur(String ecurieCouleurIG, String echelleCouleurIG, String cheminCouleurIG, String textCouleurIG, String textCouleurIC) {
 		this.ecurieCouleurIG = ecurieCouleurIG;
 		this.echelleCouleurIG = echelleCouleurIG;
 		this.cheminCouleurIG = cheminCouleurIG;
@@ -27,11 +29,11 @@ public enum Couleur {
 		this.textCouleurIC = textCouleurIC;
 	}
 	
-	private Couleur(Color caseEcurieCouleur, Color caseEchelleCouleur, Color caseCheminCouleur, String textCouleurIC) {
+	private Couleur(String caseEcurieCouleur, String caseEchelleCouleur, String caseCheminCouleur, String textCouleurIC) {
 		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur, textCouleurIC);
 	}
 
-	public Color getTextCouleurIG() {
+	public String getTextCouleurIG() {
 		return textCouleurIG;
 	}
 	
@@ -39,15 +41,15 @@ public enum Couleur {
 		return textCouleurIC;
 	}
 	
-	public Color getEcurieCouleurIG() {
+	public String getEcurieCouleurIG() {
 		return ecurieCouleurIG;
 	}
 
-	public Color getEchelleCouleurIG() {
+	public String getEchelleCouleurIG() {
 		return echelleCouleurIG;
 	}
 
-	public Color getCheminCouleurIG() {
+	public String getCheminCouleurIG() {
 		return cheminCouleurIG;
 	}
 	

@@ -15,6 +15,10 @@ import javafx.stage.Stage;
 
 public class ApplicationFX extends Application {
 	
+	public static void startApplication() {
+		Application.launch(ApplicationFX.class, new String [] {});
+	}
+	
 	private Scene scene;
 	private GridPane infoContenu;
 
@@ -55,28 +59,27 @@ public class ApplicationFX extends Application {
 				rec.setHeight(recTaille);
 				rec.setId("rec-" + id);
 
-				Couleur c = Couleur.JAUNE;
+				String c;
 
-				if (y <= 5 && x <= 5) rec.setFill(c.getEcurieCouleurIG()); // CaseEcurie
-				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getEchelleCouleurIG()); // CaseEchelle
-				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCheminCouleurIG()); // CaseChemin
+				if (y <= 5 && x <= 5) c = Couleur.JAUNE.getEcurieCouleurIG(); // CaseEcurie
+				else if (y == 7 && (x > 0 &&  x < 7)) c = Couleur.JAUNE.getEchelleCouleurIG(); // CaseEchelle
+				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) c = Couleur.JAUNE.getCheminCouleurIG(); // CaseChemin
+				
+				else if (y <= 5 && x >= 9) c = Couleur.BLEU.getEcurieCouleurIG();
+				else if (x == 7 && (y > 0 && y < 7)) c = Couleur.BLEU.getEchelleCouleurIG();
+				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) c = Couleur.BLEU.getCheminCouleurIG();
+				
+				else if (y >= 9 && x >= 9) c = Couleur.VERT.getEcurieCouleurIG();
+				else if (y == 7 && (x < 14 && x > 7)) c = Couleur.VERT.getEchelleCouleurIG();
+				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) c = Couleur.VERT.getCheminCouleurIG();
 
-				c = Couleur.ROUGE;
-				if (y >= 9 && x <= 5) rec.setFill(c.getEcurieCouleurIG());
-				else if (x == 7 && (y < 14 && y > 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) rec.setFill(c.getCheminCouleurIG());
+				else if (y >= 9 && x <= 5) c = Couleur.ROUGE.getEcurieCouleurIG();
+				else if (x == 7 && (y < 14 && y > 7)) c = Couleur.ROUGE.getEchelleCouleurIG();
+				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) c = Couleur.ROUGE.getCheminCouleurIG();
 
-				c = Couleur.VERT;
-				if (y >= 9 && x >= 9) rec.setFill(c.getEcurieCouleurIG());
-				else if (y == 7 && (x < 14 && x > 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) rec.setFill(c.getCheminCouleurIG());
-
-				c = Couleur.BLEU;
-				if (y <= 5 && x >= 9) rec.setFill(c.getEcurieCouleurIG());
-				else if (x == 7 && (y > 0 && y < 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) rec.setFill(c.getCheminCouleurIG());
-
-				if(y == 7 && x == 7)  rec.setFill(Color.BLACK);
+				else c = "#000000";
+				
+				rec.setFill(getCouleurFX(c));
 
 				Text t = new Text();
 				GridPane.setHalignment(t, HPos.CENTER);
@@ -97,6 +100,10 @@ public class ApplicationFX extends Application {
 		stage.show();
 
 		affichage.openMenuChargementSauvegarde();
+	}
+	
+	public Color getCouleurFX(String couleur) {
+		return Color.web(couleur.startsWith("#") ? couleur : "#" + couleur);
 	}
 
 	public Scene getScene() {

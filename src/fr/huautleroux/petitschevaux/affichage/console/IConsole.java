@@ -17,15 +17,12 @@ import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import fr.huautleroux.petitschevaux.save.GestionSauvegarde;
-import javafx.scene.paint.Color;
 
 public class IConsole implements AffichageInterface {
 
 	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde();
 
 	public void start() {
-		effacerAffichage();
-
 		GestionPartie gestionPartie;
 		boolean nouvellePartie = true;
 
@@ -147,7 +144,7 @@ public class IConsole implements AffichageInterface {
 		callback.run();
 	}
 
-	public void simpleMessage(String msg, Color color) {
+	public void simpleMessage(String msg, String color) {
 		System.out.println(msg);
 	}
 
@@ -222,11 +219,11 @@ public class IConsole implements AffichageInterface {
 
 					if (p != null)
 						if (p.getCouleur().equals(couleurCourant))
-							System.out.print(p.getId() + 1 + " ");
+							System.out.print(p.getId() + 1);
 						else
-							System.out.print(p.getCouleur().name().charAt(0) + " ");
+							System.out.print(p.getCouleur().name().charAt(0));
 					else
-						System.out.print(". ");
+						System.out.print(".");
 				} else {
 					String numeroCases = "";
 
@@ -261,14 +258,16 @@ public class IConsole implements AffichageInterface {
 					}
 
 					if (!numeroCases.isEmpty())
-						System.out.print(numeroCases + " ");
-					else if (caseCible instanceof CaseEchelle) 
-						System.out.print("# ");				
+						System.out.print(numeroCases);
+					else if (caseCible instanceof CaseEchelle)
+						System.out.print(((CaseEchelle) caseCible).getSymbol());				
 					else
-						System.out.print("* ");
+						System.out.print("*");
 				}
+				
+				System.out.print(" ");
 			}
-
+			
 			System.out.println(" ");
 		}
 

@@ -1,9 +1,9 @@
 package fr.huautleroux.petitschevaux;
 
+import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 import fr.huautleroux.petitschevaux.affichage.console.IConsole;
 import fr.huautleroux.petitschevaux.affichage.console.Saisie;
 import fr.huautleroux.petitschevaux.affichage.graphique.ApplicationFX;
-import javafx.application.Application;
 
 public class Main {
 
@@ -23,14 +23,19 @@ public class Main {
 	}
 
 	public Main() {
-		if (!UTILISER_INTERFACE) {
-			System.out.print("Souhaitez-vous lancer le jeu avec l'interface graphique ? O(ui) / N(on) : ");
-			UTILISER_INTERFACE = Saisie.asBoolean();
-			System.out.println("");
+		if (peutUtiliserJavaFX()) {
+			if (!UTILISER_INTERFACE) {
+				System.out.print("Souhaitez-vous lancer le jeu avec l'interface graphique ? O(ui) / N(on) : ");
+				UTILISER_INTERFACE = Saisie.asBoolean();
+				System.out.println("");
+			}
+		} else if (UTILISER_INTERFACE) {
+			System.out.println(CCouleurs.RED_BRIGHT + "\nImpossible de lancer l'interface graphique. JavaFX n'est pas installé !\n" + CCouleurs.RESET);
+			UTILISER_INTERFACE = false;
 		}
 
 		if (UTILISER_INTERFACE)
-			Application.launch(ApplicationFX.class, new String [] {});
+			ApplicationFX.startApplication();
 		else
 			new IConsole().start();
 	}
@@ -41,6 +46,15 @@ public class Main {
 
 	public static boolean utilise_Interface() {
 		return UTILISER_INTERFACE;
+	}
+
+	public boolean peutUtiliserJavaFX() {
+		try {
+			Class.forName("javafx.application.Application");
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 }
 

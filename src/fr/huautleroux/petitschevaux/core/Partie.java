@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import fr.huautleroux.petitschevaux.Main;
 import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
+import fr.huautleroux.petitschevaux.affichage.graphique.GCouleurs;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
@@ -16,7 +17,6 @@ import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
 import fr.huautleroux.petitschevaux.exceptions.AucunPionException;
 import fr.huautleroux.petitschevaux.exceptions.SauvegardeException;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.paint.Color;
 
 public class Partie {
 
@@ -77,7 +77,7 @@ public class Partie {
 		numeroTour++;
 
 		if (Main.utilise_Interface())
-			gestionPartie.toGraphique().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
+			gestionPartie.toGraphique().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", GCouleurs.VIOLET.getCouleur());
 		else
 			gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + CCouleurs.RESET, null);
 
@@ -132,13 +132,13 @@ public class Partie {
 				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
 
 				if (Main.utilise_Interface())
-					gestionPartie.toGraphique().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
+					gestionPartie.toGraphique().simpleMessage("\nLa partie a été sauvegardée", GCouleurs.VIOLET.getCouleur());
 				else
 					gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + CCouleurs.RESET, null);
 
 				if(stopPartie) {
 					if (Main.utilise_Interface())
-						gestionPartie.toGraphique().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
+						gestionPartie.toGraphique().simpleMessage("\n• La partie s'est arrêtée •", GCouleurs.VIOLET.getCouleur());
 					else
 						gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + CCouleurs.RESET, null);
 

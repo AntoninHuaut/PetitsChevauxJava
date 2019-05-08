@@ -32,4 +32,23 @@ public class CaseEchelle extends CaseColoree {
 	public String toString() {
 		return getClass().getName() + " " + toString();
 	}
+	
+	public String getSymbol() {
+		switch(getNumeroLocal()) {
+		case 0:
+			return "❶";
+		case 1:
+			return "❷";
+		case 2:
+			return "❸";
+		case 3:
+			return "❹";
+		case 4:
+			return "❺";
+		case 5:
+			return "❻";
+		default:
+			return "⓿";
+		}
+	}
 }

@@ -27,7 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 public class IGraphique implements AffichageInterface {
-
+	
 	private ApplicationFX applicationFX;
 	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde();
 	private Popup popup;
@@ -73,7 +73,7 @@ public class IGraphique implements AffichageInterface {
 		resultat.setFont(policeBase);
 		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
 		touche.setFont(policeBase);
-		resultat.setFill(couleur.getTextCouleurIG());
+		resultat.setFill(applicationFX.getCouleurFX(couleur.getTextCouleurIG()));
 		flow.getChildren().addAll(tirage, resultat, touche);
 
 		attendreToucheEntrer(() -> callback.run());
@@ -152,10 +152,10 @@ public class IGraphique implements AffichageInterface {
 	 * @param msg Message
 	 * @param couleur Couleur du message (Facultatif)
 	 */
-	public void simpleMessage(String msg, Color couleur) {
+	public void simpleMessage(String msg, String couleur) {
 		Text simpleMessage = new Text("\n" + msg);
 		if (couleur != null)
-			simpleMessage.setFill(couleur);
+			simpleMessage.setFill(Color.web(couleur.startsWith("#") ? couleur : "#" + couleur));
 
 		simpleMessage.setFont(policeBase);
 		tourActuel.getChildren().add(simpleMessage);
@@ -176,7 +176,7 @@ public class IGraphique implements AffichageInterface {
 
 		Text gagnant = new Text(joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n");
 		gagnant.setFont(new Font(policeBase.getSize() + 4));
-		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleurIG());
+		gagnant.setFill(applicationFX.getCouleurFX(joueurGagnant.getCouleur().getTextCouleurIG()));
 
 		Button rejouer = new Button("Recommencer une nouvelle partie");
 		rejouer.setOnMouseClicked(e -> {
@@ -231,7 +231,7 @@ public class IGraphique implements AffichageInterface {
 
 					if (!numeroCases.isEmpty()) {
 						text.setText(numeroCases);
-						text.setFill(couleur.getTextCouleurIG());
+						text.setFill(applicationFX.getCouleurFX(couleur.getTextCouleurIG()));
 					}
 				}
 			}

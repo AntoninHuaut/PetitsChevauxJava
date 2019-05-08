@@ -3,7 +3,6 @@ package fr.huautleroux.petitschevaux.affichage;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
-import javafx.scene.paint.Color;
 
 public interface AffichageInterface {
 
@@ -13,7 +12,7 @@ public interface AffichageInterface {
 	public void finDePartie(int numeroTour, Joueur joueurGagnant);
 	public void effacerAffichage();
 	public void miseAJourAffichage(Plateau plateau);
-	public void simpleMessage(String msg, Color color);
+	public void simpleMessage(String msg, String color);
 
 	/**
 	 * Retourne la couleur par son nom
