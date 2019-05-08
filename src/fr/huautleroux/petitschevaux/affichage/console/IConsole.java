@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
-import fr.huautleroux.petitschevaux.core.GererPartie;
+import fr.huautleroux.petitschevaux.cases.CaseEcurie;
+import fr.huautleroux.petitschevaux.cases.abstracts.Case;
+import fr.huautleroux.petitschevaux.core.GestionPartie;
 import fr.huautleroux.petitschevaux.core.Partie;
+import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.enums.SauvegardeResultat;
@@ -21,17 +24,17 @@ public class IConsole implements AffichageInterface {
 	public void start() {
 		effacerAffichage();
 
-		GererPartie partie;
+		GestionPartie gestionPartie;
 		boolean nouvellePartie = true;
 
 		try {
-			partie = menuChargementSauvegarde();
+			gestionPartie = menuChargementSauvegarde();
 			nouvellePartie = false;
 		} catch (ChargementSauvegardeException e) {
-			partie = new GererPartie();
+			gestionPartie = new GestionPartie(this);
 		}
 
-		partie.demarrerPartie(nouvellePartie);
+		gestionPartie.demarrerPartie(nouvellePartie);
 	}
 
 	public void effacerAffichage() {
@@ -46,7 +49,7 @@ public class IConsole implements AffichageInterface {
 	}
 
 	public void debutTour(int numeroTour) {
-		System.out.println(Utils.PURPLE_BRIGHT + "TOUR N°" + numeroTour + Utils.RESET);
+		System.out.println(CCouleurs.PURPLE_BRIGHT + "TOUR N°" + numeroTour + CCouleurs.RESET);
 	}
 
 	public int getNombreJoueurs() {
@@ -82,25 +85,28 @@ public class IConsole implements AffichageInterface {
 		boolean overwrite = false;
 
 		if (gestionSauvegarde.estSauvegardeValide(nomSauvegarde)) {
-			System.out.println("Une sauvegarde existe avec ce nom, souhaitez-vous l'écraser ? (Oui/Non)");
+			System.out.print("Une sauvegarde existe avec ce nom, souhaitez-vous l'écraser ? O(ui) / N(on) : ");
 			overwrite = Saisie.asBoolean();
+			System.out.println("");
 		}
 
 		gestionSauvegarde.sauvegarderPartie(partie, nomSauvegarde, overwrite);
 		System.out.println("La partie a été sauvegarde sur le slot " + nomSauvegarde);
 
-		System.out.println("Souhaitez-vous quitter la partie en cours ? (Oui/Non)");
+		System.out.print("Souhaitez-vous quitter la partie en cours ? O(ui) / N(on) : ");
 		boolean stopPartie = Saisie.asBoolean();
+		System.out.println("");
 
 		return stopPartie ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
 	}
 
-	public GererPartie menuChargementSauvegarde() throws ChargementSauvegardeException {
+	public GestionPartie menuChargementSauvegarde() throws ChargementSauvegardeException {
 		if(gestionSauvegarde.getSauvegardes().isEmpty())
 			throw new ChargementSauvegardeException("Aucune sauvegarde n'existe");
 
-		System.out.println("Souhaitez-vous charger une sauvegarde ? (Oui/Non)");
+		System.out.print("Souhaitez-vous charger une sauvegarde ? O(ui) / N(on) : ");
 		boolean chargerSauvegarde = Saisie.asBoolean();
+		System.out.println("");
 
 		if(!chargerSauvegarde)
 			throw new ChargementSauvegardeException("Opération interrompue");
@@ -121,14 +127,14 @@ public class IConsole implements AffichageInterface {
 
 		nomSauvegarde = gestionSauvegarde.convertSaveName(nomSauvegarde);
 
-		GererPartie gererPartie = gestionSauvegarde.chargerPartie(nomSauvegarde);
+		GestionPartie gererPartie = gestionSauvegarde.chargerPartie(this, nomSauvegarde);
 		System.out.println("La partie " + nomSauvegarde + " a été chargée\n");
 		return gererPartie;
 	}
 
 	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
 		System.out.println(couleur.getTextCouleurIC() + "Tirage aléatoire : ");
-		System.out.println("C'est " + nomJoueur + " qui commence en premier !" + Utils.RESET);
+		System.out.println("C'est " + nomJoueur + " qui commence en premier !" + CCouleurs.RESET);
 		System.out.println("\nAppuyer sur Entrer pour continuer");
 
 		attendreToucheEntrer(() -> callback.run());
@@ -144,8 +150,8 @@ public class IConsole implements AffichageInterface {
 	}
 
 	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
-		System.out.println(Utils.PURPLE_BRIGHT + "FIN DE PARTIE\n\n" + Utils.RESET);
-		System.out.println(joueurGagnant.getCouleur().getTextCouleurIC() + joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n" + Utils.RESET);
+		System.out.println(CCouleurs.PURPLE_BRIGHT + "FIN DE PARTIE\n\n" + CCouleurs.RESET);
+		System.out.println(joueurGagnant.getCouleur().getTextCouleurIC() + joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n" + CCouleurs.RESET);
 		System.out.println("\nAppuyer sur Entrer pour relancer une partie");
 
 		attendreToucheEntrer(() -> start());
@@ -164,18 +170,36 @@ public class IConsole implements AffichageInterface {
 				System.out.print("  Entrez votre pseudo : ");
 				pseudo = Saisie.asStringNoEmpty();
 			} while (joueurs.containsKey(pseudo));
-			
+
 			Couleur couleur;
-			
+
 			do {
 				System.out.print("  Entrez la couleur que vous souhaitez : ");
-				couleur = Saisie.asCouleur();
+				couleur = Saisie.asCouleur(this);
 			} while (joueurs.containsValue(couleur));
-			
+
 			System.out.println("");
 			joueurs.put(pseudo, couleur);
 		}
 
 		return joueurs;
+	}
+
+	public void miseAJourAffichage(Plateau plateau) {
+		System.out.println("[PLATEAU INCROYABLE]");
+
+		for (int y = 0; y < 15; y++)
+			for (int x = 0; x < 15; x++) {
+				Case caseCible = plateau.getCaseParCordonnee(x, y);
+
+				if (caseCible == null)
+					continue;
+
+				if (caseCible instanceof CaseEcurie) {
+
+				} else {
+
+				}
+			}
 	}
 }

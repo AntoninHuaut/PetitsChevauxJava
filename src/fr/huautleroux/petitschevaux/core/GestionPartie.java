@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import fr.huautleroux.petitschevaux.Main;
+import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.affichage.console.IConsole;
 import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
@@ -17,19 +18,25 @@ import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 
-public class GererPartie {
+public class GestionPartie {
 
 	private Partie partie = null;
+	private AffichageInterface affichageInterface;
+	
+	public GestionPartie(AffichageInterface affichageInterface) {
+		this.affichageInterface = affichageInterface;
+	}
 	
 	/**
 	 * Démarre ou charge une (nouvelle) partie, l'initialise et la lance
 	 * @param nouvellePartie Indique si on doit démarrer une nouvelle partie
 	 */
 	public void demarrerPartie(boolean nouvellePartie) {
-		if (nouvellePartie) {
+		if (nouvellePartie)
 			setPartie(new Partie());
+		
+		if (nouvellePartie)
 			initialiserJeu((p) -> p.jouerJeu());
-		}
 		else {
 			initialiserReference();
 			partie.jouerJeu();
@@ -45,9 +52,9 @@ public class GererPartie {
 		int nbJoueurHumain;
 		
 		if (Main.utilise_Interface())
-			nbJoueurHumain = IGraphique.getInstance().getPopup().getNombres(4, "Nouvelle partie : Configuration", "Le nombre de joueurs doit être compris en 0 et 4", "Nombre de joueurs : ");
+			nbJoueurHumain = toGraphique().getPopup().getNombres(4, "Nouvelle partie : Configuration", "Le nombre de joueurs doit être compris en 0 et 4", "Nombre de joueurs : ");
 		else
-			nbJoueurHumain = new IConsole().getNombreJoueurs();
+			nbJoueurHumain = toConsole().getNombreJoueurs();
 
 		initialiserJoueurs(nbJoueurHumain, () -> {
 			initialiserPlateau();
@@ -68,9 +75,9 @@ public class GererPartie {
 			HashMap<String, Couleur> pairs;
 			
 			if (Main.utilise_Interface())
-				pairs = IGraphique.getInstance().getPopup().getInitialisationJoueurs(nbJoueurHumain);
+				pairs = toGraphique().getPopup().getInitialisationJoueurs(nbJoueurHumain);
 			else
-				pairs = new IConsole().getInitialisationJoueurs(nbJoueurHumain);
+				pairs = toConsole().getInitialisationJoueurs(nbJoueurHumain);
 
 			for (String nomJoueur : pairs.keySet())
 				partie.getJoueurs().add(new JoueurHumain(nomJoueur, pairs.get(nomJoueur)));
@@ -108,6 +115,7 @@ public class GererPartie {
 	 */
 	public void initialiserReference() {
 		partie.getPlateau().setPartie(partie);
+		partie.setGererPartie(this);
 
 		List<Case> cases = new ArrayList<Case>();
 		cases.addAll(partie.getPlateau().getEcuries());
@@ -150,5 +158,17 @@ public class GererPartie {
 		int de = partie.getRandom().nextInt(4);
 		Couleur[] couleurs = Couleur.values();
 		return couleurs[de];
+	}
+	
+	public IConsole toConsole() {
+		return (IConsole) affichageInterface;
+	}
+	
+	public IGraphique toGraphique() {
+		return (IGraphique) affichageInterface;
+	}
+
+	public AffichageInterface getInterface() {
+		return affichageInterface;
 	}
 }

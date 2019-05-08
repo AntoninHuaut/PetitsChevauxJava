@@ -16,7 +16,7 @@ Reprise du jeu de plateau traditionnel, il se compose :
 ## Objectif
 - Refaire le jeu en respectant les règles du jeu
 - Adapter la version C => Java, avec la POO
-- Effectuer un affichage en interface graphique
+- Effectuer un affichage en console ansi qu'en interface graphique
 
 ## Informations
 Le programme a été compilé sous Java 8  
@@ -27,10 +27,11 @@ Cette version est intégrée dans le fichier jar exécutable
 Téléchargez [ici](https://github.com/Manerr/PetitsChevauxJava/releases/latest "Dernière version") la dernière version  
 
 ## Utilisation
-> L'argument de lancement `-de` permet de jouer avec un dé truqué
+> L'argument de lancement `-de` permet de jouer avec un dé truqué  
+> L'argument de lancement `-interface` force le lancement du jeu avec l'interface graphique
 
 ```shell
-$ java -jar PetitsChevaux.jar -de
+$ java -jar PetitsChevaux.jar -de -interface
 ```
 
 ## Liens

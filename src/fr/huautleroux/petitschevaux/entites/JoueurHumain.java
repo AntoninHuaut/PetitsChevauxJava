@@ -4,7 +4,6 @@ import java.util.List;
 
 import fr.huautleroux.petitschevaux.Main;
 import fr.huautleroux.petitschevaux.affichage.console.Saisie;
-import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
 import fr.huautleroux.petitschevaux.core.Plateau;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
@@ -28,7 +27,7 @@ public class JoueurHumain extends Joueur {
 			actionDefaut = JoueurAction.DEPLACER_CHEVAL;
 		
 		if (Main.utilise_Interface())
-			return IGraphique.getInstance().getPopup().getJoueurAction(de, actionsDispo, actionDefaut, this);
+			return plateau.getPartie().getGererPartie().toGraphique().getPopup().getJoueurAction(de, actionsDispo, actionDefaut, this);
 		else {
 			actionsDispo.forEach(action -> System.out.println("  [" + action.ordinal() + "] " + action));
 			System.out.println("");
@@ -49,7 +48,7 @@ public class JoueurHumain extends Joueur {
 		List<Pion> pionsDispo = getPionsParAction(action);
 		
 		if (Main.utilise_Interface())
-			return IGraphique.getInstance().getPopup().getJoueurPion(action, pionsDispo, this);
+			return plateau.getPartie().getGererPartie().toGraphique().getPopup().getJoueurPion(action, pionsDispo, this);
 		else {
 			pionsDispo.forEach(pion -> System.out.println("  " + pion));
 			System.out.println("");

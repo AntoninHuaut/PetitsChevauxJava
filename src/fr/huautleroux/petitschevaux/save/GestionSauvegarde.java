@@ -12,9 +12,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree;
-import fr.huautleroux.petitschevaux.core.GererPartie;
+import fr.huautleroux.petitschevaux.core.GestionPartie;
 import fr.huautleroux.petitschevaux.core.Partie;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
@@ -51,7 +52,7 @@ public class GestionSauvegarde {
 	 * @return Partie
 	 * @throws ChargementSauvegardeException Erreur générée si le chargement échoue
 	 */
-	public GererPartie chargerPartie(String saveName) throws ChargementSauvegardeException {
+	public GestionPartie chargerPartie(AffichageInterface affichageInterface, String saveName) throws ChargementSauvegardeException {
 		saveName = convertSaveName(saveName);
 		File saveFile = getFile(saveName);
 
@@ -69,7 +70,7 @@ public class GestionSauvegarde {
 
 		try {
 			Partie partie = gson.fromJson(json, Partie.class);
-			GererPartie gererPartie = new GererPartie();
+			GestionPartie gererPartie = new GestionPartie(affichageInterface);
 			gererPartie.setPartie(partie);
 			return gererPartie;
 		} catch(JsonSyntaxException e) {
@@ -86,7 +87,7 @@ public class GestionSauvegarde {
 	public boolean estSauvegardeValide(String saveName) {
 		saveName = convertSaveName(saveName);
 		try {
-			chargerPartie(saveName);
+			chargerPartie(null, saveName);
 			return true;
 		} catch(ChargementSauvegardeException e) {
 			return false;

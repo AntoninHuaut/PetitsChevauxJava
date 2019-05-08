@@ -1,133 +1,276 @@
 package fr.huautleroux.petitschevaux.affichage.graphique;
 
+import java.util.HashMap;
+import java.util.List;
+
+import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
+import fr.huautleroux.petitschevaux.cases.CaseEcurie;
+import fr.huautleroux.petitschevaux.cases.abstracts.Case;
+import fr.huautleroux.petitschevaux.core.GestionPartie;
+import fr.huautleroux.petitschevaux.core.Plateau;
+import fr.huautleroux.petitschevaux.entites.Pion;
+import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
 import fr.huautleroux.petitschevaux.enums.Couleur;
+import fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException;
 import fr.huautleroux.petitschevaux.save.GestionSauvegarde;
-import javafx.application.Application;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.scene.text.TextFlow;
 
-public class IGraphique extends Application {
-	
-	private static IGraphique instance;
-	private Affichage affichage;
-	private Popup popup = new Popup();
+public class IGraphique implements AffichageInterface {
 
+	private ApplicationFX applicationFX;
 	private GestionSauvegarde gestionSauvegarde = new GestionSauvegarde();
-	private Scene scene;
-	private GridPane infoContenu;
+	private Popup popup;
+
+	private Font policeBase = new Font(14);
+	private HashMap<String, Text> texts = new HashMap<String, Text>();
+
+	private TextFlow tourActuel = null;
+
+	public IGraphique(ApplicationFX javaFx) {
+		this.applicationFX = javaFx;
+		this.popup = new Popup(this);
+	}
 
 	/**
-	 * Initialisation de l'interface graphique
+	 * Affiche le message de début du tour
+	 * @param numeroTour Numéro du tour
 	 */
-	@Override
-	public void start(Stage stage) {
-		instance = this;
-		affichage = new Affichage(this);
+	public void debutTour(int numeroTour) {
+		effacerAffichage();
+		tourActuel = new TextFlow();
 
-		GridPane root = new GridPane();
-		GridPane grilleContenu = new GridPane();
-		infoContenu = new GridPane();
+		Text infoTour = new Text("TOUR N°" + numeroTour);
+		infoTour.setFont(new Font(policeBase.getSize() + 4));
+		infoTour.setFill(Color.MEDIUMPURPLE);
+		tourActuel.getChildren().add(infoTour);
 
-		double nbCases = 15;
-		double recTaille = 60;
-		double espacement = 2.5;
-		double marge = 20;
+		applicationFX.getInfoContenu().getChildren().add(tourActuel);
+	}
 
-		grilleContenu.setPadding(new Insets(marge));
-		grilleContenu.setHgap(espacement);
-		grilleContenu.setVgap(espacement);
-		infoContenu.setPadding(new Insets(marge));
-		infoContenu.setHgap(espacement);
-		infoContenu.setVgap(espacement);
+	/**
+	 * Affiche le message du tirage au sort et attend une interaction
+	 * @param couleur Couleur
+	 * @param nomJoueur Nom du joueur qui va jouer
+	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
+	 */
+	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
+		effacerAffichage();
+		TextFlow flow = new TextFlow();
+		Text tirage = new Text("Tirage aléatoire : ");
+		tirage.setFont(policeBase);
+		Text resultat = new Text("C'est " + nomJoueur + " qui commence en premier !");
+		resultat.setFont(policeBase);
+		Text touche = new Text("\nAppuyer sur Entrer pour continuer");
+		touche.setFont(policeBase);
+		resultat.setFill(couleur.getTextCouleurIG());
+		flow.getChildren().addAll(tirage, resultat, touche);
 
-		double tailleCarre = (recTaille+espacement)*nbCases + 2*marge;
-		infoContenu.setTranslateX(tailleCarre);
+		attendreToucheEntrer(() -> callback.run());
 
-		root.getChildren().addAll(grilleContenu, infoContenu);
-		scene = new Scene(root, tailleCarre + 500, tailleCarre);
+		applicationFX.getInfoContenu().getChildren().add(flow);
+	}
 
-		for (int y = 0; y < nbCases; y++)
-			for (int x = 0; x < nbCases; x++) {
+	/**
+	 * Affiche le menu de chargement de sauvegarde
+	 */
+	public void openMenuChargementSauvegarde() {
+		effacerAffichage();
+		List<String> sauvegardes = gestionSauvegarde.getSauvegardes();
+
+		if (sauvegardes.isEmpty()) {
+			new GestionPartie(this).demarrerPartie(true);
+			return;
+		}
+
+		Text labelSauvegarde = new Text("Choisissez une sauvegarde à charger ou lancez une nouvelle partie");
+		labelSauvegarde.setFont(policeBase);
+		ObservableList<String> options = FXCollections.observableArrayList(sauvegardes);
+
+		ComboBox<String> comboBox = new ComboBox<String>(options);
+		comboBox.setValue(sauvegardes.size() + " sauvegarde(s) disponible(s)");
+		comboBox.setTranslateY(50);
+		comboBox.setMaxWidth(280);
+
+		comboBox.setOnAction(e -> {
+			if(e.getTarget() instanceof ComboBox) {
+				String sauvegarde = "" + ((ComboBox<?>) e.getTarget()).getValue();
+
+				try {
+					effacerAffichage();
+
+					GestionPartie gererPartie = gestionSauvegarde.chargerPartie(this, sauvegarde);
+					gererPartie.demarrerPartie(false);
+				} catch (ChargementSauvegardeException e1) {
+					getPopup().showPopup(AlertType.ERROR, "Chargement de la sauvegarde", null, "Le chargement de la sauvegarde " + sauvegarde + " a échoué");
+				}
+			}
+		});
+
+		Button nouvellePartie = new Button("Nouvelle partie");
+		nouvellePartie.setTranslateY(50);
+		nouvellePartie.setTranslateX(comboBox.getMaxWidth() + 50);
+		nouvellePartie.setOnMouseClicked(e -> {
+			effacerAffichage();
+			new GestionPartie(this).demarrerPartie(true);
+		});
+
+		applicationFX.getInfoContenu().getChildren().addAll(labelSauvegarde, comboBox, nouvellePartie);
+	}
+
+	/**
+	 * Exécute un bloc lorsqu'une interaction est effectuée
+	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
+	 */
+	public void attendreToucheEntrer(Runnable callback) {
+		EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
+			@Override 
+			public void handle(KeyEvent e) {
+				if (!e.getCode().equals(KeyCode.ENTER))
+					return;
+
+				applicationFX.getScene().removeEventHandler(KeyEvent.KEY_PRESSED, this);
+				callback.run();
+			} 
+		};
+
+		applicationFX.getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+	}
+
+	/**
+	 * Affiche un message à la suite
+	 * @param msg Message
+	 * @param couleur Couleur du message (Facultatif)
+	 */
+	public void simpleMessage(String msg, Color couleur) {
+		Text simpleMessage = new Text("\n" + msg);
+		if (couleur != null)
+			simpleMessage.setFill(couleur);
+
+		simpleMessage.setFont(policeBase);
+		tourActuel.getChildren().add(simpleMessage);
+	}
+
+	/**
+	 * Affiche le message de fin de partie quand un joueur a gagné
+	 * @param numeroTour Numéro du tour en cours
+	 * @param joueurGagnant Joueur gagnant
+	 */
+	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
+		effacerAffichage();
+		tourActuel = new TextFlow();
+
+		Text infoTour = new Text("FIN DE PARTIE\n\n");
+		infoTour.setFont(new Font(policeBase.getSize() + 16));
+		infoTour.setFill(Color.MEDIUMPURPLE);
+
+		Text gagnant = new Text(joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n");
+		gagnant.setFont(new Font(policeBase.getSize() + 4));
+		gagnant.setFill(joueurGagnant.getCouleur().getTextCouleurIG());
+
+		Button rejouer = new Button("Recommencer une nouvelle partie");
+		rejouer.setOnMouseClicked(e -> {
+			openMenuChargementSauvegarde();
+
+			for (Text text : texts.values())
+				text.setText("");
+		});
+
+		tourActuel.getChildren().addAll(infoTour, gagnant, rejouer);
+		applicationFX.getInfoContenu().getChildren().add(tourActuel);
+	}
+
+	public void miseAJourAffichage(Plateau plateau) {
+		for (int y = 0; y < 15; y++)
+			for (int x = 0; x < 15; x++) {
 				String id = x + "-" + y;
-				Rectangle rec = new Rectangle();
-				rec.setWidth(recTaille);
-				rec.setHeight(recTaille);
-				rec.setId("rec-" + id);
 
-				Couleur c = Couleur.JAUNE;
+				Text text = texts.get(id);
+				text.setText("");
 
-				if (y <= 5 && x <= 5) rec.setFill(c.getEcurieCouleurIG()); // CaseEcurie
-				else if (y == 7 && (x > 0 &&  x < 7)) rec.setFill(c.getEchelleCouleurIG()); // CaseEchelle
-				else if (y <= 6 && x <= 6 || (x == 0 && y == 7)) rec.setFill(c.getCheminCouleurIG()); // CaseChemin
+				Case caseCible = plateau.getCaseParCordonnee(x, y);
 
-				c = Couleur.ROUGE;
-				if (y >= 9 && x <= 5) rec.setFill(c.getEcurieCouleurIG());
-				else if (x == 7 && (y < 14 && y > 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if ((y >= 8 && x <= 6) || (y == 14 && x == 7)) rec.setFill(c.getCheminCouleurIG());
+				if (caseCible == null)
+					continue;
 
-				c = Couleur.VERT;
-				if (y >= 9 && x >= 9) rec.setFill(c.getEcurieCouleurIG());
-				else if (y == 7 && (x < 14 && x > 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if (y >= 8 && x >= 8 || (y == 7 && x == 14)) rec.setFill(c.getCheminCouleurIG());
+				if (caseCible instanceof CaseEcurie) {
+					int numeroCheval = 0;
+					numeroCheval += x <= 3 ? x%2 : x%11;
+					int yTemp = (y <= 3 ? y%2 : y%11);
+					numeroCheval += yTemp;
 
-				c = Couleur.BLEU;
-				if (y <= 5 && x >= 9) rec.setFill(c.getEcurieCouleurIG());
-				else if (x == 7 && (y > 0 && y < 7)) rec.setFill(c.getEchelleCouleurIG());
-				else if (y <= 6 && x >= 8 || (y == 0 && x == 7)) rec.setFill(c.getCheminCouleurIG());
+					if (yTemp != 0)
+						numeroCheval++;
 
-				if(y == 7 && x == 7)  rec.setFill(Color.BLACK);
+					Pion p = null;
 
-				Text t = new Text();
-				GridPane.setHalignment(t, HPos.CENTER);
-				GridPane.setValignment(t, VPos.CENTER);
-				GridPane.setRowIndex(t, y);
-				GridPane.setRowIndex(rec, y);
-				GridPane.setColumnIndex(t, x);
-				GridPane.setColumnIndex(rec, x);
-				grilleContenu.getChildren().addAll(rec, t);
+					for (Pion pGet : caseCible.getChevaux())
+						if (pGet.getId() == numeroCheval)
+							p = pGet;
 
-				affichage.addText(id, t);
+					if (p != null)
+						text.setText(Couleur.SYMBOL + " " + (p.getId() + 1));
+				} else {
+					String numeroCases = "";
+					Couleur couleur = null;
+
+					for (Pion p : caseCible.getChevaux()) {
+						couleur = p.getCouleur();
+						numeroCases += (numeroCases.isEmpty() ? Couleur.SYMBOL + " " : ", ") + (p.getId() + 1);
+					}
+
+					if (!numeroCases.isEmpty()) {
+						text.setText(numeroCases);
+						text.setFill(couleur.getTextCouleurIG());
+					}
+				}
 			}
 
-		stage.getIcons().add(new Image(getClass().getResource("/ressources/iconMain.png").toExternalForm()));
-		stage.setScene(scene);
-		stage.setTitle("Jeu des petits chevaux");
-		stage.setResizable(false);
-		stage.show();
-
-		affichage.openMenuChargementSauvegarde();
+		Text text = texts.get("7-7");
+		text.setText(Couleur.SYMBOL);
+		text.setFill(Color.WHITE);
+		text.setFont(new Font(40));
 	}
 
-	public Scene getScene() {
-		return scene;
+	/**
+	 * Supprime les messages
+	 */
+	public void effacerAffichage() {
+		applicationFX.getInfoContenu().getChildren().clear();
 	}
 
-	public GridPane getInfoContenu() {
-		return infoContenu;
+	/**
+	 * Ajoute un Text d'une case a un id
+	 * @param id Id de la case ('x-y')
+	 * @param text Text de la case
+	 */
+	public void addText(String id, Text text) {
+		texts.put(id, text);
 	}
 
-	public GestionSauvegarde getGestionSauvegarde() {
-		return gestionSauvegarde;
+	public HashMap<String, Text> getTexts() {
+		return texts;
 	}
 
 	public Popup getPopup() {
 		return popup;
 	}
 
-	public Affichage getAffichage() {
-		return affichage;
+	public ApplicationFX getApplicationFX() {
+		return applicationFX;
 	}
 
-	public static IGraphique getInstance() {
-		return instance;
+	public GestionSauvegarde getGestionSauvegarde() {
+		return gestionSauvegarde;
 	}
-
 }

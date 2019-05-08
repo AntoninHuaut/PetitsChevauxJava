@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.huautleroux.petitschevaux.Main;
-import fr.huautleroux.petitschevaux.affichage.console.Utils;
-import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
+import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
@@ -13,9 +12,6 @@ import fr.huautleroux.petitschevaux.cases.abstracts.Case;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 import fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class Plateau {
 
@@ -49,80 +45,7 @@ public class Plateau {
 	 * Met à jour l'affichage graphique du plateau
 	 */
 	public void updateAffichage() {
-		if (Main.utilise_Interface())
-			updateAffichageInterface();
-		else
-			updateAffichageConsole();
-	}
-
-	private void updateAffichageConsole() {
-		System.out.println("[PLATEAU INCROYABLE]");
-		
-		for (int y = 0; y < 15; y++)
-			for (int x = 0; x < 15; x++) {
-				Case caseCible = getCaseParCordonnee(x, y);
-
-				if (caseCible == null)
-					continue;
-
-				if (caseCible instanceof CaseEcurie) {
-
-				} else {
-
-				}
-			}
-	}
-
-	private void updateAffichageInterface() {
-		for (int y = 0; y < 15; y++)
-			for (int x = 0; x < 15; x++) {
-				String id = x + "-" + y;
-
-				Text text = IGraphique.getInstance().getAffichage().getTexts().get(id);
-				text.setText("");
-
-				Case caseCible = getCaseParCordonnee(x, y);
-
-				if (caseCible == null)
-					continue;
-
-				if (caseCible instanceof CaseEcurie) {
-					int numeroCheval = 0;
-					numeroCheval += x <= 3 ? x%2 : x%11;
-					int yTemp = (y <= 3 ? y%2 : y%11);
-					numeroCheval += yTemp;
-
-					if (yTemp != 0)
-						numeroCheval++;
-
-					Pion p = null;
-
-					for (Pion pGet : caseCible.getChevaux())
-						if (pGet.getId() == numeroCheval)
-							p = pGet;
-
-					if (p != null)
-						text.setText(Couleur.SYMBOL + " " + (p.getId() + 1));
-				} else {
-					String numeroCases = "";
-					Couleur couleur = null;
-
-					for (Pion p : caseCible.getChevaux()) {
-						couleur = p.getCouleur();
-						numeroCases += (numeroCases.isEmpty() ? Couleur.SYMBOL + " " : ", ") + (p.getId() + 1);
-					}
-
-					if (!numeroCases.isEmpty()) {
-						text.setText(numeroCases);
-						text.setFill(couleur.getTextCouleurIG());
-					}
-				}
-			}
-
-		Text text = IGraphique.getInstance().getAffichage().getTexts().get("7-7");
-		text.setText(Couleur.SYMBOL);
-		text.setFill(Color.WHITE);
-		text.setFont(new Font(40));
+		partie.getGererPartie().getInterface().miseAJourAffichage(this);
 	}
 
 	/**
@@ -148,21 +71,21 @@ public class Plateau {
 
 			if (ancienneCase instanceof CaseEcurie) {
 				if (Main.utilise_Interface())
-					IGraphique.getInstance().getAffichage().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
+					partie.getGererPartie().toGraphique().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
 				else
-					partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐎 Votre " + pion + " est sorti de l'écurie" + Utils.RESET, null);
+					partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐎 Votre " + pion + " est sorti de l'écurie" + CCouleurs.RESET, null);
 			}
 			else {
 				if (Main.utilise_Interface())
-					IGraphique.getInstance().getAffichage().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
+					partie.getGererPartie().toGraphique().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
 				else
-					partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() +"🏇 Votre " + pion + " s'est déplacé" + Utils.RESET, null);
+					partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() +"🏇 Votre " + pion + " s'est déplacé" + CCouleurs.RESET, null);
 			}
 		} else {
 			if (Main.utilise_Interface())
-				IGraphique.getInstance().getAffichage().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
+				partie.getGererPartie().toGraphique().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
 			else
-				partie.getAffichageInterface().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐴 Votre " + pion + " n'a pas pu se déplacer" + Utils.RESET, null);
+				partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐴 Votre " + pion + " n'a pas pu se déplacer" + CCouleurs.RESET, null);
 		}
 	}
 
@@ -181,11 +104,11 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			
+
 			if (Main.utilise_Interface())
-				IGraphique.getInstance().getAffichage().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
+				partie.getGererPartie().toGraphique().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
 			else
-				partie.getAffichageInterface().simpleMessage(couleurPionRenvoye.getTextCouleurIC() + "🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie" + Utils.RESET, null);
+				partie.getGererPartie().toConsole().simpleMessage(couleurPionRenvoye.getTextCouleurIC() + "🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie" + CCouleurs.RESET, null);
 		}
 	}
 
@@ -283,7 +206,7 @@ public class Plateau {
 	 * @param y Indice y
 	 * @return Case a la position donnée
 	 */
-	private Case getCaseParCordonnee(int x, int y) {
+	public Case getCaseParCordonnee(int x, int y) {
 		// Cases plateaux standards (sauf cases pré-échelles)
 
 		if (y == 6) {

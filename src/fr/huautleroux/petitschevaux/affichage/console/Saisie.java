@@ -2,6 +2,7 @@ package fr.huautleroux.petitschevaux.affichage.console;
 
 import java.util.Scanner;
 
+import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.enums.Couleur;
 
 public class Saisie {
@@ -17,9 +18,9 @@ public class Saisie {
 		return get.isEmpty() ? asStringNoEmpty() : get;
 	}
 
-	public static Couleur asCouleur() {
+	public static Couleur asCouleur(AffichageInterface affichage) {
 		try {
-			Couleur couleur = Utils.getCouleurString(asStringNoEmpty());
+			Couleur couleur = affichage.getCouleurString(asStringNoEmpty());
 
 			if (couleur == null)
 				throw new IllegalArgumentException();
@@ -27,7 +28,7 @@ public class Saisie {
 			return couleur;
 		} catch(IllegalArgumentException e) {
 			errorMsg("une couleur");
-			return asCouleur();
+			return asCouleur(affichage);
 		}
 	}
 

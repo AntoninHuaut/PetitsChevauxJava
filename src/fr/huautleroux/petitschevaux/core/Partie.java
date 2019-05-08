@@ -6,10 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import fr.huautleroux.petitschevaux.Main;
-import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
-import fr.huautleroux.petitschevaux.affichage.console.IConsole;
-import fr.huautleroux.petitschevaux.affichage.console.Utils;
-import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
+import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.entites.Pion;
 import fr.huautleroux.petitschevaux.entites.abstracts.Joueur;
@@ -23,7 +20,7 @@ import javafx.scene.paint.Color;
 
 public class Partie {
 
-	private transient AffichageInterface affichageInterface;
+	public transient GestionPartie gestionPartie;
 
 	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
@@ -39,20 +36,23 @@ public class Partie {
 	 * Lance le jeu
 	 */
 	public void jouerJeu() {
-		if (Main.utilise_Interface())
-			affichageInterface = IGraphique.getInstance().getAffichage();
-		else
-			affichageInterface = new IConsole();
-
-		affichageInterface.tirageAuSort(couleurCommence, "" + getJoueurs().get(couleurCommence.ordinal()), () -> jouerTour());
+		if (estPartieTerminee()) {
+			gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
+			return;
+		}
+		
+		gestionPartie.getInterface().tirageAuSort(couleurCommence, "" + getJoueurs().get(couleurCommence.ordinal()), () -> jouerTour());
 	}
-	
+
 	/**
 	 * Joue un tour
 	 */
 	public void jouerTour() {
+		if (!Main.utilise_Interface())
+			gestionPartie.toConsole().effacerAffichage();
+		
 		plateau.updateAffichage();
-		affichageInterface.debutTour(numeroTour);
+		gestionPartie.getInterface().debutTour(numeroTour);
 
 		int idDepart = couleurCommence.ordinal();
 
@@ -64,7 +64,7 @@ public class Partie {
 			plateau.updateAffichage();
 
 			if (estPartieTerminee()) {
-				affichageInterface.finDePartie(numeroTour, getJoueurGagnant());
+				gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
 				return;
 			}
 		}
@@ -75,11 +75,11 @@ public class Partie {
 		numeroTour++;
 
 		if (Main.utilise_Interface())
-			IGraphique.getInstance().getAffichage().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
+			gestionPartie.toGraphique().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Color.MEDIUMPURPLE);
 		else
-			affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + Utils.RESET, null);
+			gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + CCouleurs.RESET, null);
 
-		affichageInterface.attendreToucheEntrer(() -> {
+		gestionPartie.getInterface().attendreToucheEntrer(() -> {
 			if(!estPartieTerminee() && !stopPartie) {
 				idJoueurCourant = 0;
 				jouerTour();
@@ -97,32 +97,32 @@ public class Partie {
 
 		if (!aDejaFaitSix) {
 			if (Main.utilise_Interface())
-				IGraphique.getInstance().getAffichage().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleurIG());
+				gestionPartie.toGraphique().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleurIG());
 			else
-				affichageInterface.simpleMessage(joueurCourant.getCouleur().getTextCouleurIC() + "C'est à " + joueurCourant + " de jouer !" + Utils.RESET, null);
+				gestionPartie.toConsole().simpleMessage(joueurCourant.getCouleur().getTextCouleurIC() + "C'est à " + joueurCourant + " de jouer !" + CCouleurs.RESET, null);
 		}
 		else
-			affichageInterface.simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
-		
+			gestionPartie.getInterface().simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
+
 		if (Main.utiliser_DeTruque()) {
 			if (Main.utilise_Interface())
-				de = IGraphique.getInstance().getPopup().getNombres(999, "De truqué", "Dé original : " + de, "Entrez la valeur du dé truquée : ");
+				de = gestionPartie.toGraphique().getPopup().getNombres(999, "De truqué", "Dé original : " + de, "Entrez la valeur du dé truquée : ");
 			else
-				de = ((IConsole) affichageInterface).getDeTruque(de);
+				de = gestionPartie.toConsole().getDeTruque(de);
 		}
 
-		affichageInterface.simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
+		gestionPartie.getInterface().simpleMessage(joueurCourant.getNom() + " a fait " + de, null);
 		JoueurAction action = joueurCourant.choixAction(de, plateau);
-		affichageInterface.simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
+		gestionPartie.getInterface().simpleMessage(joueurCourant.getNom() + " a choisi de : " + action.getNom(), null);
 
 		if (action.equals(JoueurAction.SAUVEGARDER)) {
 			try {
 				SauvegardeResultat sauvegardeResultat;
 
 				if (Main.utilise_Interface())
-					sauvegardeResultat = IGraphique.getInstance().getPopup().menuSauvegarde(this);
+					sauvegardeResultat = gestionPartie.toGraphique().getPopup().menuSauvegarde(this);
 				else
-					sauvegardeResultat = ((IConsole) affichageInterface).menuSauvegarde(this);
+					sauvegardeResultat = gestionPartie.toConsole().menuSauvegarde(this);
 
 				if (sauvegardeResultat.equals(SauvegardeResultat.ANNULER))
 					throw new SauvegardeException("Sauvegarde annulée");
@@ -130,20 +130,20 @@ public class Partie {
 				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
 
 				if (Main.utilise_Interface())
-					IGraphique.getInstance().getAffichage().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
+					gestionPartie.toGraphique().simpleMessage("\nLa partie a été sauvegardée", Color.MEDIUMPURPLE);
 				else
-					affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + Utils.RESET, null);
+					gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + CCouleurs.RESET, null);
 
 				if(stopPartie) {
 					if (Main.utilise_Interface())
-						IGraphique.getInstance().getAffichage().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
+						gestionPartie.toGraphique().simpleMessage("\n• La partie s'est arrêtée •", Color.MEDIUMPURPLE);
 					else
-						affichageInterface.simpleMessage(Utils.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + Utils.RESET, null);
+						gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + CCouleurs.RESET, null);
 
 					return;
 				}
 			} catch (SauvegardeException ex) {
-				affichageInterface.simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", null);
+				gestionPartie.getInterface().simpleMessage("\nUne erreur est survenue pendant la sauvegarde :\n" + ex.getMessage() + "\n", null);
 			}
 
 			tourJoueur(aDejaFaitSix, de);
@@ -154,20 +154,20 @@ public class Partie {
 			Pion pion;
 			try {
 				pion = joueurCourant.choisirPion(de, action, plateau);
-				affichageInterface.simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
+				gestionPartie.getInterface().simpleMessage(joueurCourant.getNom() + " a choisi son pion n°" + (pion.getId() + 1), null);
 				plateau.deplacerPionA(pion, de);
 			} catch (AucunPionException e) {
 				if (Main.utilise_Interface())
-					IGraphique.getInstance().getPopup().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null, "Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
+					gestionPartie.toGraphique().getPopup().showPopup(AlertType.ERROR, "Erreur de la détection de victoire", null, "Aucun pion disponible, " + joueurCourant.getNom() + " a gagné"); // Normalement n'arrive jamais ici
 				else
-					System.out.println("Erreur de la détection de victoire\nAucun pion disponible, " + joueurCourant.getNom() + " a gagné");
+					gestionPartie.toConsole().simpleMessage("Erreur de la détection de victoire\nAucun pion disponible, " + joueurCourant.getNom() + " a gagné", null);
 			}
 		}
 
 		else 
-			affichageInterface.simpleMessage(joueurCourant.getNom() + " passe son tour", null);
+			gestionPartie.getInterface().simpleMessage(joueurCourant.getNom() + " passe son tour", null);
 
-		affichageInterface.simpleMessage("", null);
+		gestionPartie.getInterface().simpleMessage("", null);
 
 		if (de == 6 && !aDejaFaitSix) {
 			plateau.updateAffichage();
@@ -241,10 +241,6 @@ public class Partie {
 		this.plateau = plateau;
 	}
 
-	public AffichageInterface getAffichageInterface() {
-		return affichageInterface;
-	}
-
 	public List<Joueur> getJoueurs() {
 		return joueurs;
 	}
@@ -263,5 +259,13 @@ public class Partie {
 
 	public Random getRandom() {
 		return random;
+	}
+
+	public GestionPartie getGererPartie() {
+		return gestionPartie;
+	}
+
+	public void setGererPartie(GestionPartie gererPartie) {
+		this.gestionPartie = gererPartie;
 	}
 }

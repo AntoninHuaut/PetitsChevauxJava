@@ -1,15 +1,15 @@
 
 package fr.huautleroux.petitschevaux.enums;
 
-import fr.huautleroux.petitschevaux.affichage.console.Utils;
+import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 import javafx.scene.paint.Color;
 
 public enum Couleur {
 	
-	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE, Utils.YELLOW_BRIGHT),
-	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff"), Utils.BLUE_BRIGHT),
-	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN, Utils.GREEN_BRIGHT),
-	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK, Utils.RED_BRIGHT);
+	JAUNE(Color.GOLD, Color.web("#ffff33"), Color.LIGHTGOLDENRODYELLOW, Color.ORANGE, CCouleurs.YELLOW_BRIGHT),
+	BLEU(Color.web("#0073e6"), Color.web("#3399ff"), Color.web("#99ccff"), CCouleurs.BLUE_BRIGHT),
+	VERT(Color.GREEN, Color.web("#00e600"), Color.LIGHTGREEN, CCouleurs.GREEN_BRIGHT),
+	ROUGE(Color.RED, Color.web("#ff6666"), Color.PINK, CCouleurs.RED_BRIGHT);
 	
 	public static final String SYMBOL = "🐎";
 	

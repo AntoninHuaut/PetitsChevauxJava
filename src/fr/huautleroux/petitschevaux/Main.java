@@ -2,8 +2,7 @@ package fr.huautleroux.petitschevaux;
 
 import fr.huautleroux.petitschevaux.affichage.console.IConsole;
 import fr.huautleroux.petitschevaux.affichage.console.Saisie;
-import fr.huautleroux.petitschevaux.affichage.console.Utils;
-import fr.huautleroux.petitschevaux.affichage.graphique.IGraphique;
+import fr.huautleroux.petitschevaux.affichage.graphique.ApplicationFX;
 import javafx.application.Application;
 
 public class Main {
@@ -25,13 +24,13 @@ public class Main {
 
 	public Main() {
 		if (!UTILISER_INTERFACE) {
-			System.out.print(Utils.PURPLE_BRIGHT + "Souhaitez-vous lancer le jeu avec l'interface graphique ? "
-					+ Utils.GREEN_BRIGHT + "O(ui) " + Utils.PURPLE_BRIGHT + "/ " + Utils.RED_BRIGHT + "N(on)" + Utils.PURPLE_BRIGHT + " : " + Utils.RESET);
+			System.out.print("Souhaitez-vous lancer le jeu avec l'interface graphique ? O(ui) / N(on) : ");
 			UTILISER_INTERFACE = Saisie.asBoolean();
+			System.out.println("");
 		}
 
 		if (UTILISER_INTERFACE)
-			Application.launch(IGraphique.class, new String [] {});
+			Application.launch(ApplicationFX.class, new String [] {});
 		else
 			new IConsole().start();
 	}

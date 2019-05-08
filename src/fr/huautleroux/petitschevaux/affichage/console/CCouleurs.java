@@ -1,24 +1,6 @@
 package fr.huautleroux.petitschevaux.affichage.console;
 
-import fr.huautleroux.petitschevaux.enums.Couleur;
-
-public class Utils {
-	
-	/**
-	 * Retourne la couleur par son nom
-	 * @param couleurStr Nom de la couleur
-	 * @return Couleur
-	 */
-	public static Couleur getCouleurString(String couleurStr) {
-		if (couleurStr.isEmpty())
-			return null;
-
-		for (Couleur couleur : Couleur.values())
-			if ((couleur.name().toLowerCase()).startsWith(couleurStr.toLowerCase()))
-				return couleur;
-
-		return null;
-	}
+public class CCouleurs {
 
     public static final String RESET = "\033[0m";
 
