@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="fr.huautleroux.petitschevaux.Main" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/Main.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2015" y="191"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="fr.huautleroux.petitschevaux.exceptions.AucunPionException" 
-    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/AucunPionException.java" 
+  <class id="1" language="java" name="fr.huautleroux.petitschevaux.affichage.graphique.IGraphique" 
+    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/graphique/IGraphique.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1083" y="118"/>    
+    <position height="-1" width="-1" x="3260" y="658"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="fr.huautleroux.petitschevaux.exceptions.SauvegardeException" 
+  <class id="2" language="java" name="fr.huautleroux.petitschevaux.exceptions.SauvegardeException" 
     project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/SauvegardeException.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1086" y="300"/>    
+    <position height="-1" width="-1" x="2598" y="1952"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException" 
-    project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/PionFinParcoursException.java" binary="false" 
+  <class id="3" language="java" name="fr.huautleroux.petitschevaux.affichage.console.IConsole" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/console/IConsole.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="728" y="308"/>    
+    <position height="-1" width="-1" x="2474" y="631"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException" 
-    project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/ChargementSauvegardeException.java" binary="false" 
+  <class id="4" language="java" name="fr.huautleroux.petitschevaux.core.Partie" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/core/Partie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="986" y="1736"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="fr.huautleroux.petitschevaux.affichage.console.CCouleurs" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/console/CCouleurs.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="731" y="118"/>    
+    <position height="-1" width="-1" x="77" y="1068"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -55,120 +53,123 @@
   <class id="6" language="java" name="fr.huautleroux.petitschevaux.save.InterfaceAdapter" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/save/InterfaceAdapter.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2503" y="795"/>    
+    <position height="-1" width="-1" x="3276" y="1675"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="fr.huautleroux.petitschevaux.save.GestionSauvegarde" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/save/GestionSauvegarde.java" binary="false" 
+  <class id="7" language="java" name="fr.huautleroux.petitschevaux.entites.Pion" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/Pion.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2021" y="1675"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="fr.huautleroux.petitschevaux.affichage.graphique.ApplicationFX" 
+    project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/graphique/ApplicationFX.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2477" y="570"/>    
+    <position height="-1" width="-1" x="3925" y="768"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="8" language="java" name="fr.huautleroux.petitschevaux.enums.SauvegardeResultat" 
-    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/SauvegardeResultat.java" 
+  <interface id="9" language="java" name="fr.huautleroux.petitschevaux.affichage.AffichageInterface" 
+    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/AffichageInterface.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1574" y="114"/>    
+    <position height="-1" width="-1" x="2456" y="1588"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </enumeration>  
-  <enumeration id="9" language="java" name="fr.huautleroux.petitschevaux.enums.JoueurAction" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/JoueurAction.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1368" y="170"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="10" language="java" name="fr.huautleroux.petitschevaux.enums.BooleanResultat" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/BooleanResultat.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1568" y="262"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="11" language="java" name="fr.huautleroux.petitschevaux.enums.Couleur" project="PetitsChevaux" 
+  </interface>  
+  <enumeration id="10" language="java" name="fr.huautleroux.petitschevaux.enums.Couleur" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/Couleur.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1271" y="1089"/>    
+    <position height="-1" width="-1" x="2100" y="2217"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="12" language="java" name="fr.huautleroux.petitschevaux.entites.abstracts.Joueur" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/abstracts/Joueur.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="597" y="1224"/>    
+  <class id="11" language="java" name="fr.huautleroux.petitschevaux.cases.CaseChemin" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/CaseChemin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1369" y="1545"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="fr.huautleroux.petitschevaux.entites.JoueurHumain" project="PetitsChevaux" 
+  <class id="12" language="java" name="fr.huautleroux.petitschevaux.entites.JoueurHumain" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/JoueurHumain.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="53" width="225" x="73" y="1086"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="fr.huautleroux.petitschevaux.entites.Pion" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/Pion.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="997" y="1303"/>    
+    <position height="-1" width="-1" x="1388" y="1126"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="fr.huautleroux.petitschevaux.entites.JoueurBot" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/JoueurBot.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="186" y="1299"/>    
+  <class id="13" language="java" name="fr.huautleroux.petitschevaux.core.GestionPartie" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/core/GestionPartie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1064" y="1180"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="fr.huautleroux.petitschevaux.core.GererPartie" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/core/GererPartie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1461" y="563"/>    
+  <class id="14" language="java" name="fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/abstracts/CaseColoree.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1689" y="1717"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="fr.huautleroux.petitschevaux.core.Partie" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/core/Partie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="984" y="709"/>    
+  <class id="15" language="java" name="fr.huautleroux.petitschevaux.save.GestionSauvegarde" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/save/GestionSauvegarde.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2867" y="1689"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="fr.huautleroux.petitschevaux.core.Plateau" project="PetitsChevaux" 
+  <class id="16" language="java" name="fr.huautleroux.petitschevaux.core.Plateau" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/core/Plateau.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2071" y="953"/>    
+    <position height="-1" width="-1" x="731" y="1207"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="fr.huautleroux.petitschevaux.entites.abstracts.Joueur" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/abstracts/Joueur.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1744" y="762"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="fr.huautleroux.petitschevaux.affichage.console.Saisie" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/console/Saisie.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2116" y="646"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -178,334 +179,418 @@
   <class id="19" language="java" name="fr.huautleroux.petitschevaux.cases.abstracts.Case" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/abstracts/Case.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1422" y="1491"/>    
+    <position height="-1" width="-1" x="1706" y="1171"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="fr.huautleroux.petitschevaux.cases.CaseEchelle" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/CaseEchelle.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1907" y="1210"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="21" language="java" name="fr.huautleroux.petitschevaux.cases.abstracts.CaseColoree" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/abstracts/CaseColoree.java" binary="false" 
+  <class id="20" language="java" name="fr.huautleroux.petitschevaux.exceptions.PionFinParcoursException" 
+    project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/PionFinParcoursException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1651" y="1209"/>    
+    <position height="-1" width="-1" x="480" y="1472"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="fr.huautleroux.petitschevaux.cases.CaseChemin" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/CaseChemin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2080" y="1473"/>    
+  <class id="21" language="java" name="fr.huautleroux.petitschevaux.entites.JoueurBot" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/entites/JoueurBot.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2047" y="1171"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="fr.huautleroux.petitschevaux.cases.CaseEcurie" project="PetitsChevaux" 
+  <enumeration id="22" language="java" name="fr.huautleroux.petitschevaux.enums.BooleanResultat" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/BooleanResultat.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3617" y="1430"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="23" language="java" name="fr.huautleroux.petitschevaux.exceptions.ChargementSauvegardeException" 
+    project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/ChargementSauvegardeException.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3050" y="1956"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="fr.huautleroux.petitschevaux.exceptions.AucunPionException" 
+    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/exceptions/AucunPionException.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="478" y="1676"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="fr.huautleroux.petitschevaux.affichage.graphique.Popup" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/graphique/Popup.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3482" y="1164"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="26" language="java" name="fr.huautleroux.petitschevaux.affichage.graphique.GCouleurs" 
+    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/graphique/GCouleurs.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3910" y="1083"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="27" language="java" name="fr.huautleroux.petitschevaux.cases.CaseEchelle" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/CaseEchelle.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1687" y="2231"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="28" language="java" name="fr.huautleroux.petitschevaux.enums.SauvegardeResultat" 
+    project="PetitsChevaux" file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/SauvegardeResultat.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3368" y="1430"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="29" language="java" name="fr.huautleroux.petitschevaux.Main" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/Main.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2881" y="469"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="30" language="java" name="fr.huautleroux.petitschevaux.enums.JoueurAction" project="PetitsChevaux" 
+    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/enums/JoueurAction.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="433" y="1187"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="31" language="java" name="fr.huautleroux.petitschevaux.cases.CaseEcurie" project="PetitsChevaux" 
     file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/cases/CaseEcurie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1648" y="1009"/>    
+    <position height="-1" width="-1" x="734" y="2105"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="fr.huautleroux.petitschevaux.affichage.Popup" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/Popup.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2086" y="604"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="25" language="java" name="fr.huautleroux.petitschevaux.affichage.Affichage" project="PetitsChevaux" 
-    file="/PetitsChevaux/src/fr/huautleroux/petitschevaux/affichage/Affichage.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1731" y="596"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <association id="26">    
+  <generalization id="32">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <association id="33">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="27" name="gestionSauvegarde">        
-        <position height="18" width="102" x="2275" y="425"/>      
+      <attribute id="34" name="gestionSauvegarde">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-628" y="-248"/>      
+      <multiplicity id="35" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <bendpoint x="889" y="1041"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="37" name="joueurs">        
+        <position height="0" width="0" x="-3038" y="348"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-3038" y="348"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="39">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <realization id="40">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="41">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="42" name="couleur">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="45" name="caseDepart">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="48" name="chemin">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="49" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="50">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="51" name="ecurie">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="52" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="54" name="pions">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="55" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="30" name="pions">        
-        <position height="0" width="0" x="-2778" y="410"/>      
+  <association id="56">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="57" name="couleur">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-2778" y="410"/>      
+      <multiplicity id="58" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="32">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="33" name="partie">        
-        <position height="0" width="0" x="-1998" y="-648"/>      
+  <association id="59">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="60" name="gestionSauvegarde">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </attribute>      
-      <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-1998" y="-648"/>      
+      <multiplicity id="61" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="35">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="36" name="caseActuelle">        
-        <position height="0" width="0" x="-2212" y="904"/>      
+  <association id="62">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="63" name="affichageInterface">        
+        <position height="0" width="0" x="-2678" y="-62"/>      
       </attribute>      
-      <multiplicity id="37" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2212" y="904"/>      
+      <multiplicity id="64" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2678" y="-62"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="38">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="21"/>  
-  </generalization>  
-  <association id="39">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="40" name="couleur">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </attribute>      
-      <multiplicity id="41" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="42">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="43">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="44" name="ecurie">        
-        <position height="0" width="0" x="-250" y="-624"/>      
-      </attribute>      
-      <multiplicity id="45" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-250" y="-624"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="46">    
-    <bendpoint x="894" y="1496"/>    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="47" name="caseDepart">        
-        <position height="0" width="0" x="-2212" y="904"/>      
-      </attribute>      
-      <multiplicity id="48" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2212" y="904"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="50" name="partie">        
-        <position height="0" width="0" x="-1998" y="-648"/>      
-      </attribute>      
-      <multiplicity id="51" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-1998" y="-648"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="52">    
-    <end type="SOURCE" refId="21"/>    
-    <end type="TARGET" refId="19"/>  
-  </generalization>  
-  <generalization id="53">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="21"/>  
-  </generalization>  
-  <association id="54">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="55" name="main">        
-        <position height="0" width="0" x="-684" y="-262"/>      
-      </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-684" y="-262"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="57">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="58" name="couleur">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </attribute>      
-      <multiplicity id="59" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="60">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="61" name="plateau">        
-        <position height="0" width="0" x="406" y="2168"/>      
-      </attribute>      
-      <multiplicity id="62" minimum="0" maximum="1">        
-        <position height="0" width="0" x="406" y="2168"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="63">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="19"/>  
-  </generalization>  
-  <association id="64">    
+  <association id="65">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="65" name="instance">        
-        <position height="18" width="49" x="2158" y="301"/>      
+      <attribute id="66" name="popup">        
+        <position height="0" width="0" x="-2148" y="1058"/>      
       </attribute>      
-      <multiplicity id="66" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-684" y="-262"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="67">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="68" name="chevaux">        
-        <position height="0" width="0" x="-2778" y="410"/>      
-      </attribute>      
-      <multiplicity id="69" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-2778" y="410"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="70">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="71">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="72" name="joueurs">        
-        <position height="0" width="0" x="-3310" y="976"/>      
-      </attribute>      
-      <multiplicity id="73" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-3310" y="976"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="75" name="affichage">        
-        <position height="18" width="54" x="1775" y="420"/>      
-      </attribute>      
-      <multiplicity id="76" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-404" y="-52"/>      
+      <multiplicity id="67" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2148" y="1058"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="25" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="77">    
-    <bendpoint x="1562" y="400"/>    
+  <generalization id="68">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <association id="69">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="78" name="petitsChevaux">        
-        <position height="0" width="0" x="-912" y="30"/>      
+      <attribute id="70" name="applicationFX">        
+        <position height="0" width="0" x="-2050" y="-820"/>      
       </attribute>      
-      <multiplicity id="79" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1540" y="436"/>      
+      <multiplicity id="71" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2050" y="-820"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="72">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="73" name="partie">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="76" name="caseActuelle">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="77" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="79" name="partie">        
+        <position height="20" width="45" x="933" y="1457"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="1">        
+        <position height="18" width="29" x="949" y="1474"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="81">    
+    <bendpoint x="2231" y="1046"/>    
+    <bendpoint x="2231" y="1463"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="82" name="couleur">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="83" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="84">    
+    <bendpoint x="1884" y="1312"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="85" name="chevaux">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="86" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="87">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="14"/>  
+  </generalization>  
+  <association id="88">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="89" name="affichage">        
+        <position height="0" width="0" x="-2520" y="-436"/>      
+      </attribute>      
+      <multiplicity id="90" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2520" y="-436"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="91">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="14"/>  
+  </generalization>  
+  <association id="92">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="93" name="plateau">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
+      </attribute>      
+      <multiplicity id="94" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="80">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="81" name="popup">        
-        <position height="0" width="0" x="-644" y="-62"/>      
+  <generalization id="95">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <association id="96">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="97" name="gestionPartie">        
+        <position height="20" width="95" x="1064" y="1321"/>      
       </attribute>      
-      <multiplicity id="82" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-644" y="-62"/>      
+      <multiplicity id="98" minimum="0" maximum="1">        
+        <position height="18" width="29" x="1166" y="1324"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="83">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="84" name="couleur">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
+  <association id="99">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="100" name="couleurCommence">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </attribute>      
-      <multiplicity id="85" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2716" y="-54"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="86">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="87" name="couleurCommence">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </attribute>      
-      <multiplicity id="88" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-2744" y="-514"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="89">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="90" name="chemin">        
-        <position height="0" width="0" x="-1086" y="558"/>      
-      </attribute>      
-      <multiplicity id="91" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-1086" y="558"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <generalization id="102">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

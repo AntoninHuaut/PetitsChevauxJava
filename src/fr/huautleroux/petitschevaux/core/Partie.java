@@ -76,11 +76,7 @@ public class Partie {
 
 		numeroTour++;
 
-		if (Main.utilise_Interface())
-			gestionPartie.toGraphique().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", GCouleurs.VIOLET.getCouleur());
-		else
-			gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "Appuyez sur [Entrer] pour passer au tour suivant" + CCouleurs.RESET, null);
-
+		gestionPartie.getInterface().simpleMessage("Appuyez sur [Entrer] pour passer au tour suivant", Main.utilise_Interface() ? GCouleurs.VIOLET.getCouleur()  : CCouleurs.PURPLE_BRIGHT);
 		gestionPartie.getInterface().attendreToucheEntrer(() -> {
 			if(!estPartieTerminee() && !stopPartie) {
 				idJoueurCourant = 0;
@@ -98,10 +94,8 @@ public class Partie {
 		Joueur joueurCourant = getJoueurCourant();
 
 		if (!aDejaFaitSix) {
-			if (Main.utilise_Interface())
-				gestionPartie.toGraphique().simpleMessage("C'est à " + joueurCourant + " de jouer !", joueurCourant.getCouleur().getTextCouleurIG());
-			else
-				gestionPartie.toConsole().simpleMessage(joueurCourant.getCouleur().getTextCouleurIC() + "C'est à " + joueurCourant + " de jouer !" + CCouleurs.RESET, null);
+			Couleur c = joueurCourant.getCouleur();
+			gestionPartie.getInterface().simpleMessage("C'est à " + joueurCourant + " de jouer !", Main.utilise_Interface() ? c.getTextCouleurIG() : c.getTextCouleurIC());
 		}
 		else
 			gestionPartie.getInterface().simpleMessage(joueurCourant + " peut rejouer une deuxième fois !\n", null);
@@ -130,18 +124,10 @@ public class Partie {
 					throw new SauvegardeException("Sauvegarde annulée");
 
 				stopPartie = sauvegardeResultat.equals(SauvegardeResultat.QUITTER);
-
-				if (Main.utilise_Interface())
-					gestionPartie.toGraphique().simpleMessage("\nLa partie a été sauvegardée", GCouleurs.VIOLET.getCouleur());
-				else
-					gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\nLa partie a été sauvegardée" + CCouleurs.RESET, null);
+				gestionPartie.getInterface().simpleMessage("\nLa partie a été sauvegardée", Main.utilise_Interface() ? GCouleurs.VIOLET.getCouleur() : CCouleurs.PURPLE_BRIGHT);
 
 				if(stopPartie) {
-					if (Main.utilise_Interface())
-						gestionPartie.toGraphique().simpleMessage("\n• La partie s'est arrêtée •", GCouleurs.VIOLET.getCouleur());
-					else
-						gestionPartie.toConsole().simpleMessage(CCouleurs.PURPLE_BRIGHT + "\n• La partie s'est arrêtée •" + CCouleurs.RESET, null);
-
+					gestionPartie.getInterface().simpleMessage("\n• La partie s'est arrêtée •", Main.utilise_Interface() ? GCouleurs.VIOLET.getCouleur() : CCouleurs.PURPLE_BRIGHT);
 					return;
 				}
 			} catch (SauvegardeException ex) {

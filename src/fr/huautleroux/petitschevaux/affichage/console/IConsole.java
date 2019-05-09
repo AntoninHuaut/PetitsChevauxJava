@@ -145,7 +145,10 @@ public class IConsole implements AffichageInterface {
 	}
 
 	public void simpleMessage(String msg, String color) {
-		System.out.println(msg);
+		if (color != null)
+			System.out.println(color + msg + CCouleurs.RESET);
+		else
+			System.out.println(msg);
 	}
 
 	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
@@ -264,10 +267,10 @@ public class IConsole implements AffichageInterface {
 					else
 						System.out.print("*");
 				}
-				
+
 				System.out.print(" ");
 			}
-			
+
 			System.out.println(" ");
 		}
 

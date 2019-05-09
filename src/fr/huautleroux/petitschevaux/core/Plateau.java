@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.huautleroux.petitschevaux.Main;
-import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 import fr.huautleroux.petitschevaux.cases.CaseChemin;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
 import fr.huautleroux.petitschevaux.cases.CaseEcurie;
@@ -69,24 +68,12 @@ public class Plateau {
 			nouvelleCase.ajouteCheval(pion);
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
-			if (ancienneCase instanceof CaseEcurie) {
-				if (Main.utilise_Interface())
-					partie.getGererPartie().toGraphique().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
-				else
-					partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐎 Votre " + pion + " est sorti de l'écurie" + CCouleurs.RESET, null);
-			}
-			else {
-				if (Main.utilise_Interface())
-					partie.getGererPartie().toGraphique().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
-				else
-					partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() +"🏇 Votre " + pion + " s'est déplacé" + CCouleurs.RESET, null);
-			}
-		} else {
-			if (Main.utilise_Interface())
-				partie.getGererPartie().toGraphique().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", pion.getCouleur().getTextCouleurIG());
+			if (ancienneCase instanceof CaseEcurie)
+				partie.getGererPartie().getInterface().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
 			else
-				partie.getGererPartie().toConsole().simpleMessage(pion.getCouleur().getTextCouleurIC() + "🐴 Votre " + pion + " n'a pas pu se déplacer" + CCouleurs.RESET, null);
-		}
+				partie.getGererPartie().getInterface().simpleMessage("🏇 Votre " + pion + " s'est déplacé", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
+		} else
+			partie.getGererPartie().getInterface().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
 	}
 
 	/**
@@ -104,12 +91,8 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-
-			if (Main.utilise_Interface())
-				partie.getGererPartie().toGraphique().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", couleurPionRenvoye.getTextCouleurIG());
-			else
-				partie.getGererPartie().toConsole().simpleMessage(couleurPionRenvoye.getTextCouleurIC() + "🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie" + CCouleurs.RESET, null);
-		}
+			
+			partie.getGererPartie().getInterface().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", Main.utilise_Interface() ? couleurPionRenvoye.getTextCouleurIG() : couleurPionRenvoye.getTextCouleurIC());}
 	}
 
 	/**
