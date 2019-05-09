@@ -171,8 +171,9 @@ public class IConsole implements AffichageInterface {
 			System.out.println(msg);
 	}
 
-	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
+	public void finDePartie(int numeroTour, Plateau plateau, Joueur joueurGagnant) {
 		System.out.println(CCouleurs.PURPLE_BRIGHT + "FIN DE PARTIE\n\n" + CCouleurs.RESET);
+		miseAJourAffichage(plateau);
 		System.out.println(joueurGagnant.getCouleur().getTextCouleurIC() + joueurGagnant + " gagne la partie en " + numeroTour + " tours\n\n" + CCouleurs.RESET);
 		System.out.println("\nAppuyer sur Entrer pour relancer une partie");
 

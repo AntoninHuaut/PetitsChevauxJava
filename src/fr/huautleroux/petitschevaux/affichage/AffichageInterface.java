@@ -29,9 +29,10 @@ public interface AffichageInterface {
 	/**
 	 * Affiche le message de fin de partie quand un joueur a gagné
 	 * @param numeroTour Numéro du tour en cours
+	 * @param plateau Instance du plateau
 	 * @param joueurGagnant Joueur gagnant
 	 */
-	public void finDePartie(int numeroTour, Joueur joueurGagnant);
+	public void finDePartie(int numeroTour, Plateau plateau, Joueur joueurGagnant);
 	
 	/**
 	 * Supprime les messages

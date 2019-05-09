@@ -37,7 +37,7 @@ public class Partie {
 	 */
 	public void jouerJeu() {
 		if (estPartieTerminee()) {
-			gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
+			gestionPartie.getInterface().finDePartie(numeroTour, plateau, getJoueurGagnant());
 			return;
 		}
 
@@ -66,7 +66,7 @@ public class Partie {
 				plateau.updateAffichage();
 
 			if (estPartieTerminee()) {
-				gestionPartie.getInterface().finDePartie(numeroTour, getJoueurGagnant());
+				gestionPartie.getInterface().finDePartie(numeroTour, plateau, getJoueurGagnant());
 				return;
 			}
 		}

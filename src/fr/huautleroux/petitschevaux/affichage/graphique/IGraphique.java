@@ -142,8 +142,9 @@ public class IGraphique implements AffichageInterface {
 		tourActuel.getChildren().add(simpleMessage);
 	}
 
-	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
+	public void finDePartie(int numeroTour, Plateau plateau, Joueur joueurGagnant) {
 		effacerAffichage();
+		miseAJourAffichage(plateau);
 		tourActuel = new TextFlow();
 
 		Text infoTour = new Text("FIN DE PARTIE\n\n");
