@@ -31,7 +31,6 @@ public class GestionSauvegarde {
 
 	/**
 	 * Initialise la gestion des sauvegardes
-	 * @param folderName Nom du sous dossier contenant les sauvegardes
 	 */
 	public GestionSauvegarde() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -48,6 +47,7 @@ public class GestionSauvegarde {
 
 	/**
 	 * Charge une sauvegarde (fichier) à partir de son nom
+	 * @param affichageInterface Interface utilisée pour l'affichage
 	 * @param saveName Nom du fichier
 	 * @return Partie
 	 * @throws ChargementSauvegardeException Erreur générée si le chargement échoue

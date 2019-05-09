@@ -42,10 +42,6 @@ public class IGraphique implements AffichageInterface {
 		this.popup = new Popup(this);
 	}
 
-	/**
-	 * Affiche le message de début du tour
-	 * @param numeroTour Numéro du tour
-	 */
 	public void debutTour(int numeroTour) {
 		effacerAffichage();
 		tourActuel = new TextFlow();
@@ -58,12 +54,6 @@ public class IGraphique implements AffichageInterface {
 		applicationFX.getInfoContenu().getChildren().add(tourActuel);
 	}
 
-	/**
-	 * Affiche le message du tirage au sort et attend une interaction
-	 * @param couleur Couleur
-	 * @param nomJoueur Nom du joueur qui va jouer
-	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
-	 */
 	public void tirageAuSort(Couleur couleur, String nomJoueur, Runnable callback) {
 		effacerAffichage();
 		TextFlow flow = new TextFlow();
@@ -128,10 +118,6 @@ public class IGraphique implements AffichageInterface {
 		applicationFX.getInfoContenu().getChildren().addAll(labelSauvegarde, comboBox, nouvellePartie);
 	}
 
-	/**
-	 * Exécute un bloc lorsqu'une interaction est effectuée
-	 * @param callback Bloc à exécuter lorsque l'interaction a été effectuée
-	 */
 	public void attendreToucheEntrer(Runnable callback) {
 		EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
 			@Override 
@@ -147,11 +133,6 @@ public class IGraphique implements AffichageInterface {
 		applicationFX.getScene().addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
 	}
 
-	/**
-	 * Affiche un message à la suite
-	 * @param msg Message
-	 * @param couleur Couleur du message (Facultatif)
-	 */
 	public void simpleMessage(String msg, String couleur) {
 		Text simpleMessage = new Text("\n" + msg);
 		if (couleur != null)
@@ -161,11 +142,6 @@ public class IGraphique implements AffichageInterface {
 		tourActuel.getChildren().add(simpleMessage);
 	}
 
-	/**
-	 * Affiche le message de fin de partie quand un joueur a gagné
-	 * @param numeroTour Numéro du tour en cours
-	 * @param joueurGagnant Joueur gagnant
-	 */
 	public void finDePartie(int numeroTour, Joueur joueurGagnant) {
 		effacerAffichage();
 		tourActuel = new TextFlow();
@@ -242,9 +218,6 @@ public class IGraphique implements AffichageInterface {
 		text.setFont(new Font(40));
 	}
 
-	/**
-	 * Supprime les messages
-	 */
 	public void effacerAffichage() {
 		applicationFX.getInfoContenu().getChildren().clear();
 	}

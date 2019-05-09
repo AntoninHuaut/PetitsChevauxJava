@@ -33,6 +33,10 @@ public class CaseEchelle extends CaseColoree {
 		return getClass().getName() + " " + toString();
 	}
 	
+	/**
+	 * Symbole de la case
+	 * @return Symbole contenant le numéro de la case
+	 */
 	public String getSymbol() {
 		switch(getNumeroLocal()) {
 		case 0:

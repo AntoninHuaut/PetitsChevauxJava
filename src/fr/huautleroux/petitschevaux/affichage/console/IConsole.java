@@ -51,11 +51,15 @@ public class IConsole implements AffichageInterface {
 		System.out.println(CCouleurs.PURPLE_BRIGHT + "TOUR N°" + numeroTour + CCouleurs.RESET);
 	}
 
+	/**
+	 * Demande le nombre de joueurs humains à l'utilisateur
+	 * @return Nombre de joueurs humains
+	 */
 	public int getNombreJoueurs() {
 		int nbJoueur;
 
 		do {
-			System.out.print("Entrez le nombre de joueurs qui vont participer : ");
+			System.out.print("Entrez le nombre de joueurs humains qui vont participer : ");
 			nbJoueur = Saisie.asInt();
 			System.out.println("");
 		} while (nbJoueur > 4 || nbJoueur < 0);
@@ -63,6 +67,11 @@ public class IConsole implements AffichageInterface {
 		return nbJoueur;
 	}
 
+	/**
+	 * Demande la valeur du dé truqué à l'utilisateur
+	 * @param de Dé original
+	 * @return Dé truqué
+	 */
 	public int getDeTruque(int de) {
 		int deTruque;
 
@@ -77,6 +86,12 @@ public class IConsole implements AffichageInterface {
 		return deTruque;
 	}
 
+	/**
+	 * Menu de sauvegarde
+	 * @param partie Partie à sauvegarder
+	 * @return Résultat de l'action de l'utilisateur
+	 * @throws SauvegardeException Erreur générée si la sauvegarde a échoué
+	 */
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
 		System.out.println("Entrez le nom souhaité pour la sauvegarde");
 		String nomSauvegarde = Saisie.asStringNoEmpty();
@@ -99,6 +114,11 @@ public class IConsole implements AffichageInterface {
 		return stopPartie ? SauvegardeResultat.QUITTER : SauvegardeResultat.CONTINUER;
 	}
 
+	/**
+	 * Menu de chargement de sauvegarde
+	 * @return GestionPartie contenant la partie chargée
+	 * @throws ChargementSauvegardeException Erreur générée si le chargement de la sauvegarde a échoué
+	 */
 	public GestionPartie menuChargementSauvegarde() throws ChargementSauvegardeException {
 		if(gestionSauvegarde.getSauvegardes().isEmpty())
 			throw new ChargementSauvegardeException("Aucune sauvegarde n'existe");
@@ -159,6 +179,11 @@ public class IConsole implements AffichageInterface {
 		attendreToucheEntrer(() -> start());
 	}
 
+	/**
+	 * Menu d'initialisation des joueurs
+	 * @param nbJoueurHumain Nombre de joueurs humains
+	 * @return HashMap associant le pseudo de chaque joueur à sa couleur
+	 */
 	public HashMap<String, Couleur> getInitialisationJoueurs(int nbJoueurHumain) {
 		HashMap<String, Couleur> joueurs = new HashMap<String, Couleur>();
 		System.out.println("Couleur : J(aune) / B(leu) / V(ert) / R(ouge)");
@@ -195,8 +220,14 @@ public class IConsole implements AffichageInterface {
 		for (Couleur c : Couleur.values())
 			aliasCompteur.put(c, 0);
 
-
+		for (int x = 0; x < 30; x++)
+			System.out.print(CCouleurs.PURPLE + "-" + CCouleurs.RESET);
+		
+		System.out.println("");
+		
 		for (int y = 0; y < 15; y++) {
+			System.out.print(" ");
+			
 			for (int x = 0; x < 15; x++) {
 				Case caseCible = plateau.getCaseParCordonnee(x, y);
 
@@ -214,21 +245,27 @@ public class IConsole implements AffichageInterface {
 					if (yTemp != 0)
 						numeroCheval++;
 
+					Couleur couleur = ((CaseEcurie) caseCible).getCouleur();
 					Pion p = null;
 
 					for (Pion pGet : caseCible.getChevaux())
 						if (pGet.getId() == numeroCheval)
 							p = pGet;
+					
+					String msg;
 
 					if (p != null)
-						if (p.getCouleur().equals(couleurCourant))
-							System.out.print(p.getId() + 1);
+						if (couleur.equals(couleurCourant))
+							msg = "" + (p.getId() + 1);
 						else
-							System.out.print(p.getCouleur().name().charAt(0));
+							msg = "" + p.getCouleur().name().charAt(0);
 					else
-						System.out.print(".");
+						msg = ".";
+					
+					System.out.print(couleur.getTextCouleurIC() + msg + CCouleurs.RESET);
 				} else {
 					String numeroCases = "";
+					String couleurText = "";
 
 					for (Pion p : caseCible.getChevaux()) {
 						if (numeroCases.isEmpty()) {
@@ -251,19 +288,21 @@ public class IConsole implements AffichageInterface {
 									lettreNumero++;
 
 								String lettre = "" + (char) (lettreNumero);
-								lettreInfos = lettre + " - " + p.getCouleur() + " : " + (caseCible.getChevaux().get(0).getId() + 1) + ", " + (p.getId() + 1);
+								lettreInfos = lettre + " (" + p.getCouleur() + ") : " + (caseCible.getChevaux().get(0).getId() + 1) + ", " + (p.getId() + 1);
 								numeroCases = lettre;
 								aliasCompteur.put(p.getCouleur(), compteur + 1);
 							}
 
 							alias.put(caseCible, lettreInfos);
 						}
+						
+						couleurText = p.getCouleur().getTextCouleurIC();
 					}
 
 					if (!numeroCases.isEmpty())
-						System.out.print(numeroCases);
+						System.out.print(couleurText + numeroCases + CCouleurs.RESET);
 					else if (caseCible instanceof CaseEchelle)
-						System.out.print(((CaseEchelle) caseCible).getSymbol());				
+						System.out.print(((CaseEchelle) caseCible).getCouleur().getTextCouleurFonceIC() + ((CaseEchelle) caseCible).getSymbol() + CCouleurs.RESET);				
 					else
 						System.out.print("*");
 				}
@@ -280,7 +319,7 @@ public class IConsole implements AffichageInterface {
 			System.out.println("Vos pions :");
 			for (String value : alias.values())
 				if (value.toUpperCase().contains(couleurCourant.name()))
-					System.out.println("  " + value);
+					System.out.println(couleurCourant.getTextCouleurIC() + "  " + value + CCouleurs.RESET);
 
 			System.out.println("\nAutres pions :");
 

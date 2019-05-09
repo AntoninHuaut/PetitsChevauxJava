@@ -40,14 +40,23 @@ public class Main {
 			new IConsole().start();
 	}
 
+	/**
+	 * @return L'utilisateur souhaite utiliser le dé truqué
+	 */
 	public static boolean utiliser_DeTruque() {
 		return UTILISER_DETRUQUE;
 	}
 
+	/**
+	 * @return L'utilisateur souhaite utiliser l'interface
+	 */
 	public static boolean utilise_Interface() {
 		return UTILISER_INTERFACE;
 	}
 
+	/**
+	 * @return L'utilisateur peut utiliser l'interface graphique
+	 */
 	public boolean peutUtiliserJavaFX() {
 		try {
 			Class.forName("javafx.application.Application");

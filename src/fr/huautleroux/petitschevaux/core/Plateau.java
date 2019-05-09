@@ -68,12 +68,24 @@ public class Plateau {
 			nouvelleCase.ajouteCheval(pion);
 			mangerLesPions(pion.getCouleur(), nouvelleCase);
 
-			if (ancienneCase instanceof CaseEcurie)
-				partie.getGererPartie().getInterface().simpleMessage("🐎 Votre " + pion + " est sorti de l'écurie", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
+			if (ancienneCase instanceof CaseEcurie) {
+				if (Main.utilise_Interface())
+					partie.getGererPartie().getInterface().simpleMessage("Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIG());
+				else
+					partie.getGererPartie().getInterface().simpleMessage("Votre " + pion + " est sorti de l'écurie", pion.getCouleur().getTextCouleurIC());
+			}
+			else {
+				if (Main.utilise_Interface())
+					partie.getGererPartie().getInterface().simpleMessage("🏇 Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIG());
+				else
+					partie.getGererPartie().getInterface().simpleMessage("Votre " + pion + " s'est déplacé", pion.getCouleur().getTextCouleurIC());
+			}
+		} else {
+			if (Main.utilise_Interface())
+				partie.getGererPartie().getInterface().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer",pion.getCouleur().getTextCouleurIG());
 			else
-				partie.getGererPartie().getInterface().simpleMessage("🏇 Votre " + pion + " s'est déplacé", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
-		} else
-			partie.getGererPartie().getInterface().simpleMessage("🐴 Votre " + pion + " n'a pas pu se déplacer", Main.utilise_Interface() ? pion.getCouleur().getTextCouleurIG() : pion.getCouleur().getTextCouleurIC());
+				partie.getGererPartie().getInterface().simpleMessage("Votre " + pion + " n'a pas pu se déplacer",pion.getCouleur().getTextCouleurIC());
+		}
 	}
 
 	/**
@@ -91,7 +103,7 @@ public class Plateau {
 			pion.getCaseActuelle().retirerCheval(pion);
 			Couleur couleurPionRenvoye = pion.getCouleur();
 			getEcuries().get(couleurPionRenvoye.ordinal()).ajouteCheval(pion);
-			
+
 			partie.getGererPartie().getInterface().simpleMessage("🐴 Le " + pion + " " + couleurPionRenvoye + " a été renvoyé à l'écurie", Main.utilise_Interface() ? couleurPionRenvoye.getTextCouleurIG() : couleurPionRenvoye.getTextCouleurIC());}
 	}
 

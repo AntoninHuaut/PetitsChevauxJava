@@ -5,10 +5,10 @@ import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
 
 public enum Couleur {
 	
-	JAUNE("#FFD700", "#ffff33", "#FAFAD2", "#FFA500", CCouleurs.YELLOW_BRIGHT),
-	BLEU("#0073e6", "#3399ff", "#99ccff", CCouleurs.BLUE_BRIGHT),
-	VERT("#008000", "#00e600", "#90EE90", CCouleurs.GREEN_BRIGHT),
-	ROUGE("#FF0000", "#ff6666", "#FFC0CB", CCouleurs.RED_BRIGHT);
+	JAUNE("#FFD700", "#ffff33", "#FAFAD2", "#FFA500", CCouleurs.YELLOW_BRIGHT, CCouleurs.YELLOW),
+	BLEU("#0073e6", "#3399ff", "#99ccff", CCouleurs.CYAN_BRIGHT, CCouleurs.CYAN),
+	VERT("#008000", "#00e600", "#90EE90", CCouleurs.GREEN_BRIGHT, CCouleurs.GREEN),
+	ROUGE("#FF0000", "#ff6666", "#FFC0CB", CCouleurs.RED_BRIGHT, CCouleurs.RED);
 	
 	public static final String SYMBOL = "🐎";
 	
@@ -20,17 +20,19 @@ public enum Couleur {
 	
 	/* Console */
 	private String textCouleurIC;
+	private String textCouleurFonceIC;
 	
-	private Couleur(String ecurieCouleurIG, String echelleCouleurIG, String cheminCouleurIG, String textCouleurIG, String textCouleurIC) {
+	private Couleur(String ecurieCouleurIG, String echelleCouleurIG, String cheminCouleurIG, String textCouleurIG, String textCouleurIC, String textCouleurFonceIC) {
 		this.ecurieCouleurIG = ecurieCouleurIG;
 		this.echelleCouleurIG = echelleCouleurIG;
 		this.cheminCouleurIG = cheminCouleurIG;
 		this.textCouleurIG = textCouleurIG;
 		this.textCouleurIC = textCouleurIC;
+		this.textCouleurFonceIC = textCouleurFonceIC;
 	}
 	
-	private Couleur(String caseEcurieCouleur, String caseEchelleCouleur, String caseCheminCouleur, String textCouleurIC) {
-		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur, textCouleurIC);
+	private Couleur(String caseEcurieCouleur, String caseEchelleCouleur, String caseCheminCouleur, String textCouleurIC, String textCouleurFonceIC) {
+		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur, textCouleurIC, textCouleurFonceIC);
 	}
 
 	public String getTextCouleurIG() {
@@ -39,6 +41,10 @@ public enum Couleur {
 	
 	public String getTextCouleurIC() {
 		return textCouleurIC;
+	}
+	
+	public String getTextCouleurFonceIC() {
+		return textCouleurFonceIC;
 	}
 	
 	public String getEcurieCouleurIG() {

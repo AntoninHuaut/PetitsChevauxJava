@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 
 public class ApplicationFX extends Application {
 	
+	/**
+	 * Lance l'application graphique
+	 */
 	public static void startApplication() {
 		Application.launch(ApplicationFX.class, new String [] {});
 	}

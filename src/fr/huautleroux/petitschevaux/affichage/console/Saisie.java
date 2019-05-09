@@ -9,15 +9,28 @@ public class Saisie {
 
 	private static Scanner scanner = new Scanner(System.in);
 
+	/**
+	 * Saisie utilisateur d'une chaîne de caractère
+	 * @return Chaîne de caractère
+	 */
 	public static String asString() {
 		return scanner.nextLine();
 	}
 
+	/**
+	 * Saisie utilisateur d'une chaîne de caractère non vide
+	 * @return Chaîne de caractère non vide
+	 */
 	public static String asStringNoEmpty() {
 		String get = asString();
 		return get.isEmpty() ? asStringNoEmpty() : get;
 	}
 
+	/**
+	 * Saisie utilisateur d'une couleur
+	 * @param affichage Interface utilisée pour l'affichage
+	 * @return Couleur du jeu
+	 */
 	public static Couleur asCouleur(AffichageInterface affichage) {
 		try {
 			Couleur couleur = affichage.getCouleurString(asStringNoEmpty());
@@ -32,6 +45,10 @@ public class Saisie {
 		}
 	}
 
+	/**
+	 * Saisie utilisateur d'un nombre entier
+	 * @return Nombre entier
+	 */
 	public static int asInt() {
 		try {
 			return Integer.valueOf(asStringNoEmpty());
@@ -41,24 +58,10 @@ public class Saisie {
 		}
 	}
 
-	public static double asDouble() {
-		try {
-			return Double.valueOf(asStringNoEmpty().replace(',', '.'));
-		} catch(NumberFormatException e) {
-			errorMsg("un nombre décimal (double précision)");
-			return asDouble();
-		}
-	}
-
-	public static float asFloat() {
-		try {
-			return (float) asDouble();
-		} catch(NumberFormatException e) {
-			errorMsg("un nombre décimal (simple précision)");
-			return asFloat();
-		}
-	}
-
+	/**
+	 * Saisie utilisateur d'un O(ui) / N(on)
+	 * @return Boolean
+	 */
 	public static boolean asBoolean() {
 		String get = asStringNoEmpty().toLowerCase();
 		if(get.equals("o") || get.equals("oui"))
