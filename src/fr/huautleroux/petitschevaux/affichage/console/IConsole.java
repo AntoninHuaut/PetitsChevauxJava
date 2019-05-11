@@ -2,6 +2,8 @@ package fr.huautleroux.petitschevaux.affichage.console;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.huautleroux.petitschevaux.affichage.AffichageInterface;
 import fr.huautleroux.petitschevaux.cases.CaseEchelle;
@@ -223,12 +225,12 @@ public class IConsole implements AffichageInterface {
 
 		for (int x = 0; x < 30; x++)
 			System.out.print(CCouleurs.PURPLE + "-" + CCouleurs.RESET);
-		
+
 		System.out.println("");
-		
+
 		for (int y = 0; y < 15; y++) {
 			System.out.print(" ");
-			
+
 			for (int x = 0; x < 15; x++) {
 				Case caseCible = plateau.getCaseParCordonnee(x, y);
 
@@ -252,7 +254,7 @@ public class IConsole implements AffichageInterface {
 					for (Pion pGet : caseCible.getChevaux())
 						if (pGet.getId() == numeroCheval)
 							p = pGet;
-					
+
 					String msg;
 
 					if (p != null)
@@ -262,7 +264,7 @@ public class IConsole implements AffichageInterface {
 							msg = "" + p.getCouleur().name().charAt(0);
 					else
 						msg = ".";
-					
+
 					System.out.print(couleur.getTextCouleurIC() + msg + CCouleurs.RESET);
 				} else {
 					String numeroCases = "";
@@ -296,7 +298,7 @@ public class IConsole implements AffichageInterface {
 
 							alias.put(caseCible, lettreInfos);
 						}
-						
+
 						couleurText = p.getCouleur().getTextCouleurIC();
 					}
 
@@ -317,16 +319,20 @@ public class IConsole implements AffichageInterface {
 		if (!alias.isEmpty()) {
 			System.out.println(" ");
 
-			System.out.println("Vos pions :");
-			for (String value : alias.values())
-				if (value.toUpperCase().contains(couleurCourant.name()))
+			List<String> aliasJoueurCourant = alias.values().stream().filter(value -> value.toUpperCase().contains(couleurCourant.name())).collect(Collectors.toList());
+			List<String> aliasJoueurNonCourant = alias.values().stream().filter(value -> !value.toUpperCase().contains(couleurCourant.name())).collect(Collectors.toList());
+
+			if (!aliasJoueurCourant.isEmpty()) {
+				System.out.println("Vos pions :");
+				for (String value : aliasJoueurCourant)
 					System.out.println(couleurCourant.getTextCouleurIC() + "  " + value + CCouleurs.RESET);
+			}
 
-			System.out.println("\nAutres pions :");
-
-			for (String value : alias.values())
-				if (!value.toUpperCase().contains(couleurCourant.name()))
+			if (!aliasJoueurNonCourant.isEmpty()) {
+				System.out.println("\nAutres pions :");
+				for (String value : aliasJoueurNonCourant)
 					System.out.println("  " + value);
+			}
 		}
 
 		System.out.println("");

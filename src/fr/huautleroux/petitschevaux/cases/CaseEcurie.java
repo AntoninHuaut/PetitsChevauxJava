@@ -22,7 +22,7 @@ public class CaseEcurie extends CaseColoree {
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + " " + toString();
+		return getClass().getName() + " " + super.toString();
 	}
 
 }

@@ -123,15 +123,17 @@ public class Plateau {
 
 			do {
 				caseTmp = getCaseCible(pion, i);
+				
+				System.out.println(i + " + " + caseTmp + " " + de);
 
-				if (i == de && !caseTmp.peutSArreter(pion, de))
+				if (caseTmp == caseCible && !caseTmp.peutSArreter(pion, de))
 					deplacementPossible = false;
 
-				if (i != de && !caseTmp.peutPasser(pion))
+				if (caseTmp != caseCible && !caseTmp.peutPasser(pion))
 					deplacementPossible = false;
 
 				i++;
-			} while (caseTmp != caseCible && deplacementPossible);
+			} while (i <= de && deplacementPossible);
 
 			return deplacementPossible;
 		} catch (PionFinParcoursException e) {

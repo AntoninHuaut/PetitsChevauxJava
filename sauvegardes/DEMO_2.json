@@ -15,7 +15,7 @@
       }
     },
     {
-      "type": "fr.huautleroux.petitschevaux.entites.JoueurBot",
+      "type": "fr.huautleroux.petitschevaux.entites.JoueurHumain",
       "data": {
         "nom": "Alpha",
         "couleur": "VERT"
@@ -73,25 +73,22 @@
         {
           "couleur": "BLEU",
           "numero": 7,
-          "pions": []
-        },
-        {
-          "couleur": "BLEU",
-          "numero": 8,
           "pions": [
-           {
+          {
             "id": 3,
             "couleur": "BLEU"
           }]
         },
         {
           "couleur": "BLEU",
-          "numero": 9,
+          "numero": 8,
           "pions": [
-           {
-            "id": 2,
-            "couleur": "BLEU"
-          }]
+           ]
+        },
+        {
+          "couleur": "BLEU",
+          "numero": 9,
+          "pions": []
         },
         {
           "couleur": "BLEU",
@@ -292,7 +289,10 @@
       },
       {
         "numero": 28,
-        "pions": []
+        "pions": [ {
+            "id": 1,
+            "couleur": "VERT"
+          }]
       },
       {
         "numero": 29,
@@ -313,7 +313,12 @@
       },
       {
         "numero": 32,
-        "pions": []
+        "pions": [
+          {
+            "id": 0,
+            "couleur": "ROUGE"
+          }
+        ]
       },
       {
         "numero": 33,
@@ -349,10 +354,7 @@
       },
       {
         "numero": 41,
-        "pions": [{
-            "id": 0,
-            "couleur": "ROUGE"
-          }]
+        "pions": []
       },
       {
         "numero": 42,
@@ -438,17 +440,16 @@
         "couleur": "BLEU",
         "numero": 1,
         "pions": [
+          {
+            "id": 2,
+            "couleur": "BLEU"
+          }
         ]
       },
       {
         "couleur": "VERT",
         "numero": 2,
-        "pions": [
-          {
-            "id": 1,
-            "couleur": "VERT"
-          },
-          {
+        "pions": [{
             "id": 2,
             "couleur": "VERT"
           },
