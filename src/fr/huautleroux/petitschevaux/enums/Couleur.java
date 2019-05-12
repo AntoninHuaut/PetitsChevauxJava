@@ -2,27 +2,28 @@
 package fr.huautleroux.petitschevaux.enums;
 
 import fr.huautleroux.petitschevaux.affichage.console.CCouleurs;
+import fr.huautleroux.petitschevaux.affichage.graphique.GCouleurs;
 
 public enum Couleur {
 	
-	JAUNE("#FFD700", "#ffff33", "#FAFAD2", "#FFA500", CCouleurs.YELLOW_BRIGHT, CCouleurs.YELLOW),
-	BLEU("#0073e6", "#3399ff", "#99ccff", CCouleurs.CYAN_BRIGHT, CCouleurs.CYAN),
-	VERT("#008000", "#00e600", "#90EE90", CCouleurs.GREEN_BRIGHT, CCouleurs.GREEN),
-	ROUGE("#FF0000", "#ff6666", "#FFC0CB", CCouleurs.RED_BRIGHT, CCouleurs.RED);
+	JAUNE(GCouleurs.JAUNE_ECURIE, GCouleurs.JAUNE_ECHELLE, GCouleurs.JAUNE_CHEMIN, GCouleurs.JAUNE_TEXT, CCouleurs.YELLOW_BRIGHT, CCouleurs.YELLOW),
+	BLEU(GCouleurs.BLEU_ECURIE, GCouleurs.BLEU_ECHELLE, GCouleurs.BLEU_CHEMIN, CCouleurs.CYAN_BRIGHT, CCouleurs.CYAN),
+	VERT(GCouleurs.VERT_ECURIE, GCouleurs.VERT_ECHELLE, GCouleurs.VERT_CHEMIN, CCouleurs.GREEN_BRIGHT, CCouleurs.GREEN),
+	ROUGE(GCouleurs.ROUGE_ECURIE, GCouleurs.ROUGE_ECHELLE, GCouleurs.ROUGE_CHEMIN, CCouleurs.RED_BRIGHT, CCouleurs.RED);
 	
 	public static final String SYMBOL = "🐎";
 	
 	/* Interface graphique */
-	private String ecurieCouleurIG;
-	private String echelleCouleurIG;
-	private String cheminCouleurIG;
-	private String textCouleurIG;
+	private GCouleurs ecurieCouleurIG;
+	private GCouleurs echelleCouleurIG;
+	private GCouleurs cheminCouleurIG;
+	private GCouleurs textCouleurIG;
 	
 	/* Console */
 	private String textCouleurIC;
 	private String textCouleurFonceIC;
 	
-	private Couleur(String ecurieCouleurIG, String echelleCouleurIG, String cheminCouleurIG, String textCouleurIG, String textCouleurIC, String textCouleurFonceIC) {
+	private Couleur(GCouleurs ecurieCouleurIG, GCouleurs echelleCouleurIG, GCouleurs cheminCouleurIG, GCouleurs textCouleurIG, String textCouleurIC, String textCouleurFonceIC) {
 		this.ecurieCouleurIG = ecurieCouleurIG;
 		this.echelleCouleurIG = echelleCouleurIG;
 		this.cheminCouleurIG = cheminCouleurIG;
@@ -31,12 +32,8 @@ public enum Couleur {
 		this.textCouleurFonceIC = textCouleurFonceIC;
 	}
 	
-	private Couleur(String caseEcurieCouleur, String caseEchelleCouleur, String caseCheminCouleur, String textCouleurIC, String textCouleurFonceIC) {
+	private Couleur(GCouleurs caseEcurieCouleur, GCouleurs caseEchelleCouleur, GCouleurs caseCheminCouleur, String textCouleurIC, String textCouleurFonceIC) {
 		this(caseEcurieCouleur, caseEchelleCouleur, caseCheminCouleur, caseEcurieCouleur, textCouleurIC, textCouleurFonceIC);
-	}
-
-	public String getTextCouleurIG() {
-		return textCouleurIG;
 	}
 	
 	public String getTextCouleurIC() {
@@ -47,16 +44,20 @@ public enum Couleur {
 		return textCouleurFonceIC;
 	}
 	
+	public String getTextCouleurIG() {
+		return textCouleurIG.getCouleur();
+	}
+	
 	public String getEcurieCouleurIG() {
-		return ecurieCouleurIG;
+		return ecurieCouleurIG.getCouleur();
 	}
 
 	public String getEchelleCouleurIG() {
-		return echelleCouleurIG;
+		return echelleCouleurIG.getCouleur();
 	}
 
 	public String getCheminCouleurIG() {
-		return cheminCouleurIG;
+		return cheminCouleurIG.getCouleur();
 	}
 	
 	@Override

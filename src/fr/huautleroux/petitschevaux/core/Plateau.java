@@ -123,8 +123,6 @@ public class Plateau {
 
 			do {
 				caseTmp = getCaseCible(pion, i);
-				
-				System.out.println(i + " + " + caseTmp + " " + de);
 
 				if (caseTmp == caseCible && !caseTmp.peutSArreter(pion, de))
 					deplacementPossible = false;
