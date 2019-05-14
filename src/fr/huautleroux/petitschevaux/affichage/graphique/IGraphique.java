@@ -200,10 +200,19 @@ public class IGraphique implements AffichageInterface {
 				} else {
 					String numeroCases = "";
 					Couleur couleur = null;
+					int compteurChevaux = 0;
 
 					for (Pion p : caseCible.getChevaux()) {
 						couleur = p.getCouleur();
-						numeroCases += (numeroCases.isEmpty() ? Couleur.SYMBOL + " " : ", ") + (p.getId() + 1);
+						if (compteurChevaux == 0)
+							numeroCases += Couleur.SYMBOL + " ";
+						else if (compteurChevaux != 2)
+							numeroCases += ", ";
+						else
+							numeroCases += "\n     ";
+						
+						numeroCases += (p.getId() + 1);
+						compteurChevaux++;
 					}
 
 					if (!numeroCases.isEmpty()) {

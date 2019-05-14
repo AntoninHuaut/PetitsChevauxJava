@@ -95,8 +95,9 @@ public class IConsole implements AffichageInterface {
 	 * @throws SauvegardeException Erreur générée si la sauvegarde a échoué
 	 */
 	public SauvegardeResultat menuSauvegarde(Partie partie) throws SauvegardeException {
-		System.out.println("Entrez le nom souhaité pour la sauvegarde");
+		System.out.print("Entrez le nom souhaité pour la sauvegarde : ");
 		String nomSauvegarde = Saisie.asStringNoEmpty();
+		System.out.println(" ");
 		nomSauvegarde = gestionSauvegarde.convertSaveName(nomSauvegarde);
 		boolean overwrite = false;
 
@@ -138,7 +139,7 @@ public class IConsole implements AffichageInterface {
 		String nomSauvegarde;
 
 		do {
-			System.out.print("Choisissez la sauvegarde à charger (Tappez stop pour annuler) : ");
+			System.out.print("Choisissez la sauvegarde à charger (Tapez stop pour annuler) : ");
 			nomSauvegarde = Saisie.asStringNoEmpty();
 			System.out.println("");
 		} while(!gestionSauvegarde.estSauvegardeValide(nomSauvegarde) && !nomSauvegarde.equals("stop"));
