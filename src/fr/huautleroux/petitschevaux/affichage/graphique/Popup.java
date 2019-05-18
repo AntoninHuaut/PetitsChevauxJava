@@ -377,7 +377,7 @@ public class Popup {
 	}
 	
 	/**
-	 * Définie l'icône d'une fenêtre
+	 * Définit l'icône d'une fenêtre
 	 * @param dialog Fenêtre
 	 * @param nom Nom de l'icone
 	 */

@@ -187,13 +187,13 @@ public class Partie {
 				boolean aPionEchelle = !caseEchelle.getChevaux().isEmpty();
 				comptagePion += aPionEchelle ? 1 : 0;
 
-				// Si le pion est sur un case de l'échelle qui n'est pas 3-4-5-6
+				// Si le pion est sur une case de l'échelle qui n'est pas 3-4-5-6
 				// L'indice 1 correspond à la case 2
 				if(i <= 1 && aPionEchelle)
 					pionBienPlace = false;
 			}
 
-			// Si tous les pions du joueur sont à l'échelles et que les pions sont dans placés dans les cases 3-4-5-6
+			// Si tous les pions du joueur sont sur l'échelles et que les pions sont dans placés dans les cases 3-4-5-6
 			if(comptagePion == 4 && pionBienPlace)
 				return j;
 		}

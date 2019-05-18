@@ -53,7 +53,7 @@ public abstract class Joueur implements Comparable<Joueur> {
 
 	/**
 	 * @param plateau Instance du plateau
-	 * @return Si au moins un des chevaux du joueur sont dans l'écurie
+	 * @return Si au moins un des chevaux du joueur est dans l'écurie
 	 */
 	public boolean hasPionEcurie(Plateau plateau) {
 		return getNombrePionEcurie(plateau) != 0;
@@ -85,7 +85,7 @@ public abstract class Joueur implements Comparable<Joueur> {
 	}
 
 	/**
-	 * Initialise la liste de chevaux
+	 * Initialise la liste des chevaux
 	 */
 	public void initialisationChevaux() {
 		this.chevaux = new ArrayList<Pion>();

@@ -24,7 +24,7 @@ public abstract class Case {
 	}
 	
 	/**
-	 * Retire un cheval sur le case
+	 * Retire un cheval sur la case
 	 * @param pion Pion à retirer
 	 */
 	public void retirerCheval(Pion pion) {

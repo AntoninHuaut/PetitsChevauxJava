@@ -1,7 +1,7 @@
 package fr.huautleroux.petitschevaux.exceptions;
 
 /**
- * Erreur générée lorsque qu'un pion a terminé le parcours et à atteint la case maximum
+ * Erreur générée lorsqu'un pion a terminé le parcours et a atteint la case maximum
  */
 @SuppressWarnings("serial")
 public class PionFinParcoursException extends Exception {

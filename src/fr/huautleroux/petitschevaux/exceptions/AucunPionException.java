@@ -1,7 +1,7 @@
 package fr.huautleroux.petitschevaux.exceptions;
 
 /**
- * Erreur générée lorsque qu'aucun pion n'est disponible
+ * Erreur générée lorsqu'aucun pion n'est disponible
  */
 @SuppressWarnings("serial")
 public class AucunPionException extends Exception {

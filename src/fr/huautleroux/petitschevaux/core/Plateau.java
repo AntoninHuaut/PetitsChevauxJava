@@ -144,7 +144,7 @@ public class Plateau {
 	 * @param pion Pion à ajouter
 	 * @param nbDeplacement Nombre de déplacements que le cheval doit effectuer
 	 * @return Case ciblée
-	 * @throws PionFinParcoursException Erreur générée si le pion ne peut plus avancer car il est a la dernière case
+	 * @throws PionFinParcoursException Erreur générée si le pion ne peut plus avancer car il est à la dernière case
 	 */
 	public Case getCaseCible(Pion pion, int nbDeplacement) throws PionFinParcoursException {
 		Case caseActuelle = pion.getCaseActuelle();
@@ -164,7 +164,7 @@ public class Plateau {
 
 			// Le joueur atteint la case de transition
 			if (isTransition(caseNumero, nbDeplacement, indiceJoueur))
-				return chemins.get(indiceJoueur * 14); // Le joueur est limité à la case de transition
+				return chemins.get(indiceJoueur * 14); // Le joueur est limité à la case de la transition
 
 			caseNumero += nbDeplacement;
 			return chemins.get(caseNumero % chemins.size());
@@ -181,7 +181,7 @@ public class Plateau {
 	}
 
 	/**
-	 * Teste si en se déplacant, la case ciblé est une case de transition pour le joueur
+	 * Teste si en se déplacant, la case ciblée est une case de transition pour le joueur
 	 * @param caseNumero Numéro de la case
 	 * @param de Nombre de déplacements que le cheval doit effectuer
 	 * @param indiceJoueur Numéro du joueur
@@ -199,7 +199,7 @@ public class Plateau {
 	 * Transition entre la position d'une case sur le plateau et une instance de case
 	 * @param x Indice x
 	 * @param y Indice y
-	 * @return Case a la position donnée
+	 * @return Case à la position donnée
 	 */
 	public Case getCaseParCordonnee(int x, int y) {
 		// Cases plateaux standards (sauf cases pré-échelles)

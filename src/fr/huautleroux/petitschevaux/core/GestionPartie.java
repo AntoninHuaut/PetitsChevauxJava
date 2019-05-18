@@ -143,7 +143,7 @@ public class GestionPartie {
 	}
 	
 	/**
-	 * Définie la partie qui va être utilisée
+	 * Définit la partie qui va être utilisée
 	 * @param partie Partie
 	 */
 	public void setPartie(Partie partie) {
