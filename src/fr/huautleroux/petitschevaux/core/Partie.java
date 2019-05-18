@@ -127,7 +127,7 @@ public class Partie {
 				gestionPartie.getInterface().simpleMessage("\nLa partie a été sauvegardée", Main.utilise_Interface() ? GCouleurs.VIOLET.getCouleur() : CCouleurs.PURPLE_BRIGHT);
 
 				if(stopPartie) {
-					gestionPartie.getInterface().simpleMessage("\n• La partie s'est arrêtée •", Main.utilise_Interface() ? GCouleurs.VIOLET.getCouleur() : CCouleurs.PURPLE_BRIGHT);
+					gestionPartie.getInterface().stopPartie(plateau);
 					return;
 				}
 			} catch (SauvegardeException ex) {
@@ -135,6 +135,12 @@ public class Partie {
 			}
 
 			tourJoueur(aDejaFaitSix, de);
+			return;
+		}
+
+		else if (action.equals(JoueurAction.QUITTER)) {
+			stopPartie = true;
+			gestionPartie.getInterface().stopPartie(plateau);
 			return;
 		}
 

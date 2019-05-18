@@ -182,6 +182,15 @@ public class IConsole implements AffichageInterface {
 
 		attendreToucheEntrer(() -> start());
 	}
+	
+	public void stopPartie(Plateau plateau) {
+		System.out.println(CCouleurs.PURPLE_BRIGHT + "FIN DE PARTIE\n\n" + CCouleurs.RESET);
+		miseAJourAffichage(plateau);
+		System.out.println(CCouleurs.PURPLE_BRIGHT + "• La partie s'est arrêtée •" + CCouleurs.RESET);
+		System.out.println("\nAppuyer sur Entrer pour relancer une partie");
+
+		attendreToucheEntrer(() -> start());
+	}
 
 	/**
 	 * Menu d'initialisation des joueurs

@@ -166,6 +166,31 @@ public class IGraphique implements AffichageInterface {
 		tourActuel.getChildren().addAll(infoTour, gagnant, rejouer);
 		applicationFX.getInfoContenu().getChildren().add(tourActuel);
 	}
+	
+	public void stopPartie(Plateau plateau) {
+		effacerAffichage();
+		miseAJourAffichage(plateau);
+		tourActuel = new TextFlow();
+
+		Text infoTour = new Text("FIN DE PARTIE\n\n");
+		infoTour.setFont(new Font(policeBase.getSize() + 16));
+		infoTour.setFill(Color.MEDIUMPURPLE);
+
+		Text gagnant = new Text("• La partie s'est arrêtée •\n\n");
+		gagnant.setFont(new Font(policeBase.getSize() + 4));
+		gagnant.setFill(Color.MEDIUMPURPLE);
+
+		Button rejouer = new Button("Recommencer une nouvelle partie");
+		rejouer.setOnMouseClicked(e -> {
+			openMenuChargementSauvegarde();
+
+			for (Text text : texts.values())
+				text.setText("");
+		});
+
+		tourActuel.getChildren().addAll(infoTour, gagnant, rejouer);
+		applicationFX.getInfoContenu().getChildren().add(tourActuel);
+	}
 
 	public void miseAJourAffichage(Plateau plateau) {
 		for (int y = 0; y < 15; y++)

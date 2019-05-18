@@ -35,6 +35,12 @@ public interface AffichageInterface {
 	public void finDePartie(int numeroTour, Plateau plateau, Joueur joueurGagnant);
 	
 	/**
+	 * Arrêt d'une partie forcée
+	 * @param plateau Instance du plateau
+	 */
+	public void stopPartie(Plateau plateau);
+	
+	/**
 	 * Supprime les messages
 	 */
 	public void effacerAffichage();

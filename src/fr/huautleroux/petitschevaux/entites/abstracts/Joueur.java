@@ -97,7 +97,7 @@ public abstract class Joueur implements Comparable<Joueur> {
 	 * @return Liste d'actions disponibles pour un tirage de dé
 	 */
 	protected List<JoueurAction> getActionsDisponible(int de, Plateau plateau) {
-		List<JoueurAction> actionsDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER));
+		List<JoueurAction> actionsDispo = new ArrayList<JoueurAction>(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER, JoueurAction.QUITTER));
 
 		if(hasToutPionEcurie(plateau)) {
 			if(de == 6)
@@ -108,7 +108,7 @@ public abstract class Joueur implements Comparable<Joueur> {
 			if(de == 6 && hasPionEcurie(plateau))
 				actionsDispo.add(1, JoueurAction.SORTIR_CHEVAL);
 
-			actionsDispo.add(actionsDispo.size() - 1, JoueurAction.DEPLACER_CHEVAL);
+			actionsDispo.add(actionsDispo.size() - 2, JoueurAction.DEPLACER_CHEVAL);
 		}
 
 		return actionsDispo;

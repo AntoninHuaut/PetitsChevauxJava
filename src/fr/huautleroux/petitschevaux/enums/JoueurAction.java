@@ -5,7 +5,8 @@ public enum JoueurAction {
 	RIEN_FAIRE("Ne rien faire"),
 	SORTIR_CHEVAL("Sortir un cheval", "sortir de l'écurie"),
 	DEPLACER_CHEVAL("Déplacer un cheval", "déplacer sur le plateau"),
-	SAUVEGARDER("Sauvegarder");
+	SAUVEGARDER("Sauvegarder"),
+	QUITTER("Quitter");
 	
 	private String nom;
 	private String message = "";

@@ -1,5 +1,6 @@
 package fr.huautleroux.petitschevaux.entites;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +24,7 @@ public class JoueurBot extends Joueur {
 	@Override
 	public JoueurAction choixAction(int de, Plateau plateau) {
 		List<JoueurAction> actionsDispo = getActionsDisponible(de, plateau);
-		actionsDispo.remove(JoueurAction.SAUVEGARDER);
-		actionsDispo.remove(JoueurAction.RIEN_FAIRE);
+		actionsDispo.removeAll(Arrays.asList(JoueurAction.RIEN_FAIRE, JoueurAction.SAUVEGARDER, JoueurAction.QUITTER));
 
 		JoueurAction choixAction;
 		
